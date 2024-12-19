@@ -1,23 +1,30 @@
 {% extends 'accounts/base.html' %}
+
 {% block title %}
-{{ user.username }}のプロフィール
-{% endblock %}
+
+{% endblock title %}
+
 {% block content %}
 <header>
-  <h1>{{ user.username }}のプロフィール</h1>
+  {% if user.Last_name %}
+  <h1>{{ user.First_name }} {{ user.Last_name }}のプロフィール</h1>
+  {% endif %}
 </header>
 <main>
   <section>
     <h2>基本情報</h2>
-    <p><strong>ユーザ名:</strong> {{ user.username }}</p>
+    {% if user.email %}
     <p><strong>メールアドレス:</strong> {{ user.email }}</p>
+    {% endif %}
+    {% if user.date_joined %}
     <p><strong>登録日:</strong> {{ user.date_joined }}</p>
+    {% endif %}
   </section>
   <section>
     <h2>プロフィール詳細</h2>
-    <p><strong>フルネーム:</strong> {{ user.profile.full_name }}</p>
-    <p><strong>自己紹介:</strong> {{ user.profile.bio }}</p>
-    <p><strong>ウェブサイト:</strong> <a href="{{ user.profile.website }}">{{ user.profile.website }}</a></p>
+    {% if user.profile.avatar %}
+    <p><strong>フルネーム:</strong> {{ user.First_name }} {{ user.Last_name }} </p>
+    {% endif %}
   </section>
   <a href="{% url 'accounts:index' %}">トップへ戻る</a>
 </main>
