@@ -12,7 +12,11 @@
 {% if user.is_authenticated %}
 <div class="h2">Welcome {{ user.first_name }} {{ user.last_name }}</div>
 <!-- ↓追加 -->
-<a href="{% url 'accounts:logout' %}" class="btn btn-primary">Logout</a> 
+<form action="{% url 'accounts:logout' %}" method="post" name="f_logout">
+  {% csrf_token %}
+  <input type="hidden" value="logout">
+  <a href="javascript:f_logout.submit()" class="logout nav-link">Logout</a>
+</form>
 {% else %}
 <a href="{% url 'accounts:signup' %}" class="btn btn-primary">Signup</a>
 <a href="{% url 'accounts:login' %}" class="btn btn-primary">Login</a>

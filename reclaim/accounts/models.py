@@ -52,7 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     account_id = models.CharField(
         verbose_name=_("account_id"),
         unique=True,
-        max_length=10
+        max_length=40
     )
     email = models.EmailField(
         verbose_name=_("email"),

@@ -45,3 +45,6 @@ class LoginView(BaseLoginView):
 
 class LogoutView(BaseLogoutView):
     success_url = reverse_lazy("accounts:index")
+    
+def profile(request):
+    return render(request, "accounts/profile.html")

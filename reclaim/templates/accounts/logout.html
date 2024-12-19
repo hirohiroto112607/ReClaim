@@ -1,0 +1,15 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}
+<div class="h1">Login</div>
+
+{% endblock %}
+{% block content %}<form action="{% url 'logout' %}" method="post" name="f_logout">
+    {% csrf_token %}
+    <input type="hidden" value="logout">
+    <a href="javascript:f_logout.submit()" class="logout nav-link">Logout</a>
+    
+</form>
+                    
+
+{% endblock %}

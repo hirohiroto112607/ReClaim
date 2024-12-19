@@ -1,0 +1,21 @@
+{% extends 'accounts/base.html' %}
+{% block title %}{{ user.username }}のプロフィール{% endblock %}
+{% block content %}
+<header>
+  <h1>{{ user.username }}のプロフィール</h1>
+</header>
+<main>
+  <section>
+    <h2>基本情報</h2>
+    <p><strong>ユーザ名:</strong> {{ user.username }}</p>
+    <p><strong>メールアドレス:</strong> {{ user.email }}</p>
+    <p><strong>登録日:</strong> {{ user.date_joined }}</p>
+  </section>
+  <section>
+    <h2>プロフィール詳細</h2>
+    <p><strong>フルネーム:</strong> {{ user.profile.full_name }}</p>
+    <p><strong>自己紹介:</strong> {{ user.profile.bio }}</p>
+    <p><strong>ウェブサイト:</strong> <a href="{{ user.profile.website }}">{{ user.profile.website }}</a></p>
+  </section>
+</main>
+{% endblock %}
