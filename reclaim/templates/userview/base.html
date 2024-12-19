@@ -23,7 +23,19 @@
     <div class="navbar-nav d-flex flex-row">
       <a class="nav-link mx-3" href="{% url 'userview:index' %}">一覧</a>
     </div>
-
+    {% if user.is_authenticated %}
+    <div class="navbar-nav d-flex flex-row">
+      <a class="nav-link mx-3" href="{% url 'accounts:logout' %}">ログアウト</a>
+    </div>
+    {% else %}
+    <div class="navbar-nav d-flex flex-row">
+      <a class="nav-link mx-3" href="{% url 'accounts:login' %}">ログイン</a>
+    </div>
+    <div class="navbar-nav d-flex flex-row">
+      <a class="nav-link mx-3" href="{% url 'accounts:signin' %}">サインイン</a>
+    </div>
+    
+    {% endif %}
   </nav>
   {% block body %}
   {% endblock body %}

@@ -47,3 +47,6 @@ class LogoutView(BaseLogoutView):
     
 def profile(request):
     return render(request, "accounts/profile.html")
+
+def logout_get(request):
+    return render(request, "accounts/logout.html")
