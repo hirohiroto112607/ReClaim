@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import hello,  registerform, item_list_view, detail_item_view
+
 from . import views
+from .views import detail_item_view, hello, item_list_view, registerform
 
 app_name = 'storeview'
 urlpatterns = [

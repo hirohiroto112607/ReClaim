@@ -1,15 +1,14 @@
-from django.shortcuts import render
-from django.urls import reverse_lazy
-from django.contrib.auth import login, authenticate
-from django.views.generic.edit import CreateView
-from .forms import SignUpForm
-from django.views.generic import TemplateView
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
-from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import LoginView as BaseLoginView
 from django.contrib.auth.views import LogoutView as BaseLogoutView
+from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView
+from django.views.generic.edit import CreateView
 
+from .forms import SignUpForm
 
 # Create your views here.
 
