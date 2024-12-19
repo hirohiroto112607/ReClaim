@@ -1,0 +1,30 @@
+{% extends "storeview/base.html" %}
+
+{% block title %} Item List {% endblock %}
+
+{% block body %}
+<style>
+  .list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+</style>
+<div class="list">
+  {% for item in object_list %}
+  <div class="card p-4 m-4 bg-light border border-success rounded" style="width: 18rem;">
+    {% if item.item_image %}
+    <img src="{{ MEDIA_URL }}{{item.item_image}}" class="card-img-top" alt="...">
+    {% endif %}
+    <div class="card-body">
+      <h4 class="card-title">{{ item.item_name }}</h5>
+      <h5 class="card-text">{{ item.item_description }}</p>
+      <p class="card-text">{{ item.item_category_id }}</p>
+      <p class="card-text">{{ item.item_tag_id }}</p>
+      <p class="card-text">{{ item.item_lost_location }}</p>
+      <a href="{% url 'storeview:detail' item.pk %}" class="btn btn-primary">詳細を見る＆編集する</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock body %}

@@ -1,0 +1,32 @@
+{% load static %}
+{% load django_bootstrap5 %}
+<!DOCTYPE html>
+<html lang="ja-JP">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="Content-type"
+    content="text/html; charset=utf-8" />
+  <link rel="icon" href="#">
+  <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+  <link rel="icon" href="{% static 'images/favicon.ico' %}">
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+  <title>
+    {% block title %}
+    {% endblock title %}
+  </title>
+</head>
+
+<body>
+  <nav class="navbar navbar-dark sticky-top bg-success">
+    <div class="navbar-nav d-flex flex-row">
+      <a class="nav-link mx-3" href="{% url 'userview:index' %}">一覧</a>
+    </div>
+
+  </nav>
+  {% block body %}
+  {% endblock body %}
+</body>
+
+</html>
