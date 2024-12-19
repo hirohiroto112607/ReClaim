@@ -1,5 +1,7 @@
 {% extends 'accounts/base.html' %}
-{% block title %}{{ user.username }}のプロフィール{% endblock %}
+{% block title %}
+{{ user.username }}のプロフィール
+{% endblock %}
 {% block content %}
 <header>
   <h1>{{ user.username }}のプロフィール</h1>
