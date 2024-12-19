@@ -17,5 +17,6 @@
     <p><strong>自己紹介:</strong> {{ user.profile.bio }}</p>
     <p><strong>ウェブサイト:</strong> <a href="{{ user.profile.website }}">{{ user.profile.website }}</a></p>
   </section>
+  <a href="{% url 'accounts:index' %}">トップへ戻る</a>
 </main>
 {% endblock %}
