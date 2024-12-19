@@ -1,0 +1,13 @@
+{% extends 'storeview/base.html' %}
+{% load static %}
+
+{% block title %}
+インデックスページ
+{% endblock title %}
+
+{% block body %}
+<h1>Index</h1>
+<p>Index test page</p>
+<a href="{% url 'storeview:list'  %}">list</a>
+<a href="{% url 'storeview:registerform'  %}">register</a>
+{% endblock body %}

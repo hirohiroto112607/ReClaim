@@ -1,0 +1,17 @@
+{% extends 'storeview/base.html' %}
+{% load django_bootstrap5 %}
+{% load static %}
+
+{% block title %}TEST{% endblock %}
+
+{% block body %}
+
+<h1 class="py-2 mx-3">TEST</h1>
+
+<p>
+  {% for i in object_list %}
+  {{ i.item_lost_location }}<br>
+  {% endfor %}
+</p>
+
+{% endblock %}
