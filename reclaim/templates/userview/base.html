@@ -25,14 +25,14 @@
     </div>
     {% if user.is_authenticated %}
     <div class="navbar-nav d-flex flex-row">
-      <a class="nav-link mx-3" href="{% url 'accounts:logout' %}">ログアウト</a>
+      <a class="nav-link mx-3" href="{% url 'accounts:logout' %}?action=/userview">ログアウト</a>
     </div>
     {% else %}
     <div class="navbar-nav d-flex flex-row">
-      <a class="nav-link mx-3" href="{% url 'accounts:login' %}">ログイン</a>
+      <a class="nav-link mx-3" href="{% url 'accounts:login' %}?action=/userview">ログイン</a>
     </div>
     <div class="navbar-nav d-flex flex-row">
-      <a class="nav-link mx-3" href="{% url 'accounts:signin' %}">サインイン</a>
+      <a class="nav-link mx-3" href="{% url 'accounts:signup' %}?action=/userview">サインイン</a>
     </div>
     
     {% endif %}

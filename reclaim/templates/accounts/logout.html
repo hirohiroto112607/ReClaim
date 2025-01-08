@@ -1,20 +1,28 @@
 {% extends 'accounts/base.html' %}
 
 {% block title %}
-Login
+
 {% endblock %}
 
 {% block content %}
-  <form action="{% url 'accounts:logout' %}" method="post">
+  <style>
+    .brank {
+      visibility: hidden;
+    }
+  </style>
+  <form id="f_logout" action="{% url 'accounts:logout' %}" method="post">
     {% csrf_token %}
-    <button type="submit" name="btn" class="btn btn-info">Logout</button>
+    <button type="submit" name="btn" class="brank">Logout</button>
   </form>
+
+  <p>次のページへ進まない場合は</p>
+  <a href="{% url 'accounts:login' %}">こちら</a>をクリックしてください
 
   <script>
     function logout() {
-      document.f_logout.submit()
+      document.getElementById('f_logout').submit();
+      window.location.href = "{% url 'accounts:login' %}"
     }
-
 
     window.onload = logout
   </script>
