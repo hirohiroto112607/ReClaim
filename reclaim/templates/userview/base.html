@@ -25,16 +25,21 @@
     </div>
     {% if user.is_authenticated %}
     <div class="navbar-nav d-flex flex-row">
-      <a class="nav-link mx-3" href="{% url 'accounts:logout' %}?action=/userview">ログアウト</a>
+      <a class="nav-link mx-3" href="{% url 'accounts:logout_get' %}?next={{ request.path }}">ログアウトa</a>
+      <li class="nav-item">
+        <form action="{% url 'accounts:logout' %}" method="post">
+            {% csrf_token %}
+            <a class="nav-link" href="#" onclick="this.closest('form').submit();return false;">ログアウトform</a>
+        </form>
+      </li>
     </div>
     {% else %}
     <div class="navbar-nav d-flex flex-row">
-      <a class="nav-link mx-3" href="{% url 'accounts:login' %}?action=/userview">ログイン</a>
+      <a class="nav-link mx-3" href="{% url 'accounts:login' %}?next={{ request.path }}">ログイン</a>
     </div>
     <div class="navbar-nav d-flex flex-row">
-      <a class="nav-link mx-3" href="{% url 'accounts:signup' %}?action=/userview">サインイン</a>
+      <a class="nav-link mx-3" href="{% url 'accounts:signup' %}?next={{ request.path }}">サインアップ</a>
     </div>
-    
     {% endif %}
   </nav>
   {% block body %}

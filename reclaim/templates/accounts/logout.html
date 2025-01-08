@@ -5,14 +5,18 @@
 {% endblock %}
 
 {% block content %}
-  <style>
-    .brank {
-      visibility: hidden;
-    }
-  </style>
+
+<li class="nav-item">
+  <form action="{% url 'accounts:logout' %}" method="post">
+      {% csrf_token %}
+      <a class="nav-link" href="#" onclick="this.closest('form').submit();return false;">ログアウト</a>
+  </form>
+</li>
+
+
   <form id="f_logout" action="{% url 'accounts:logout' %}" method="post">
     {% csrf_token %}
-    <button type="submit" name="btn" class="brank">Logout</button>
+    <button type="submit" name="btn" type="hidden">Logout</button>
   </form>
 
   <p>次のページへ進まない場合は</p>
@@ -24,6 +28,6 @@
       window.location.href = "{% url 'accounts:login' %}"
     }
 
-    window.onload = logout
+    {% comment %} window.onload = logout {% endcomment %}
   </script>
 {% endblock %}
