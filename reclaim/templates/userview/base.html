@@ -25,12 +25,11 @@
     </div>
     {% if user.is_authenticated %}
     <div class="navbar-nav d-flex flex-row">
-      <a class="nav-link mx-3" href="{% url 'accounts:logout_get' %}?next={{ request.path }}">ログアウトa</a>
       <li class="nav-item">
         <form action="{% url 'accounts:logout' %}" method="post">
             {% csrf_token %}
             <a class="nav-link" href="#" onclick="this.closest('form').submit();return false;">ログアウトform</a>
-        </form>
+        </form> ## TODO: storeviewも修正する ##
       </li>
     </div>
     {% else %}
