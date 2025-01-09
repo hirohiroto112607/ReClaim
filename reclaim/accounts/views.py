@@ -50,3 +50,6 @@ def profile(request):
 
 def logout_get(request):
     return render(request, "accounts/logout.html")
+
+def edit_profile(request):
+    return render(request, "accounts/edit_profile.html")
