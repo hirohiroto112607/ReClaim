@@ -1,15 +1,17 @@
 {% extends 'items/base.html' %}
 
-{% block title %} list Test {% endblock %}
+{% block title %}
+  list Test
+{% endblock %}
 
 {% block body %}
-    <h1>list Test</h1>
-    <p>Model test page</p>
-    <!-- {{ results }} -->
-    {% for item in results %}
-        <p>{{ item }}</p>
-    {% endfor %}
-    {% for i in item %}
-        <p>{{ i.item_name }}</p>
-    {% endfor %}
-{% endblock body %}
+  <h1>list Test</h1>
+  <p>Model test page</p>
+  <!-- {{ results }} -->
+  {% for item in results %}
+    <p>{{ item }}</p>
+  {% endfor %}
+  {% for i in item %}
+    <p>{{ i.item_name }}</p>
+  {% endfor %}
+{% endblock %}

@@ -29,7 +29,7 @@
               {% csrf_token %}
               <a class="nav-link" href="#" onclick="this.closest('form').submit();return false;">ログアウト</a>
             </form>
-          </div>
+          </nav>
         {% else %}
           <h1>Forbidden</h1>
           <p>このページにアクセスする権限がありません。</p>
@@ -50,5 +50,9 @@
       <a class="nav-link mx-3" href="{% url 'accounts:login' %}?next={{ request.path }}">ログイン</a>
       <a class="nav-link mx-3" href="{% url 'accounts:signup' %}?next={{ request.path }}">サインアップ</a>
     {% endif %}
+
   </body>
+
 </html>
+
+
