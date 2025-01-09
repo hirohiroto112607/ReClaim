@@ -1,7 +1,6 @@
 # Register your models here.
 from django.contrib import admin
-
-from items.models import item, item_category, tag, tag_type, item_message
+from items.models import item, item_category, item_message, tag, tag_type
 
 admin.site.register(item)
 admin.site.register(item_category)

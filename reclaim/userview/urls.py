@@ -1,7 +1,7 @@
 from django.urls import path
 
 from . import views
-from .views import detail_item_view, item_list_view, contact
+from .views import contact, detail_item_view, item_list_view
 
 app_name = 'userview'
 urlpatterns = [
