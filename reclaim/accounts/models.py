@@ -75,6 +75,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name=_('staff status'),
         default=False,
     )
+    is_store = models.BooleanField(
+        verbose_name=_('Store account'),
+        default=False,
+    )
     is_active = models.BooleanField(
         verbose_name=_('active'),
         default=True,
@@ -97,7 +101,3 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-    class Meta:
-        permissions = (
-            ('Store', 'View Store content'),
-        )
