@@ -17,7 +17,7 @@
         <p class="card-text">{{ item.item_category_id }}</p>
         <p class="card-text">{{ item.item_tag_id }}</p>
         <p class="card-text">{{ item.item_lost_location }}</p>
-        <a href="{ % url 'userview:contact' %}" class="btn btn-primary">連絡する</a>
+        <a href="{% url 'userview:contact' item.pk %}" class="btn btn-primary">連絡する</a>
         <!-- { % url 'userview:contact' %} -->
         <a href="{% url 'userview:index' %}" class="btn btn-primary">戻る</a>
       </div>

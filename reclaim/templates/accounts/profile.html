@@ -18,7 +18,7 @@
           <strong>メールアドレス:</strong> {{ user.email }}
         </p>
       {% endif %}
-      {% if user.date_joined %}
+      {% if user.Birth_date %}
         <p>
           <strong>登録日:</strong> {{ user.date_joined }}
         </p>
@@ -26,13 +26,13 @@
     </section>
     <section>
       <h2>プロフィール詳細</h2>
-      {% if user.profile.avatar %}
-        <p>
-          <strong>フルネーム:</strong> {{ user.First_name }} {{ user.Last_name }}
-        </p>
+      {% if user.profile %}
+        {% for profile in user %}
+          <li>{{ profile }}</li>
+        {% endfor %}
       {% endif %}
     </section>
-    <a href="{% url 'userview:index' %}">リストへ飛ぶ</a>
-    <a href="{% url 'accounts:index' %}">トップへ戻る</a>
+    <a href="{% url 'userview:index' %}" class="btn btn-primary">リストへ飛ぶ</a>
+    <a href="{% url 'accounts:index' %}" class="btn btn-secondary">トップへ戻る</a>
   </main>
 {% endblock %}

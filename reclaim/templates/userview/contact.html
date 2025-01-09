@@ -1,0 +1,75 @@
+{% extends 'userview/base.html' %}
+{% load static %}
+{% block title %}
+  Contact Us
+{% endblock %}
+{% block body %}
+<style>
+  .container {
+    margin: 0 auto;
+    width: 50%;
+  }
+  h1 {
+    text-align: center;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  label {
+    font-weight: bold;
+  }
+  input, textarea {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+  button {
+    padding: 0.5rem;
+    font-size: 1rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+  a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+</style>
+  <div class="container">
+    <h1>Contact Us About an Item</h1>
+    {% if user.is_authenticated %}
+      <form method="post" action="{% url 'userview:contact' contact.pk %}">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="email">Your Email:</label>
+          <input type="email" id="email" name="email" required value="{{ user }}"/>
+          <a href="{% url 'accounts:profile' %}">異なる場合はこちらから変更してください</a>
+          {% comment %} ## TODO:edit機能をつける {% endcomment %}
+        </div>
+        <div class="form-group">
+          <label for="item">Item Name:</label>
+          <input type="number" id="item_id" name="item_id" value="{{ contact.item_id }}" hidden />
+        </div>
+        <div class="form-group">
+          <label for="message">Message:</label>
+          <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+        <button type="submit">Send Message</button>
+      </form>
+    {% else %}
+      <p>You must be logged in to contact us about an item.</p>
+      <a href="{% url 'accounts:login' %}?next={{ request.path }}">Log in</a>
+    {% endif %}
+  </div>
+{% endblock %}
