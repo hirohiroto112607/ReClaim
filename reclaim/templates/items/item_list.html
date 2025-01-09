@@ -9,14 +9,13 @@
   <p>Model test page</p>
   <!-- {{ results }} -->
   {% for item in results %}
-    <p>{{ item }}</p>
-  {% endfor %}
-  {% for i in item %}
-    <p>{{ i.item_name }}</p>
+    <p>{{ item.item_name }}</p>
   {% endfor %}
 {% endblock %}
 
-{% comment %} <!DOCTYPE html>
+{% comment %} 
+かさ増し用のコメント
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">

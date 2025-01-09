@@ -20,4 +20,7 @@
   <a href="javascript:f_logout.submit()" class="logout nav-link">Logout</a>
 </form>
 {% else %}
-<a href="{% url 'accounts:signup' %}" class="btn btn-prima
+<a href="{% url 'accounts:signup' %}" class="btn btn-primary">Signup</a>
+<a href="{% url 'accounts:login' %}" class="btn btn-primary">Login</a>
+{% endif %}
+{% endblock %}
