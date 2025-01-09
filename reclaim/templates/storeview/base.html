@@ -24,4 +24,35 @@
             <div class="navbar-nav d-flex flex-row">
               <a class="nav-link mx-3" href="{% url 'userview:index' %}">一覧</a>
             </div>
-       
+          <div class="navbar-nav d-flex flex-row">
+            <form action="{% url 'accounts:logout' %}" method="post">
+              {% csrf_token %}
+              <a class="nav-link" href="#" onclick="this.closest('form').submit();return false;">ログアウト</a>
+            </form>
+          </nav>
+        {% else %}
+          <h1>Forbidden</h1>
+          <p>このページにアクセスする権限がありません。</p>
+          <p>店舗用アカウントでログインしてください。</p>
+            <a class="btn btn-primary" href="{% url 'accounts:login' %}?next={{ request.path }}">ログイン</a>
+            <a class="btn btn-secondary" href="{% url 'accounts:signup' %}?next={{ request.path }}">サインアップ</a>
+        {% endif %}
+      </nav>
+      {% if user.is_store or user.is_superuser %}
+        {% block body %}
+
+        {% endblock %}
+      {% endif %}
+    {% else %}
+      <h1>Forbidden</h1>
+      <p>このページにアクセスする権限がありません。</p>
+      <p>ログインしてください。</p>
+      <a class="nav-link mx-3" href="{% url 'accounts:login' %}?next={{ request.path }}">ログイン</a>
+      <a class="nav-link mx-3" href="{% url 'accounts:signup' %}?next={{ request.path }}">サインアップ</a>
+    {% endif %}
+
+  </body>
+
+</html>
+
+
