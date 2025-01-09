@@ -22,6 +22,7 @@ class UserManager(BaseUserManager):
             password=password,
             **extra_fields,
         )
+
     def create_store(self, email, password=None, **extra_fields):
         extra_fields.setdefault('is_active', True)
         extra_fields.setdefault('is_staff', False)
@@ -91,7 +92,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = "email"
-    REQUIRED_FIELDS = [] 
+    REQUIRED_FIELDS = []
+
     def __str__(self):
         return self.email
 
+    class Meta:
+        permissions = (
+            ('Store', 'View Store content'),
+        )

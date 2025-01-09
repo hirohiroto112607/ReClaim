@@ -24,7 +24,10 @@
       </div>
       {% if user.is_authenticated %}
         <div class="navbar-nav d-flex flex-row">
-          <a class="nav-link mx-3" href="{% url 'accounts:logout' %}?next={{ request.path }}">ログアウト</a>
+          <form action="{% url 'accounts:logout' %}" method="post">
+            {% csrf_token %}
+            <a class="nav-link" href="#" onclick="this.closest('form').submit();return false;">ログアウト</a>
+          </form>
         </div>
       {% else %}
         <div class="navbar-nav d-flex flex-row">

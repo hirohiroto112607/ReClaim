@@ -1,6 +1,6 @@
 # Register your models here.
 from django.contrib import admin
 
-from storeview.models import store
+# from storeview.models import store
 
-admin.site.register(store)
+# admin.site.register(store)

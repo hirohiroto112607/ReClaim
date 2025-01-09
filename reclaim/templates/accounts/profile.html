@@ -2,30 +2,37 @@
 
 {% block title %}
 
-{% endblock title %}
+{% endblock %}
 
 {% block content %}
-<header>
-  {% if user.Last_name %}
-  <h1>{{ user.First_name }} {{ user.Last_name }}のプロフィール</h1>
-  {% endif %}
-</header>
-<main>
-  <section>
-    <h2>基本情報</h2>
-    {% if user.email %}
-    <p><strong>メールアドレス:</strong> {{ user.email }}</p>
+  <header>
+    {% if user.Last_name %}
+      <h1>{{ user.First_name }} {{ user.Last_name }}のプロフィール</h1>
     {% endif %}
-    {% if user.date_joined %}
-    <p><strong>登録日:</strong> {{ user.date_joined }}</p>
-    {% endif %}
-  </section>
-  <section>
-    <h2>プロフィール詳細</h2>
-    {% if user.profile.avatar %}
-    <p><strong>フルネーム:</strong> {{ user.First_name }} {{ user.Last_name }} </p>
-    {% endif %}
-  </section>
-  <a href="{% url 'accounts:index' %}">トップへ戻る</a>
-</main>
+  </header>
+  <main>
+    <section>
+      <h2>基本情報</h2>
+      {% if user.email %}
+        <p>
+          <strong>メールアドレス:</strong> {{ user.email }}
+        </p>
+      {% endif %}
+      {% if user.date_joined %}
+        <p>
+          <strong>登録日:</strong> {{ user.date_joined }}
+        </p>
+      {% endif %}
+    </section>
+    <section>
+      <h2>プロフィール詳細</h2>
+      {% if user.profile.avatar %}
+        <p>
+          <strong>フルネーム:</strong> {{ user.First_name }} {{ user.Last_name }}
+        </p>
+      {% endif %}
+    </section>
+    <a href="{% url 'userview:index' %}">リストへ飛ぶ</a>
+    <a href="{% url 'accounts:index' %}">トップへ戻る</a>
+  </main>
 {% endblock %}
