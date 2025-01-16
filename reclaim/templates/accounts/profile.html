@@ -18,11 +18,6 @@
           <strong>メールアドレス:</strong> {{ user.email }}
         </p>
       {% endif %}
-      {% if user.Birth_date %}
-        <p>
-          <strong>登録日:</strong> {{ user.date_joined }}
-        </p>
-      {% endif %}
     </section>
     <section>
       <h2>プロフィール詳細</h2>
@@ -32,7 +27,13 @@
         {% endfor %}
       {% endif %}
     </section>
-    <a href="{% url 'userview:index' %}" class="btn btn-primary">リストへ飛ぶ</a>
+    {% if user.is_store == True %}
+    Store
+      <a href="{% url 'storeview:index' %}" class="btn btn-primary">リストへ飛ぶ</a>
+    {% else %}
+    Else
+      <a href="{% url 'userview:index' %}" class="btn btn-primary">リストへ飛ぶ</a>
+    {% endif %}
     <a href="{% url 'accounts:index' %}" class="btn btn-secondary">トップへ戻る</a>
   </main>
 {% endblock %}

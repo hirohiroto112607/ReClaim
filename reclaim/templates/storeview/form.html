@@ -2,106 +2,88 @@
 {% load django_bootstrap5 %}
 {% load static %}
 
-{% block title %}落とし物登録フォーム{% endblock %}
+{% block title %}
+  落とし物登録フォーム
+{% endblock %}
 
 {% block body %}
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css" />
+  <h1 class="py-2 mx-3">落とし物登録フォーム</h1>
 
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js"></script>
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
-<h1 class="py-2 mx-3">落とし物登録フォーム</h1>
+  <form method="post" class="mx-3">
+    {% csrf_token %}
 
-{% for i in object_list %}
-  {{ i.item_category_id }}
-{% endfor %}
+    <p>
+      <label for="id_item_category_id">カテゴリー:</label>
+      <select name="item_category_id" required="" id="id_item_category_id">
+        <option value="" selected="">---------</option>
+        {% for i in item_category_object_list %}
+          <option value="{{ i.item_category_id }}">{{ i.category_name }}</option>
+        {% endfor %}
+      </select>
+    </p>
 
-<form method="POST" enctype="multipart/form-data" class="mt-3 mx-3" autocomplete="off">
-        {% csrf_token %}
+    <p>
+      <label for="id_item_tag_id">タグ:</label>
+      <select name="item_tag_id" required="" id="id_item_tag_id">
+        <option value="" selected="">---------</option>
+        {% for i in tag_object_list %}
+          <option value="{{ i.tag_id }}">{{ i.tag_name }}</option>
+        {% endfor %}
+      </select>
+    </p>
 
-        <div class="mb-3"><label class="form-label" for="id_item_category_id">カテゴリー</label><select
-                        name="item_category_id" class="form-select" required="" id="id_item_category_id">
-                        <option value="" selected="">---------</option>
+    <p>
+      <label for="id_item_name">名前:</label>
+      <input type="text" name="item_name" maxlength="100" required="" id="id_item_name" />
+    </p>
 
+    <p>
+      <label for="id_item_date">発見日時:</label>
+      <input type="text" name="item_date" required="" id="id_item_date" class="hasDatepicker" />
+    </p>
 
+    <p>
+      <label for="id_item_lost_location">発見場所:</label>
+      <input type="text" name="item_lost_location" maxlength="100" required="" id="id_item_lost_location" />
+    </p>
 
+    <p>
+      <label for="id_item_description">説明文:</label>
+      <textarea name="item_description" cols="40" rows="10" required="" id="id_item_description"></textarea>
+    </p>
 
-                        <option value="1">貴重品</option>
+    <p>
+      <label for="id_item_image">画像:</label>
+      <input type="file" name="item_image" accept="image/*" id="id_item_image" />
+    </p>
 
-                        <option value="2">電子機器</option>
+    <p>
+      <label for="id_item_status">発見されたか:</label>
+      <input type="checkbox" name="item_status" id="id_item_status" />
+    </p>
 
-                        <option value="3">衣類・アクセサリー</option>
+    <p>
+      {% comment %} <label for="id_item_founder">発見者:</label> {% endcomment %}
+      <select name="item_founder" required="" id="id_item_founder" hidden>
+        <option value="{{ request.user.id }}" selected="">{{ request.user.email }}</option>
+      </select>
+    </p>
 
-                        <option value="5">交通関連</option>
+    <button type="submit" class="btn btn-primary">登録</button>
+  </form>
 
-                        <option value="8">カバン・バッグ類</option>
-
-                        <option value="9">文房具・書類</option>
-
-                        <option value="10">生物</option>
-
-                        <option value="11">趣味・スポーツ用品</option>
-
-                        <option value="12">日用品</option>
-
-                        <option value="13">食品</option>
-
-                        <option value="14">その他</option>
-
-                        <option value="15">現金</option>
-
-                        <option value="16">傘</option>
-
-                        <option value="17">ハンカチ</option>
-
-                </select></div>
-        <div class="mb-3"><label class="form-label" for="id_item_tag_id">タグ</label><select name="item_tag_id"
-                        class="form-select" required="" id="id_item_tag_id">
-                        <option value="" selected="">---------</option>
-
-                        <option value="1">Red</option>
-
-                        <option value="2">Blue</option>
-
-                        <option value="3">Green</option>
-
-                        <option value="4">Big</option>
-
-                        <option value="5">Small</option>
-
-                </select></div>
-        <div class="mb-3"><label class="form-label" for="id_item_name">名前</label><input type="text" name="item_name"
-                        maxlength="100" class="form-control" placeholder="名前" required="" id="id_item_name"></div>
-        <div class="mb-3"><label class="form-label" for="id_item_date">発見日時</label><input type="text" name="item_date"
-                        class="form-control hasDatepicker" placeholder="発見日時" required="" id="id_item_date"></div>
-        <div class="mb-3"><label class="form-label" for="id_item_lost_location">発見場所</label><input type="text"
-                        name="item_lost_location" maxlength="100" class="form-control" placeholder="発見場所" required=""
-                        id="id_item_lost_location"></div>
-        <div class="mb-3"><label class="form-label" for="id_item_description">説明文</label><textarea
-                        name="item_description" cols="40" rows="10" class="form-control" placeholder="説明文" required=""
-                        id="id_item_description"></textarea>
-        </div>
-        <div class="mb-3"><label class="form-label" for="id_item_image">画像</label><input type="file" name="item_image"
-                        accept="image/*" class="form-control" id="id_item_image"></div>
-        <div class="mb-3">
-                <div class="form-check"><input type="checkbox" name="item_status" class="form-check-input"
-                                id="id_item_status"><label class="form-check-label" for="id_item_status">発見されたか</label>
-                </div>
-        </div>
-        <div class="mb-3"><label class="form-label" for="id_item_founder">発見者</label><input type="text"
-                        name="item_founder" maxlength="100" class="form-control" placeholder="発見者" required=""
-                        id="id_item_founder"></div>
-
-        <button type="submit" class="btn btn-primary">送信</button>
-</form>
-<script>
-        $(function () {
-                // 日付は、年-月-日 の形式でお願いする。
-                let dateFormat = 'yy-mm-dd';
-                $('#id_item_date').datepicker({
-                        dateFormat: dateFormat
-                });
-        });
-</script>
-<a href="{% url 'storeview:index' %}" class="btn btn-primary mt-3 mx-3">戻る</a>
+  <script>
+    $(function () {
+      // 日付は、年-月-日 の形式でお願いする。
+      let dateFormat = 'yy-mm-dd'
+      $('#id_item_date').datepicker({
+        dateFormat: dateFormat
+      })
+    })
+  </script>
+  <a href="{% url 'storeview:index' %}" class="btn btn-primary mt-3 mx-3">戻る</a>
 {% endblock %}

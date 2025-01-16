@@ -22,7 +22,8 @@
         {% if user.is_store or user.is_superuser %}
           <nav class="navbar navbar-dark sticky-top bg-success">
             <div class="navbar-nav d-flex flex-row">
-              <a class="nav-link mx-3" href="{% url 'userview:index' %}">一覧</a>
+              <a class="nav-link mx-3" href="{% url 'storeview:index' %}">一覧</a>
+              <a class="nav-link mx-3" href="{% url 'storeview:registerform' %}">登録</a>
             </div>
           <div class="navbar-nav d-flex flex-row">
             <form action="{% url 'accounts:logout' %}" method="post">

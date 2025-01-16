@@ -23,7 +23,8 @@ def hello(request):
     return render(request, 'base.html', {'object': hw})
 
 def registerform(request):
-    object_list = item.objects.all()
+    tag_object_list = tag.objects.all()
+    item_category_object_list = item_category.objects.all()
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
@@ -31,7 +32,7 @@ def registerform(request):
             return redirect('storeview:detail', pk=item_instance.pk)
     else:
         form = RegisterForm()
-    return render(request, 'storeview/form.html', {'form': form , 'category_list':item_category.objects.all()})
+    return render(request, 'storeview/form.html', {'form': form , 'tag_object_list': tag_object_list, 'item_category_object_list': item_category_object_list})
 
 
 

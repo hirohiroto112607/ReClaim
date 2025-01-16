@@ -53,3 +53,7 @@ def logout_get(request):
 
 def edit_profile(request):
     return render(request, "accounts/edit_profile.html")
+
+# TODO: パスワード変更機能を実装する
+# def change_password(request):
+#     return render(request, "accounts/change_password.html")

@@ -18,7 +18,7 @@ class RegisterForm(ModelForm):
         item_image = models.ImageField(
             upload_to='images/', blank=True, null=True)
         item_status = models.BooleanField(default=False)
-        item_founder = models.CharField(max_length=100)
+        item_founder = models.CharField(max_length=100)# TODO 自動で入力されるようにする
         fields = ['item_category_id', 'item_tag_id', 'item_name', 'item_date',
                   'item_lost_location', 'item_description', 'item_image', 'item_status', 'item_founder']
         labels = {

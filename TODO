@@ -1,0 +1,16 @@
+https://qiita.com/yuu_1st/items/9de358e249c2965979fd
+Todo:
+  ☐ パスワード変更機能を実装する
+  ☐ 自動で入力されるようにする
+  ☐ edit機能をつける
+  ☐ ここから下は書き換える https://gitkraken.dev/link/dnNjb2RlOi8vZWFtb2Rpby5naXRsZW5zL2xpbmsvci9hNzFiOTA5ZDA1ZDQ4NDc1ZmYyOTEwZDFlY2U0MjIxMDIxMmJhMmYwL2YvcmVjbGFpbS91c2Vydmlldy92aWV3cy5weT91cmw9aHR0cHMlM0ElMkYlMkZnaXRodWIuY29tJTJGaGlyb2hpcm90bzExMjYwNyUyRlJlQ2xhaW0uZ2l0JmxpbmVzPTM5?origin=gitlens
+  ☐ 検索機能をつける
+  ☐ タグを複数選択可能にする
+  ☐ StoreのStructureテーブルを作成する
+  
+
+Archive:
+  ✔ やること@today @3h @started(25-01-16 10:23) @done(25-01-16 10:23) @lasted(20s) @project(Todo)
+  ☐ コマンド+シフト+Aでアーカイブ
+  ☐ オプション+Sでスタート
+  ☐ オプション+Dで完了
