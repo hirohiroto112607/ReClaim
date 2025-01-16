@@ -53,8 +53,7 @@ def update_item_view(request, pk):
             return redirect('storeview:detail', pk=item_instance.pk)
     else:
         form = RegisterForm(instance=ins)
-    print(ins)
-        
+    print(item.objects.get(pk=1))
     return render(request, 'storeview/upd-form.html', {'form': form ,'ins':ins, 'tag_object_list': tag_object_list, 'item_category_object_list': item_category_object_list})
 
 '''

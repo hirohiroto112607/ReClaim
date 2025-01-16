@@ -7,80 +7,78 @@
 {% endblock %}
 
 {% block body %}
-{{ ins.item_category_id }}
   <h1 class="py-2 mx-3">落とし物更新フォーム</h1>
 
-  {{ form.errors }}
   <form method="post" class="mx-3">
     {% csrf_token %}
-    <p>
-      <label for="id_item_category_id">カテゴリー:</label>
-      <select name="item_category_id" required="" id="id_item_category_id">
-        <option value="" selected="">---------</option>
+
+    <div class="mb-3">
+      <label for="id_item_category_id" class="form-label">カテゴリー:</label>
+      <select name="item_category_id" required="" id="id_item_category_id" class="form-select">
+        <option value="">---------</option>
         {% for i in item_category_object_list %}
-          {{ i.item_category_id }}
-          {% if i.category_id == ins.item_category_id %}
+          {% if i.category_name|stringformat:'s' == ins.item_category_id|stringformat:'s' %}
             <option value="{{ i.category_id }}" selected>{{ i.category_name }}</option>
           {% else %}
             <option value="{{ i.category_id }}">{{ i.category_name }}</option>
           {% endif %}
         {% endfor %}
       </select>
-    </p>
+    </div>
 
-    <p>
-      <label for="id_item_tag_id">タグ:</label>
-      <select name="item_tag_id" required="" id="id_item_tag_id">
-        <option value="" selected="">---------</option>
+    <div class="mb-3">
+      <label for="id_item_tag_id" class="form-label">タグ:</label>
+      <select name="item_tag_id" required="" id="id_item_tag_id" class="form-select">
+        <option value="">---------</option>
         {% for i in tag_object_list %}
-          <option value="{{ i.tag_id }}">{{ i.tag_name }}</option>
+          {% if i.tag_name|stringformat:'s' == ins.item_tag_id|stringformat:'s' %}
+            <option value="{{ i.tag_id }}" selected>{{ i.tag_name }}</option>
+          {% else %}
+            <option value="{{ i.tag_id }}">{{ i.tag_name }}</option>
+          {% endif %}
         {% endfor %}
       </select>
-    </p>
+    </div>
 
-    <p>
-      <label for="id_item_name">名前:</label>
-      <input type="text" name="item_name" maxlength="100" required="" id="id_item_name" />
-    </p>
+    <div class="mb-3">
+      <label for="id_item_name" class="form-label">名前:</label>
+      <input type="text" name="item_name" maxlength="100" required="" id="id_item_name" class="form-control" value="{{ ins.item_name }}" />
+    </div>
 
-    <p>
-      <label for="id_item_date">発見日時:</label>
-      <input type="text" name="item_date" required="" id="id_item_date" class="hasDatepicker" />
-    </p>
+    <div class="mb-3">
+      <label for="id_item_date" class="form-label">発見日時:</label>
+      <input type="text" name="item_date" required="" id="id_item_date" class="form-control hasDatepicker" value="{{ ins.item_date }}" />
+    </div>
 
-    <label for="id_item_lost_location">発見場所:</label>
-    <input type="text" name="item_lost_location" maxlength="100" required="" id="id_item_lost_location" />
+    <div class="mb-3">
+      <label for="id_item_lost_location" class="form-label">発見場所:</label>
+      <input type="text" name="item_lost_location" maxlength="100" required="" id="id_item_lost_location" class="form-control" value="{{ ins.item_lost_location }}" />
+    </div>
 
-    <p>
-      <label for="id_item_description">説明文:</label>
-      <textarea name="item_description" cols="40" rows="10" required="" id="id_item_description"></textarea>
-    </p>
+    <div class="mb-3">
+      <label for="id_item_description" class="form-label">説明文:</label>
+      <textarea name="item_description" cols="40" rows="10" required="" id="id_item_description" class="form-control">{{ ins.item_description }}</textarea>
+    </div>
 
-    <p>
-      <label for="id_item_image">画像:</label>
-      <input type="file" name="item_image" accept="image/*" id="id_item_image" />
-    </p>
+    <div class="mb-3">
+      <label for="id_item_image" class="form-label">画像:</label>
+      <input type="file" name="item_image" accept="image/*" id="id_item_image" class="form-control" />
+    </div>
 
-    <p>
-      <label for="id_item_status">発見されたか:</label>
-      <input type="checkbox" name="item_status" id="id_item_status" />
-    </p>
+    <div class="mb-3 form-check">
+      <label for="id_item_status" class="form-check-label">発見されたか:</label>
+      <input type="checkbox" name="item_status" id="id_item_status" class="form-check-input" value="{{ ins.item_status }}" />
+    </div>
 
-    <p>
-      {% comment %} <label for="id_item_founder">発見者:</label> {% endcomment %}
-      <select name="item_founder" required="" id="id_item_founder">
+    <div class="mb-3">
+      <label for="id_item_founder" class="form-label">発見者:</label>
+      <select name="item_founder" required="" id="id_item_founder" class="form-select">
         <option value="{{ request.user.id }}" selected="">{{ request.user.email }}</option>
       </select>
-    </p>
+    </div>
 
     <button type="submit" class="btn btn-primary">登録</button>
   </form>
-
-  {% comment %} <form method="post">
-    {{ form.as_p }}
-    {% csrf_token %}
-    <input type="submit" class="btn btn-primary" value="Submit" />
-  </form> {% endcomment %}
 
   <a href="{% url 'storeview:index' %}" class="btn btn-primary mt-3 mx-3">戻る</a>
 {% endblock %}
