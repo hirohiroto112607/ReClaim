@@ -1,6 +1,7 @@
-from django.db import models
 from accounts.models import User
 from django.conf import settings
+from django.db import models
+
 
 # Create your models here.
 class item(models.Model):
