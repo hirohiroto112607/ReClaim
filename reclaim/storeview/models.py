@@ -9,3 +9,5 @@ class Store_Structure(models.Model):
     floor = models.CharField(max_length=100)
     area = models.CharField(max_length=100)
     space = models.CharField(max_length=100)
+    def __str__(self):
+        return str(self.store_name)

@@ -7,9 +7,9 @@ from .forms import RegisterForm
 
 # Create your views here.
 
+
 def index(request):
     object_list = item.objects.all()
-    print(object_list)
     return render(request, 'storeview/list.html', {'object_list': object_list})
 
 
@@ -22,6 +22,7 @@ def hello(request):
     hw = 'Hello World!'
     return render(request, 'base.html', {'object': hw})
 
+
 def registerform(request):
     tag_object_list = tag.objects.all()
     item_category_object_list = item_category.objects.all()
@@ -32,24 +33,29 @@ def registerform(request):
             return redirect('storeview:detail', pk=item_instance.pk)
     else:
         form = RegisterForm()
-    return render(request, 'storeview/form.html', {'form': form , 'tag_object_list': tag_object_list, 'item_category_object_list': item_category_object_list})
-
+    return render(request, 'storeview/form.html', {'form': form, 'tag_object_list': tag_object_list, 'item_category_object_list': item_category_object_list})
 
 
 def detail_item_view(request, pk):
     item_instance = get_object_or_404(item, pk=pk)
     return render(request, 'storeview/item_detail.html', {'item': item_instance})
 
+
 def update_item_view(request, pk):
-    item_instance = get_object_or_404(item, pk=pk)
+    tag_object_list = tag.objects.all()
+    item_category_object_list = item_category.objects.all()
+    ins = item.objects.get(item_id=pk)
+    form = RegisterForm(instance=ins)
     if request.method == 'POST':
-        form = RegisterForm(request.POST, instance=item_instance)
+        form = RegisterForm(request.POST)
         if form.is_valid():
             item_instance = form.save()
             return redirect('storeview:detail', pk=item_instance.pk)
     else:
-        form = RegisterForm(instance=item_instance)
-    return render(request, 'storeview/form.html', {'form': form, 'item': item_instance})
+        form = RegisterForm(instance=ins)
+    print(ins)
+        
+    return render(request, 'storeview/upd-form.html', {'form': form ,'ins':ins, 'tag_object_list': tag_object_list, 'item_category_object_list': item_category_object_list})
 
 '''
 以下がカテゴリー名のリストです：

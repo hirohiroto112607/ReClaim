@@ -3,23 +3,27 @@
 {% load static %}
 
 {% block title %}
-  落とし物登録フォーム
+  落とし物更新フォーム
 {% endblock %}
 
 {% block body %}
-  
-  <h1 class="py-2 mx-3">落とし物登録フォーム</h1>
+{{ ins.item_category_id }}
+  <h1 class="py-2 mx-3">落とし物更新フォーム</h1>
 
   {{ form.errors }}
   <form method="post" class="mx-3">
     {% csrf_token %}
-
     <p>
       <label for="id_item_category_id">カテゴリー:</label>
       <select name="item_category_id" required="" id="id_item_category_id">
         <option value="" selected="">---------</option>
         {% for i in item_category_object_list %}
-          <option value="{{ i.category_id }}">{{ i.category_name }}</option>
+          {{ i.item_category_id }}
+          {% if i.category_id == ins.item_category_id %}
+            <option value="{{ i.category_id }}" selected>{{ i.category_name }}</option>
+          {% else %}
+            <option value="{{ i.category_id }}">{{ i.category_name }}</option>
+          {% endif %}
         {% endfor %}
       </select>
     </p>
@@ -75,9 +79,8 @@
   {% comment %} <form method="post">
     {{ form.as_p }}
     {% csrf_token %}
-    <input type="submit" class="btn btn-primary" value="Submit">
-</form> {% endcomment %}
-
+    <input type="submit" class="btn btn-primary" value="Submit" />
+  </form> {% endcomment %}
 
   <a href="{% url 'storeview:index' %}" class="btn btn-primary mt-3 mx-3">戻る</a>
 {% endblock %}
