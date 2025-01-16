@@ -6,8 +6,8 @@ from django.db import models
 # Create your models here.
 class item(models.Model):
     item_id = models.AutoField(primary_key=True)
-    item_category_id = models.ForeignKey('item_category', on_delete=models.CASCADE)
-    item_tag_id = models.ForeignKey('tag', on_delete=models.CASCADE)
+    item_category_id = models.ForeignKey('item_category', on_delete=models.PROTECT)
+    item_tag_id = models.ForeignKey('tag', on_delete=models.PROTECT)
     item_name = models.CharField(max_length=100)
     item_date = models.DateTimeField()
     item_lost_location = models.CharField(max_length=100)
