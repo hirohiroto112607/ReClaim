@@ -1,29 +1,32 @@
-{% extends "storeview/base.html" %}
+{% extends 'storeview/base.html' %}
 {% load static %}
 
-
-{% block title %} {{ item.item_name }} {% endblock %}
+{% block title %}
+  {{ item.item_name }}
+{% endblock %}
 
 {% block body %}
-<div class="mt-5">
-  <div class="mx-5">
-    <div class="card" style="width: 18rem;">
-      {% if item.item_image %}
-      <img src="{{ MEDIA_URL }}{{item.item_image}}" class="card-img-top" alt="...">
-      {% endif %}
-      <div class="card-body">
-        <h5 class="card-title">{{ item.item_name }}</h5>
-        <p class="card-text">{{ item.item_description }}</p>
-        <p class="card-text">{{ item.item_category_id }}</p>
-        <p class="card-text">{{ item.item_tag_id }}</p>
-        <p class="card-text">{{ item.item_lost_location }}</p>
-        <a href="{% url 'storeview:update' item.pk %}" class="btn btn-primary">編集する</a>
-        <a href="{% url 'storeview:index' %}" class="btn btn-primary">戻る</a>
+  <div class="mt-5">
+    <div class="mx-5">
+      <div class="card" style="width: 18rem;">
+        {% if item.item_image %}
+          <img src="{{ MEDIA_URL }}{{ item.item_image }}" class="card-img-top" alt="..." />
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ item.item_name }}</h5>
+          <p class="card-text">{{ item.item_description }}</p>
+          <p class="card-text">{{ item.item_category_id }}</p>
+          {% for i in item.item_tag_id.all %}
+            <p class="card-text">{{ i }}</p>
+          {% endfor %}
+          <p class="card-text">{{ item.item_lost_location }}</p>
+          <a href="{% url 'storeview:update' item.pk %}" class="btn btn-primary">編集する</a>
+          <a href="{% url 'storeview:index' %}" class="btn btn-primary">戻る</a>
+        </div>
       </div>
+
+
+      
     </div>
   </div>
-</div>
-
-
-
-{% endblock body %}
+{% endblock %}
