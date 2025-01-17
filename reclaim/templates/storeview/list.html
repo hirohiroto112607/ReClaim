@@ -20,6 +20,9 @@
       <h4 class="card-title">{{ item.item_name }}</h5>
       <h5 class="card-text">{{ item.item_description }}</p>
       <p class="card-text">{{ item.item_category_id }}</p>
+      {% for i in tag_list %}
+        {{ i }}
+      {% endfor %}
       <p class="card-text">{{ item.item_tag_id }}</p>
       <p class="card-text">{{ item.item_lost_location }}</p>
       <a href="{% url 'storeview:detail' item.pk %}" class="btn btn-primary">詳細を見る＆編集する</a>

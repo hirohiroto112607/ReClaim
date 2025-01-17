@@ -1,5 +1,6 @@
-from django.db import models
 from accounts.models import User
+from django.db import models
+
 
 # Create your models here.
 class Store_Structure(models.Model):

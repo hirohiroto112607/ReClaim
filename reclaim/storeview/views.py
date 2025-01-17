@@ -1,7 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import DetailView, ListView
-from items.models import item, item_category, tag, tag_type
+from items.models import item, item_category, tag
 
 from .forms import RegisterForm
 
@@ -10,12 +9,9 @@ from .forms import RegisterForm
 
 def index(request):
     object_list = item.objects.all()
-    return render(request, 'storeview/list.html', {'object_list': object_list})
-
-
-def item_list_view(request):
-    object_list = item.objects.all()
-    return render(request, 'storeview/list.html', {'object_list': object_list})
+    tag_list = tag.objects.all()
+    print(tag_list)
+    return render(request, 'storeview/list.html', {'object_list': object_list, 'tag_list': tag_list})
 
 
 def hello(request):
@@ -54,7 +50,8 @@ def update_item_view(request, pk):
     else:
         form = RegisterForm(instance=ins)
     print(item.objects.get(pk=1))
-    return render(request, 'storeview/upd-form.html', {'form': form ,'ins':ins, 'tag_object_list': tag_object_list, 'item_category_object_list': item_category_object_list})
+    return render(request, 'storeview/upd-form.html', {'form': form, 'ins': ins, 'tag_object_list': tag_object_list, 'item_category_object_list': item_category_object_list})
+
 
 '''
 以下がカテゴリー名のリストです：
