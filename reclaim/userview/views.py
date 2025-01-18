@@ -3,7 +3,7 @@ from urllib.parse import parse_qs
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import DetailView, ListView
-from items.models import item, item_category, item_message, tag, tag_type
+from items.models import item, item_category, item_message, tag, tag_type # type: ignore
 
 from .forms import ItemContactForm
 
@@ -31,12 +31,6 @@ def detail_item_view(request, pk):
     item_instance = get_object_or_404(item, pk=pk)
     return render(request, 'userview/item_detail.html', {'item': item_instance})
 
-
-def contact(request, pk):
-    item_instance = get_object_or_404(item, pk=pk)
-    return render(request, 'userview/contact.html', {'contact': item_instance})
-
-# TODO ここから下は書き換える
 
 
 def contact(request, pk):
@@ -67,4 +61,4 @@ def contact(request, pk):
     else:
         form = ItemContactForm()
         item_instance = get_object_or_404(item, pk=pk)
-    return render(request, 'userview/contact.html', {'contact': item_instance})
+    return render(request, 'userview/contact.html', {'item_instance': item_instance})

@@ -1,15 +1,19 @@
 https://qiita.com/yuu_1st/items/9de358e249c2965979fd
 Todo:
   ☐ パスワード変更機能を実装する
-  ☐ 自動で入力されるようにする
-  ☐ edit機能をつける
-  ☐ ここから下は書き換える https://gitkraken.dev/link/dnNjb2RlOi8vZWFtb2Rpby5naXRsZW5zL2xpbmsvci9hNzFiOTA5ZDA1ZDQ4NDc1ZmYyOTEwZDFlY2U0MjIxMDIxMmJhMmYwL2YvcmVjbGFpbS91c2Vydmlldy92aWV3cy5weT91cmw9aHR0cHMlM0ElMkYlMkZnaXRodWIuY29tJTJGaGlyb2hpcm90bzExMjYwNyUyRlJlQ2xhaW0uZ2l0JmxpbmVzPTM5?origin=gitlens
+  ☐ アカウント登録画面のエラー表示を修正する
+  ☐ プロフィール編集機能を実装する
   ☐ 検索機能をつける
+  ☐ キーワード検索機能＆カテゴリー検索機能＆タグ検索機能
   ☐ タグを複数選択可能にする
-  ☐ StoreのStructureテーブルを作成する
-  
+  ☐ 画像を複数投稿できるようにする
+  ☐ UI統一
+  ☐ 広告機能＆サブスク機能
+
 
 Archive:
+  ✔ ここから下は書き換える https://gitkraken.dev/link/dnNjb2RlOi8vZWFtb2Rpby5naXRsZW5zL2xpbmsvci9hNzFiOTA5ZDA1ZDQ4NDc1ZmYyOTEwZDFlY2U0MjIxMDIxMmJhMmYwL2YvcmVjbGFpbS91c2Vydmlldy92aWV3cy5weT91cmw9aHR0cHMlM0ElMkYlMkZnaXRodWIuY29tJTJGaGlyb2hpcm90bzExMjYwNyUyRlJlQ2xhaW0uZ2l0JmxpbmVzPTM5?origin=gitlens @done(25-01-17 19:24) @project(Todo)
+  ✔ StoreのStructureテーブルを作成する @done(25-01-17 19:26) @project(Todo)
   ✔ やること@today @3h @started(25-01-16 10:23) @done(25-01-16 10:23) @lasted(20s) @project(Todo)
   ☐ コマンド+シフト+Aでアーカイブ
   ☐ オプション+Sでスタート
