@@ -1,3 +1,4 @@
+from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -102,11 +103,27 @@ class ProfileEditView(LoginRequiredMixin, View):
             print(user_data.birth_date)
             user_data.save()
             return redirect('accounts:profile')
+        else:
+            return render(request, 'accounts/profile.html', {
+                'form': form
+            })
 
-        return render(request, 'accounts/profile.html', {
-            'form': form
-        })
 
-# TODO: パスワード変更機能を実装する
-# def change_password(request):
-#     return render(request, "accounts/change_password.html")
+class ChangePasswordView(LoginRequiredMixin, PasswordChangeView):
+    template_name = 'accounts/change_password.html'
+    success_url = reverse_lazy('accounts:profile')
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+
+class PasswordChange(LoginRequiredMixin, PasswordChangeView):
+    """パスワード変更ビュー"""
+    success_url = reverse_lazy('accounts:profile')
+    template_name = 'accounts/password_change.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs) # 継承元のメソッドCALL
+        context["form_name"] = "password_change"
+        return context

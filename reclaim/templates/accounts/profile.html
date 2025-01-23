@@ -12,8 +12,6 @@
   </header>
   <main>
     <section>
-
-      {% comment %} <img src="{{ MEDIA_URL }}{{ user. }}" alt=""> {% endcomment %}
       <h2>基本情報</h2>
       {% if user.email %}
         <p>
@@ -22,7 +20,7 @@
       {% endif %}
       {% if user.birth_date %}
         <p>
-          <strong>生年月日:</strong> {{ user.Fbirth_date }}
+          <strong>生年月日:</strong> {{ user.birth_date }}
         </p>
       {% endif %}
 
@@ -36,9 +34,10 @@
       {% endif %}
     </section>
     <a href="{% url 'accounts:edit_profile' %}" class="btn btn-primary">プロフィールを編集</a>
+    <a href="{% url 'accounts:password_change' %}" class="btn btn-warning">パスワードを変更</a>
     {% if user.is_store %}
       <a href="{% url 'storeview:index' %}" class="btn btn-primary">リストへ飛ぶ</a>
-    {% elif not user.is_store %}
+    {% else %}
       <a href="{% url 'userview:index' %}" class="btn btn-primary">リストへ飛ぶ</a>
     {% endif %}
     <a href="{% url 'accounts:index' %}" class="btn btn-secondary">トップへ戻る</a>
