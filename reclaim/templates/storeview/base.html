@@ -21,7 +21,7 @@
     {% if user.is_authenticated %}
         {% if user.is_store or user.is_superuser %}
           <nav class="navbar navbar-dark sticky-top bg-success">
-            <a class="navbar-brand" href="{% url 'storeview:index' %}">Reclaim</a>
+            <a class="navbar-brand mx-3" href="{% url 'storeview:index' %}">Reclaim</a>
             <div class="navbar-nav d-flex flex-row">
               <a class="nav-link mx-3" href="{% url 'storeview:index' %}">一覧</a>
               <a class="nav-link mx-3" href="{% url 'storeview:registerform' %}">登録</a>

@@ -49,7 +49,7 @@
     <div class="mb-3">
       <label for="id_item_date" class="form-label">発見日時:</label>
       {{ form.item_date.errors }}
-      <input type="text" name="item_date" required="" id="id_item_date" class="form-control hasDatepicker" value="{{ ins.item_date }}" />
+      <input type="text" name="item_date" required="" id="id_item_date" class="form-control hasDatepicker" value="{{ ins.item_date|date:'Y-m-d' }}" />
     </div>
 
     <div class="mb-3">
@@ -69,6 +69,8 @@
       {{ form.item_image.errors }}
       <input type="file" name="item_image" accept="image/*" id="id_item_image" class="form-control" />
     </div>
+
+    <a href="">説明欄を画像から生成する</a>
 
     {% comment %} <div class="mb-3 form-check">
       <label for="id_item_status" class="form-check-label">発見されたか:</label>
