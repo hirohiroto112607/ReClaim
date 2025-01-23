@@ -1,40 +1,35 @@
-TODO
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edit Profile</title>
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
+{% extends 'accounts/base.html' %}
+{% load static %}
+{% block title %}
+  Edit Profile
+{% endblock %}
+{% block body %}
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
   <div class="container">
     <h1>Edit Profile</h1>
     <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
-      <div class="form-group">
+      {% comment %} <div class="form-group">
         <label for="username">Username:</label>
-        <input type="text" id="username" name="username" value="{{ user.username }}" required>
-      </div>
+        <input type="text" id="username" name="username" value="{{ user.username }}" required />
+      </div> {% endcomment %}
       <div class="form-group">
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="{{ user.email }}" required>
+        <input type="email" id="email" name="email" autocomplete="email" value="{{ user.email }}" required />
       </div>
       <div class="form-group">
         <label for="first_name">First Name:</label>
-        <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}">
+        <input type="text" id="first_name" name="first_name" autocomplete="given-name" value="{{ user.first_name }}" />
       </div>
       <div class="form-group">
         <label for="last_name">Last Name:</label>
-        <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}">
+        <input type="text" id="last_name" name="last_name" autocomplete="family-name" value="{{ user.last_name }}" />
       </div>
       <div class="form-group">
         <label for="profile_picture">Profile Picture:</label>
-        <input type="file" id="profile_picture" name="profile_picture">
+        <input type="file" id="profile_picture" autocomplete="photo" name="profile_picture" />
       </div>
       <button type="submit">Save Changes</button>
     </form>
   </div>
-</body>
-</html>
+{% endblock %}
