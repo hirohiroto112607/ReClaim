@@ -2,16 +2,16 @@
 
 {% block title %}
 {% if user.is_authenticated %}
-<div class="h1">MyPage</div>
+MyPage
 {% else %}
-<div class="h1">Main</div>
+Main
 {% endif %}
 {% endblock %}
 
-{% block content %}
+{% block body %}
 {% if user.is_authenticated %}
 <div class="h2">Welcome {{ user.first_name }} {{ user.last_name }}</div>
-<!-- ↓追加 -->
+  <p>{{ user.email }}</p>
  <a href="{% url 'accounts:profile' %}">profile</a>
  <a href="{% url 'userview:index' %}">リストへ戻る</a>
 <form action="{% url 'accounts:logout' %}" method="post" name="f_logout">
@@ -20,6 +20,7 @@
   <a href="javascript:f_logout.submit()" class="logout nav-link">Logout</a>
 </form>
 {% else %}
+<h2>Welcome to Reclaim</h2>
 <a href="{% url 'accounts:signup' %}" class="btn btn-primary">Signup</a>
 <a href="{% url 'accounts:login' %}" class="btn btn-primary">Login</a>
 {% endif %}

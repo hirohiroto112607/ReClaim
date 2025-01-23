@@ -1,17 +1,17 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
-# from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView as BaseLoginView
 from django.contrib.auth.views import LogoutView as BaseLogoutView
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
-from django.views.generic.edit import CreateView
 from django.views.generic.base import View
-from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import User
+from django.views.generic.edit import CreateView
+
 from .forms import SignUpForm
-from django.shortcuts import redirect
+from .models import User
+
 # Create your views here.
 
 
@@ -36,13 +36,13 @@ class SignupView(CreateView):
         return response
 
 
-class LoginFrom(AuthenticationForm):
+class LoginForm(AuthenticationForm):
     class Meta:
         model = User
 
 
 class LoginView(BaseLoginView):
-    form_class = LoginFrom
+    form_class = LoginForm
     template_name = "accounts/login.html"
 
 
@@ -75,6 +75,7 @@ class ProfileEditView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         print(request.user.id)
         user_data = User.objects.get(id=request.user.id)
+        print(user_data.birth_date)
         form = SignUpForm(
             request.POST or None,
             initial={
@@ -90,16 +91,14 @@ class ProfileEditView(LoginRequiredMixin, View):
         })
 
     def post(self, request, *args, **kwargs):
-        print(request.POST)
         user_data = User.objects.get(id=request.user.id)
         form = SignUpForm(request.POST, request.FILES, instance=user_data)
         if form.is_valid():
             user_data = User.objects.get(id=request.user.id)
+            user_data.email = form.cleaned_data['email']
             user_data.first_name = form.cleaned_data['first_name']
             user_data.last_name = form.cleaned_data['last_name']
-            user_data.description = form.cleaned_data['description']
-            if request.FILES.get('image'):
-                user_data.image = request.FILES.get('image')
+            user_data.birth_date = form.cleaned_data['birth_date']
             user_data.save()
             return redirect('index')
 

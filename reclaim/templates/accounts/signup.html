@@ -1,15 +1,15 @@
 {% extends 'accounts/base.html' %}
 
 {% block title %}
-  <div class="h1">Create account</div>
+  Create account
 {% endblock %}
 
-{% block content %}
+{% block body %}
+  <h2>Create account</h2>
   <div>
     <br />
     <form method="POST">
-      {% csrf_token %}
-      Email<input type="email" name="email" maxlength="254" required="" id="id_email" />
+      {% csrf_token %}Email<input type="email" name="email" maxlength="254" required="" id="id_email" />
       <br />
       First_name<input type="text" name="first_name" maxlength="150" required="" id="id_first_name" />
       <br />
@@ -21,7 +21,7 @@
       <br />
       パスワード(確認用)<input type="password" name="password2" autocomplete="new-password" aria-describedby="id_password2_helptext" id="id_password2" />
       <br />
-      {% comment %} パスワードによる認証<div id="id_usable_password" class="radiolist inline">
+      {% comment %}パスワードによる認証<div id="id_usable_password" class="radiolist inline">
         <div>
           <label for="id_usable_password_0"><input type="radio" name="usable_password" value="true" class="radiolist inline" id="id_usable_password_0" checked="" />有効</label>
         </div>
@@ -38,12 +38,11 @@
 
     {{ form.non_field_errors }}
     {% for field in form %}
-      {% comment %} {{ field.label }} 
+      {% comment %} {{ field.label }}
       {{ field }} {% endcomment %}
       {{ field.errors }}
       <br />
     {% endfor %}
-
 
     {% comment %}
     <form method="POST">

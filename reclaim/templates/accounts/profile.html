@@ -1,10 +1,10 @@
 {% extends 'accounts/base.html' %}
 
 {% block title %}
-
+  プロフィール
 {% endblock %}
 
-{% block content %}
+{% block body %}
   <header>
     {% if user.last_name %}
       <h1>{{ user.last_name }} {{ user.first_name }}のプロフィール</h1>
@@ -12,12 +12,20 @@
   </header>
   <main>
     <section>
+
+      {% comment %} <img src="{{ MEDIA_URL }}{{ user. }}" alt=""> {% endcomment %}
       <h2>基本情報</h2>
       {% if user.email %}
         <p>
           <strong>メールアドレス:</strong> {{ user.email }}
         </p>
       {% endif %}
+      {% if user.birth_date %}
+        <p>
+          <strong>生年月日:</strong> {{ user.birth_date }}
+        </p>
+      {% endif %}
+
     </section>
     <section>
       <h2>プロフィール詳細</h2>
