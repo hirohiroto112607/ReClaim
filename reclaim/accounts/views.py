@@ -99,8 +99,9 @@ class ProfileEditView(LoginRequiredMixin, View):
             user_data.first_name = form.cleaned_data['first_name']
             user_data.last_name = form.cleaned_data['last_name']
             user_data.birth_date = form.cleaned_data['birth_date']
+            print(user_data.birth_date)
             user_data.save()
-            return redirect('index')
+            return redirect('accounts:profile')
 
         return render(request, 'accounts/profile.html', {
             'form': form

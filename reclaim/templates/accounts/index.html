@@ -1,27 +1,27 @@
 {% extends 'accounts/base.html' %}
 
 {% block title %}
-{% if user.is_authenticated %}
-MyPage
-{% else %}
-Main
-{% endif %}
+  {% if user.is_authenticated %}
+    MyPage
+  {% else %}
+    Main
+  {% endif %}
 {% endblock %}
 
 {% block body %}
-{% if user.is_authenticated %}
-<div class="h2">Welcome {{ user.first_name }} {{ user.last_name }}</div>
-  <p>{{ user.email }}</p>
- <a href="{% url 'accounts:profile' %}">profile</a>
- <a href="{% url 'userview:index' %}">リストへ戻る</a>
-<form action="{% url 'accounts:logout' %}" method="post" name="f_logout">
-  {% csrf_token %}
-  <input type="hidden" value="logout">
-  <a href="javascript:f_logout.submit()" class="logout nav-link">Logout</a>
-</form>
-{% else %}
-<h2>Welcome to Reclaim</h2>
-<a href="{% url 'accounts:signup' %}" class="btn btn-primary">Signup</a>
-<a href="{% url 'accounts:login' %}" class="btn btn-primary">Login</a>
-{% endif %}
+  {% if user.is_authenticated %}
+    <div class="h2">Welcome {{ user.first_name }} {{ user.last_name }}</div>
+    <p>{{ user.email }}</p>
+    <a href="{% url 'accounts:profile' %}">profile</a>
+    <a href="{% url 'userview:index' %}">リストへ戻る</a>
+    <form action="{% url 'accounts:logout' %}" method="post" name="f_logout">
+      {% csrf_token %}
+      <input type="hidden" value="logout" />
+      <a href="javascript:f_logout.submit()" class="logout nav-link">Logout</a>
+    </form>
+  {% else %}
+    <h2>Welcome to Reclaim</h2>
+    <a href="{% url 'accounts:signup' %}" class="btn btn-primary">Signup</a>
+    <a href="{% url 'accounts:login' %}" class="btn btn-primary">Login</a>
+  {% endif %}
 {% endblock %}

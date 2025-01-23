@@ -7,7 +7,6 @@
 {% endblock %}
 
 {% block body %}
-  
   <h1 class="py-2 mx-3">落とし物登録フォーム</h1>
 
   {{ form.errors }}
@@ -44,7 +43,7 @@
 
     <div class="mb-3">
       <label for="id_item_date" class="form-label">発見日時:</label>
-      {% comment %} # TODO ピッカー対応させる {% endcomment %}
+      {% comment %}# TODO ピッカー対応させる{% endcomment %}
       {{ form.item_date.errors }}
       <input type="datetime-local" name="item_date" required="" id="id_item_date" class="form-control hasDatepicker" />
     </div>

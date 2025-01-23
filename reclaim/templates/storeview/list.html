@@ -17,8 +17,8 @@
     <img src="{{ MEDIA_URL }}{{item.item_image}}" class="card-img-top" alt="...">
     {% endif %}
     <div class="card-body">
-      <h4 class="card-title">{{ item.item_name }}</h5>
-      <h5 class="card-text">{{ item.item_description }}</p>
+      <h4 class="card-title">{{ item.item_name }}</h4>
+      <h5 class="card-text">{{ item.item_description }}</h5>
       <p class="card-text">{{ item.item_category_id }}</p>
       {% for i in item.item_tag_id.all %}
         {{ i }}

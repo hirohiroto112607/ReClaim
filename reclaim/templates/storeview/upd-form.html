@@ -11,18 +11,18 @@
 
   <form method="post" class="mx-3">
     {% csrf_token %}
-    
+
     <div class="mb-3">
       <label for="id_item_category_id" class="form-label">カテゴリー:</label>
       {{ form.item_category_id.errors }}
       <select name="item_category_id" required="" id="id_item_category_id" class="form-select">
         <option value="">---------</option>
         {% for i in item_category_object_list %}
-        {% if i.category_name|stringformat:"s" == ins.item_category_id|stringformat:"s" %}
-          <option value="{{ i.category_id }}" selected>{{ i.category_name }}</option>
-        {% else %}
-          <option value="{{ i.category_id }}">{{ i.category_name }}</option>
-        {% endif %}
+          {% if i.category_name|stringformat:'s' == ins.item_category_id|stringformat:'s' %}
+            <option value="{{ i.category_id }}" selected>{{ i.category_name }}</option>
+          {% else %}
+            <option value="{{ i.category_id }}">{{ i.category_name }}</option>
+          {% endif %}
         {% endfor %}
       </select>
     </div>
@@ -33,11 +33,11 @@
       <select name="item_tag_id" required="" id="id_item_tag_id" class="form-select">
         <option value="">---------</option>
         {% for i in tag_object_list %}
-        {% if i.tag_name|stringformat:"s" == ins.item_tag_id|stringformat:"s" %}
-          <option value="{{ i.tag_id }}" selected>{{ i.tag_name }}</option>
-        {% else %}
-          <option value="{{ i.tag_id }}">{{ i.tag_name }}</option>
-        {% endif %}
+          {% if i.tag_name|stringformat:'s' == ins.item_tag_id|stringformat:'s' %}
+            <option value="{{ i.tag_id }}" selected>{{ i.tag_name }}</option>
+          {% else %}
+            <option value="{{ i.tag_id }}">{{ i.tag_name }}</option>
+          {% endif %}
         {% endfor %}
       </select>
     </div>

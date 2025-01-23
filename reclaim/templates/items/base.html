@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="ja-JP">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>
-    {% block title %}
-    {% endblock title %}
-  </title>
-</head>
+      {% endblock %}
+    </title>
+  </head>
 
-<body>
-  <p>これはitems直下のbase.htmlです。</p>
-  {% block body %}
-  {% endblock body %}
-</body>
+  <body>
+    <p>これはitems直下のbase.htmlです。</p>
+    {% block body %}
 
+    {% endblock %}
+  </body>
 </html>
