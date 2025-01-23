@@ -16,7 +16,6 @@
       <label for="id_item_category_id" class="form-label">カテゴリー:</label>
       {{ form.item_category_id.errors }}
       <select name="item_category_id" required="" id="id_item_category_id" class="form-select">
-        <option value="">---------</option>
         {% for i in item_category_object_list %}
           {% if i.category_name|stringformat:'s' == ins.item_category_id|stringformat:'s' %}
             <option value="{{ i.category_id }}" selected>{{ i.category_name }}</option>
@@ -31,7 +30,6 @@
       <label for="id_item_tag_id" class="form-label">タグ:</label>
       {{ form.item_tag_id.errors }}
       <select name="item_tag_id" required="" id="id_item_tag_id" class="form-select">
-        <option value="">---------</option>
         {% for i in tag_object_list %}
           {% if i.tag_name|stringformat:'s' == ins.item_tag_id|stringformat:'s' %}
             <option value="{{ i.tag_id }}" selected>{{ i.tag_name }}</option>
@@ -72,11 +70,11 @@
       <input type="file" name="item_image" accept="image/*" id="id_item_image" class="form-control" />
     </div>
 
-    <div class="mb-3 form-check">
+    {% comment %} <div class="mb-3 form-check">
       <label for="id_item_status" class="form-check-label">発見されたか:</label>
       {{ form.item_status.errors }}
       <input type="checkbox" name="item_status" id="id_item_status" class="form-check-input" value="{{ ins.item_status }}" />
-    </div>
+    </div> {% endcomment %}
 
     <div class="mb-3">
       <label for="id_item_founder" class="form-label">発見者:</label>
