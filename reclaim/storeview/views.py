@@ -56,6 +56,11 @@ def overview(request):
     object_list = item.objects.all()
     return render(request, 'storeview/overview.html', {'object_list': object_list})
 
+def AiGenerate(request,pk):
+    item = get_object_or_404(item, pk=pk)
+    
+    return render(request, 'storeview/AiGenerate.html')
+
 
 '''
 以下がカテゴリー名のリストです：

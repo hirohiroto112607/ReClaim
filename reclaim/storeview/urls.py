@@ -13,4 +13,5 @@ urlpatterns = [
     path('item/<int:pk>/', detail_item_view, name='item_detail'),
     path('update/<int:pk>/', views.update_item_view, name='update'),
     path('overview/', views.overview, name='overview'),
+    path('AiGenerate/<int:pk>', views.AiGenerate, name='AiGenerate'),
 ]
