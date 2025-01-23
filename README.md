@@ -15,5 +15,4 @@ Tags
 Item_categorys
 にそれぞれ追加する
 
-6.
-## TODO
+6.TODO~
