@@ -5,41 +5,46 @@
 {% endblock %}
 
 {% block body %}
-  <header>
-    {% if user.last_name %}
-      <h1>{{ user.last_name }} {{ user.first_name }}のプロフィール</h1>
-    {% endif %}
-  </header>
-  <main>
-    <section>
-      <h2>基本情報</h2>
-      {% if user.email %}
-        <p>
-          <strong>メールアドレス:</strong> {{ user.email }}
-        </p>
+  <div class="container mt-5">
+    <header class="mb-4">
+      {% if user.last_name %}
+        <h1 class="display-4">{{ user.last_name }} {{ user.first_name }}のプロフィール</h1>
       {% endif %}
-      {% if user.birth_date %}
-        <p>
-          <strong>生年月日:</strong> {{ user.birth_date }}
-        </p>
-      {% endif %}
-
-    </section>
-    <section>
-      <h2>プロフィール詳細</h2>
-      {% if user.profile %}
-        {% for profile in user %}
-          <li>{{ profile }}</li>
-        {% endfor %}
-      {% endif %}
-    </section>
-    <a href="{% url 'accounts:edit_profile' %}" class="btn btn-primary">プロフィールを編集</a>
-    <a href="{% url 'accounts:password_change' %}" class="btn btn-warning">パスワードを変更</a>
-    {% if user.is_store %}
-      <a href="{% url 'storeview:index' %}" class="btn btn-primary">リストへ飛ぶ</a>
-    {% else %}
-      <a href="{% url 'userview:index' %}" class="btn btn-primary">リストへ飛ぶ</a>
-    {% endif %}
-    <a href="{% url 'accounts:index' %}" class="btn btn-secondary">トップへ戻る</a>
-  </main>
+    </header>
+    <main>
+      <section class="mb-4">
+        <h2 class="h3">基本情報</h2>
+        {% if user.email %}
+          <p class="mb-2">
+            <strong>メールアドレス:</strong> {{ user.email }}
+          </p>
+        {% endif %}
+        {% if user.birth_date %}
+          <p class="mb-2">
+            <strong>生年月日:</strong> {{ user.birth_date }}
+          </p>
+        {% endif %}
+      </section>
+      <section class="mb-4">
+        <h2 class="h3">プロフィール詳細</h2>
+        {% if user.profile %}
+          <ul class="list-group">
+            {% for profile in user.profile %}
+              <li class="list-group-item">{{ profile }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </section>
+      <div class="mb-3">
+        <a href="{% url 'accounts:edit_profile' %}" class="btn btn-primary me-2">プロフィールを編集</a>
+        <a href="{% url 'accounts:password_change' %}" class="btn btn-warning me-2">パスワードを変更</a>
+        {% if user.is_store %}
+          <a href="{% url 'storeview:index' %}" class="btn btn-primary me-2">リストへ飛ぶ</a>
+        {% else %}
+          <a href="{% url 'userview:index' %}" class="btn btn-primary me-2">リストへ飛ぶ</a>
+        {% endif %}
+        <a href="{% url 'accounts:index' %}" class="btn btn-secondary">トップへ戻る</a>
+      </div>
+    </main>
+  </div>
 {% endblock %}
