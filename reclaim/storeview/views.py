@@ -52,6 +52,10 @@ def update_item_view(request, pk):
     print(item.objects.get(pk=1))
     return render(request, 'storeview/upd-form.html', {'form': form, 'ins': ins, 'tag_object_list': tag_object_list, 'item_category_object_list': item_category_object_list})
 
+def overview(request):
+    object_list = item.objects.all()
+    return render(request, 'storeview/overview.html', {'object_list': object_list})
+
 
 '''
 以下がカテゴリー名のリストです：

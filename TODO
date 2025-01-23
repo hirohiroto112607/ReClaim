@@ -10,10 +10,11 @@ Todo:
   ☐ UI統一
   ☐ 広告機能＆サブスク機能
   ☐ accountを修正する
-  ☐ テレビで表示する用の画面を作成する
   ☐ 探し物機能を実装する
+  ☐ listの並び方を改善する
 
 Archive:
+  ✔ テレビで表示する用の画面を作成する @done(25-01-23 15:00) @project(Todo)
   ✔ パスワード変更機能を実装する @done(25-01-23 13:22) @project(Todo)
   ✔ ここから下は書き換える https://gitkraken.dev/link/dnNjb2RlOi8vZWFtb2Rpby5naXRsZW5zL2xpbmsvci9hNzFiOTA5ZDA1ZDQ4NDc1ZmYyOTEwZDFlY2U0MjIxMDIxMmJhMmYwL2YvcmVjbGFpbS91c2Vydmlldy92aWV3cy5weT91cmw9aHR0cHMlM0ElMkYlMkZnaXRodWIuY29tJTJGaGlyb2hpcm90bzExMjYwNyUyRlJlQ2xhaW0uZ2l0JmxpbmVzPTM5?origin=gitlens @done(25-01-17 19:24) @project(Todo)
   ✔ StoreのStructureテーブルを作成する @done(25-01-17 19:26) @project(Todo)

@@ -1,0 +1,60 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Overview</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css" />
+    <link rel="stylesheet" href="{% static 'css/scroll.css' %}" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script src="{% static 'js/scroll.js' %}" defer></script>
+    <style>
+      .list {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark sticky-top bg-success">
+      <a class="navbar-brand" href="{% url 'storeview:index' %}">Reclaim</a>
+      <div class="navbar-nav d-flex flex-row">
+        <h2 class="navbar-text text-white">今見つかっている落とし物一覧</h2>
+      </div>
+      <div class="navbar-nav d-flex flex-row">
+      <form action="{% url 'accounts:logout' %}" method="post">
+        {% csrf_token %}
+        <a class="nav-link" href="#" onclick="this.closest('form').submit();return false;">ログアウト</a>
+      </form>
+      </div>
+    </nav>
+    <div class="list slider">
+      {% for item in object_list %}
+        <div class="card p-4 m-4 bg-light border border-success rounded" style="">
+          {% if item.item_image %}
+            <img src="{{ MEDIA_URL }}{{ item.item_image }}" class="card-img-top" alt="..." />
+          {% endif %}
+          <div class="card-body">
+            <h4 class="card-title">{{ item.item_name }}</h4>
+            <h5 class="card-text">{{ item.item_description }}</h5>
+            <p class="card-text">{{ item.item_category_id }}</p>
+            {% for i in item.item_tag_id.all %}
+              {{ i }}
+            {% endfor %}
+            <p class="card-text">{{ item.item_lost_location }}</p>
+            <a href="{% url 'storeview:detail' item.pk %}" class="btn btn-primary">詳細を見る＆編集する</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </body>
+</html>

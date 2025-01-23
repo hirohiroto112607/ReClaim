@@ -12,4 +12,5 @@ urlpatterns = [
     path('detail/<int:pk>/', views.detail_item_view, name='detail'),
     path('item/<int:pk>/', detail_item_view, name='item_detail'),
     path('update/<int:pk>/', views.update_item_view, name='update'),
+    path('overview/', views.overview, name='overview'),
 ]

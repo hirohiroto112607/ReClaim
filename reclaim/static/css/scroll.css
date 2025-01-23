@@ -1,0 +1,11 @@
+.visual {
+    overflow-y: scroll;
+    padding: 0;
+    margin: 0;
+    object-fit: cover;
+}
+.card-img-top {
+  object-fit: cover;
+  width: 20%;
+  height: auto;
+}
