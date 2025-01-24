@@ -1,0 +1,11 @@
+{% extends 'storeview/base.html' %}
+{% load static %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+<img src="{{ MEDIA_URL }}{{ item.item_image }}" alt="">
+<p> {{ test }} </p>
+{% endblock %}

@@ -3,7 +3,8 @@ from urllib.parse import parse_qs
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import DetailView, ListView
-from items.models import item, item_category, item_message, tag, tag_type # type: ignore
+from items.models import (item, item_category, item_message,  # type: ignore
+                          tag, tag_type)
 
 from .forms import ItemContactForm
 

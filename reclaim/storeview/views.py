@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from items.models import item, item_category, tag
-
+import python.GenAi as GenAi
 from .forms import RegisterForm
 
 # Create your views here.
@@ -26,7 +26,7 @@ def registerform(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             item_instance = form.save()
-            return redirect('storeview:detail', pk=item_instance.pk)
+            return redirect('storeview:index')
     else:
         form = RegisterForm()
     return render(request, 'storeview/form.html', {'form': form, 'tag_object_list': tag_object_list, 'item_category_object_list': item_category_object_list})
@@ -57,9 +57,11 @@ def overview(request):
     return render(request, 'storeview/overview.html', {'object_list': object_list})
 
 def AiGenerate(request,pk):
-    item = get_object_or_404(item, pk=pk)
-    
-    return render(request, 'storeview/AiGenerate.html')
+    item_instance = get_object_or_404(item, pk=pk)
+    image_path = item_instance.image.url
+    # GenAi.generate_by_image_path("この画像はなんですか？", item_instance.image.url)
+    test = image_path
+    return render(request, 'storeview/AiGenerate.html', {'item': item_instance,'test':test })
 
 
 '''
