@@ -1,11 +1,96 @@
 {% extends 'storeview/base.html' %}
 {% load static %}
-
 {% block title %}
 
 {% endblock %}
 
 {% block body %}
+<div>
+<h1>AI生成</h1>
 <img src="{{ MEDIA_URL }}{{ item.item_image }}" alt="">
+{% for i in test %}
+    <p> {{ i }} </p>
+{% endfor %}
 <p> {{ test }} </p>
+</div>
+
+<form method="post" class="mx-3">
+  {% csrf_token %}
+
+  <div class="mb-3">
+    <label for="id_item_category_id" class="form-label">カテゴリー:</label>
+    {{ form.item_category_id.errors }}
+    <select name="item_category_id" required="" id="id_item_category_id" class="form-select">
+      {% for i in item_category_object_list %}
+        {% if i.category_name|stringformat:'s' == item_instance.item_category_id|stringformat:'s' %}
+          <option value="{{ i.category_id }}" selected>{{ i.category_name }}</option>
+        {% else %}
+          <option value="{{ i.category_id }}">{{ i.category_name }}</option>
+        {% endif %}
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="id_item_tag_id" class="form-label">タグ:</label>
+    {{ form.item_tag_id.errors }}
+    <select name="item_tag_id" required="" id="id_item_tag_id" class="form-select">
+      {% for i in tag_object_list %}
+        {% if i.tag_name|stringformat:'s' == item_instance.item_tag_id|stringformat:'s' %}
+          <option value="{{ i.tag_id }}" selected>{{ i.tag_name }}</option>
+        {% else %}
+          <option value="{{ i.tag_id }}">{{ i.tag_name }}</option>
+        {% endif %}
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="id_item_name" class="form-label">名前:</label>
+    {{ form.item_name.errors }}
+    <input type="text" name="item_name" maxlength="100" required="" id="id_item_name" class="form-control" value="{{ item_instance.item_name }}" />
+  </div>
+
+  <div class="mb-3">
+    <label for="id_item_date" class="form-label">発見日時:</label>
+    {{ form.item_date.errors }}
+    <input type="text" name="item_date" required="" id="id_item_date" class="form-control hasDatepicker" value="{{ item_instance.item_date|date:'Y-m-d' }}" />
+  </div>
+
+  <div class="mb-3">
+    <label for="id_item_lost_location" class="form-label">発見場所:</label>
+    {{ form.item_lost_location.errors }}
+    <input type="text" name="item_lost_location" maxlength="100" required="" id="id_item_lost_location" class="form-control" value="{{ item_instance.item_lost_location }}" />
+  </div>
+
+  <div class="mb-3">
+    <label for="id_item_description" class="form-label">説明文:</label>
+    {{ form.item_description.errors }}
+    <textarea name="item_description" cols="40" rows="10" required="" id="id_item_description" class="form-control">{{ item_instance.item_description }}</textarea>
+  </div>
+
+  <div class="mb-3">
+    <label for="id_item_image" class="form-label">画像:</label>
+    {{ form.item_image.errors }}
+    <input type="file" name="item_image" accept="image/*" id="id_item_image" class="form-control" />
+  </div>
+
+  <a href="">説明欄を画像から生成する</a>
+
+  {% comment %} <div class="mb-3 form-check">
+    <label for="id_item_status" class="form-check-label">発見されたか:</label>
+    {{ form.item_status.errors }}
+    <input type="checkbox" name="item_status" id="id_item_status" class="form-check-input" value="{{ ins.item_status }}" />
+  </div> {% endcomment %}
+
+  <div class="mb-3">
+    <label for="id_item_founder" class="form-label">発見者:</label>
+    {{ form.item_founder.errors }}
+    <select name="item_founder" required="" id="id_item_founder" class="form-select">
+      <option value="{{ request.user.id }}" selected="">{{ request.user.email }}</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 {% endblock %}

@@ -1,7 +1,7 @@
-from django.http import HttpResponse
+import python.GenAi as GenAi
 from django.shortcuts import get_object_or_404, redirect, render
 from items.models import item, item_category, tag
-import python.GenAi as GenAi
+import json
 from .forms import RegisterForm
 
 # Create your views here.
@@ -52,16 +52,20 @@ def update_item_view(request, pk):
     print(item.objects.get(pk=1))
     return render(request, 'storeview/upd-form.html', {'form': form, 'ins': ins, 'tag_object_list': tag_object_list, 'item_category_object_list': item_category_object_list})
 
+
 def overview(request):
     object_list = item.objects.all()
     return render(request, 'storeview/overview.html', {'object_list': object_list})
 
-def AiGenerate(request,pk):
+
+def AiGenerate(request, pk):
     item_instance = get_object_or_404(item, pk=pk)
-    image_path = item_instance.image.url
-    # GenAi.generate_by_image_path("この画像はなんですか？", item_instance.image.url)
-    test = image_path
-    return render(request, 'storeview/AiGenerate.html', {'item': item_instance,'test':test })
+    form = RegisterForm(instance=item_instance)
+    image_path = str(item_instance.item_image)
+    # test = GenAi.generate_by_image_path("", image_path).text
+    test = '[ "アウター", "コート", "ロングコート", "ダブルブレスト", "ピーコート", "オーバーコート", "チェスターコート", "キャメル", "ベージュ", "無地", "シンプル", "秋冬", "レディース", "ファッション", "通勤", "きれいめ", "カジュアル", "フォーマル", "上品", "エレガント", "着回し", "オフィス", "デート", "普段着", "ジャケット", "長袖", "ポケット付き", "ボタン留め", "ウール", "上着", "冬服", "秋服", "防寒", "保温性", "暖か", "膝丈", "ミドル丈", "ゆったり", "リラックス", "シルエット", "定番", "ベーシック", "マニッシュ", "きれいめカジュアル", "大人女子", "着痩せ", "スタイルアップ", "トレンド", "人気", "おしゃれ", "コーディネート", "着こなし" ]'
+    parsed = json.loads(test)
+    return render(request, 'storeview/AiGenerate.html', {'item': item_instance, 'test': parsed,'form': form})   
 
 
 '''
