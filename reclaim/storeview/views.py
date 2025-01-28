@@ -60,22 +60,30 @@ def overview(request):
 
 def AiGenerate(request, pk):
     item_instance = get_object_or_404(item, pk=pk)
-    form = RegisterForm(instance=item_instance)
     tag_object_list = tag.objects.all()
     item_category_object_list = item_category.objects.all()
+
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
+        form = RegisterForm(request.POST, request.FILES,
+                            instance=item_instance)
         if form.is_valid():
-            # item_instance = 
-            form.save()
-            return redirect('storeview:detail', pk=item_instance.pk)
+            obj = form.save()
+            return redirect('storeview:detail', pk=obj.pk)
     else:
         form = RegisterForm(instance=item_instance)
+
     image_path = str(item_instance.item_image)
     # test = GenAi.generate_by_image_path("", image_path).text
     test = '[ "アウター", "コート", "ロングコート", "ダブルブレスト", "ピーコート", "オーバーコート", "チェスターコート", "キャメル", "ベージュ", "無地", "シンプル", "秋冬", "レディース", "ファッション", "通勤", "きれいめ", "カジュアル", "フォーマル", "上品", "エレガント", "着回し", "オフィス", "デート", "普段着", "ジャケット", "長袖", "ポケット付き", "ボタン留め", "ウール", "上着", "冬服", "秋服", "防寒", "保温性", "暖か", "膝丈", "ミドル丈", "ゆったり", "リラックス", "シルエット", "定番", "ベーシック", "マニッシュ", "きれいめカジュアル", "大人女子", "着痩せ", "スタイルアップ", "トレンド", "人気", "おしゃれ", "コーディネート", "着こなし" ]'
     parsed = json.loads(test)
-    return render(request, 'storeview/AiGenerate.html', {'item_instance': item_instance, 'gen': parsed, 'form': form, 'tag_object_list': tag_object_list, 'item_category_object_list': item_category_object_list})
+
+    return render(request, 'storeview/AiGenerate.html', {
+        'item_instance': item_instance,
+        'gen': parsed,
+        'form': form,
+        'tag_object_list': tag_object_list,
+        'item_category_object_list': item_category_object_list
+    })
 
 
 '''
