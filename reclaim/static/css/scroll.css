@@ -9,3 +9,8 @@
   width: 20%;
   height: auto;
 }
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
