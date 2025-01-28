@@ -51,6 +51,7 @@ def update_item_view(request, pk):
         form = RegisterForm(request.POST, request.FILES,
                             instance=item_instance)
         if form.is_valid():
+            print(form)
             item_instance = form.save()
             return redirect('storeview:detail', pk=item_instance.pk)
     else:

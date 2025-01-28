@@ -65,10 +65,17 @@
     </div>
 
     <div class="mb-3">
+      <label for="id_item_keyword" class="form-label">キーワード:</label>
+      {{ form.item_keyword.errors }}
+      <textarea name="item_keyword" cols="40" rows="10" required="" id="id_item_keyword" class="form-control">{{ item_instance.item_keyword }}</textarea>
+    </div>
+
+    <div class="mb-3">
       <label for="id_item_image" class="form-label">画像:</label>
       {{ form.item_image.errors }}
       <input type="file" name="item_image" accept="image/*" id="id_item_image" class="form-control" />
     </div>
+    <img src="{{ MEDIA_URL }}{{ item_instance.item_image }}" class="preview-img" alt="..." style="max-width: 30%;max-height: 30%;"/>
 
     <a href="{% url 'storeview:AiGenerate' item_instance.pk %}">説明欄を画像から生成する</a>
     {% comment %} #TODO {% endcomment %}

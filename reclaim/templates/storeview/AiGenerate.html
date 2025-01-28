@@ -66,7 +66,13 @@
     <div class="mb-3">
       <label for="id_item_description" class="form-label">説明文:</label>
       {{ form.item_description.errors }}
-      <textarea name="item_description" cols="40" rows="10" required="" id="id_item_description" class="form-control">{{ item_instance.item_description }}{{ gen }}</textarea>
+      <textarea name="item_description" cols="40" rows="10" required="" id="id_item_description" class="form-control">{{ item_instance.item_description }}</textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="id_item_keyword" class="form-label">キーワード:</label>
+      {{ form.item_keyword.errors }}
+      <textarea name="item_keyword" cols="40" rows="10" required="" id="id_item_keyword" class="form-control">{{ item_instance.item_keyword }}{{ gen }}</textarea>
     </div>
 
     <div class="mb-3">
@@ -75,15 +81,7 @@
       <input type="file" name="item_image" accept="image/*" id="id_item_image" class="form-control" />
     </div>
 
-    <a href="">説明欄を画像から生成する</a>
 
-    {% comment %} <div class="mb-3 form-check">
-      <label for="id_item_status" class="form-check-label">発見されたか:</label>
-       {% endcomment %}
-      {{ form.item_status.errors }}
-      {% comment %} 
-      <input type="checkbox" name="item_status" id="id_item_status" class="form-check-input" value="{{ ins.item_status }}" />
-    </div> {% endcomment %}
 
     <div class="mb-3">
       <label for="id_item_founder" class="form-label">発見者:</label>

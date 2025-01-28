@@ -20,6 +20,7 @@
             <p class="card-text">{{ i }}</p>
           {% endfor %}
           <p class="card-text">{{ item.item_lost_location }}</p>
+          <p class="card-text">{{ item.item_keyword }}</p>
           <a href="{% url 'storeview:update' item.pk %}" class="btn btn-primary">編集する</a>
           <button id="delete-check">delete</button>
           <form action="{% url 'storeview:delete' item.pk %}" method="post" name="delete" style="display: none;">
