@@ -60,6 +60,12 @@
     </div>
 
     <div class="mb-3">
+      <label for="id_item_description" class="form-label">説明文:</label>
+      {{ form.item_description.errors }}
+      <textarea name="item_description" cols="40" rows="10" required="" id="id_item_description" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
       <label for="id_item_image" class="form-label">画像:</label>
       {{ form.item_image.errors }}
       <input type="file" name="item_image" accept="image/*" id="id_item_image" class="form-control" />
