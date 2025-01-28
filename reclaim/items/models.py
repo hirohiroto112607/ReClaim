@@ -29,17 +29,17 @@ class item_category(models.Model):
 
 class tag(models.Model):
     tag_id = models.AutoField(primary_key=True)
-    tag_type = models.ForeignKey('tag_type', on_delete=models.CASCADE)
+    # tag_type = models.ForeignKey('tag_type', on_delete=models.CASCADE)
     tag_name = models.CharField(max_length=100)
     
     def __str__(self):
         return str(self.tag_name)
 
-class tag_type(models.Model):
-    tag_type_id = models.AutoField(primary_key=True)
-    tag_type_name = models.CharField(max_length=100)
-    def __str__(self):
-        return str(self.tag_type_name)
+# class tag_type(models.Model):
+#     tag_type_id = models.AutoField(primary_key=True)
+#     tag_type_name = models.CharField(max_length=100)
+#     def __str__(self):
+#         return str(self.tag_type_name)
     
 class item_message(models.Model):
     message_id = models.AutoField(primary_key=True)
@@ -48,3 +48,10 @@ class item_message(models.Model):
     message = models.TextField(max_length=500,)
     def __str__(self):
         return str(self.message)
+    
+class item_keyword(models.Model):
+    keyword_id = models.AutoField(primary_key=True)
+    item_id = models.ForeignKey('item', on_delete=models.CASCADE)
+    keyword = models.CharField(max_length=200)
+    def __str__(self):
+        return str(self.keyword)

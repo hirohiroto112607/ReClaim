@@ -21,9 +21,28 @@
           {% endfor %}
           <p class="card-text">{{ item.item_lost_location }}</p>
           <a href="{% url 'storeview:update' item.pk %}" class="btn btn-primary">編集する</a>
+          <button id="delete-check">delete</button>
+          <form action="{% url 'storeview:delete' item.pk %}" method="post" name="delete" style="display: none;">
+            {% csrf_token %}
+            <button type="submit" id="delete" class="btn btn-danger">削除</button>
+          </form>
           <a href="{% url 'storeview:index' %}" class="btn btn-primary">戻る</a>
         </div>
       </div>
     </div>
   </div>
+
+  <script>
+    const delete_check_button = document.getElementById('delete-check')
+    const delete_button = document.getElementById('delete')
+    delete_check_button.addEventListener('click', () => {
+      var result = window.confirm('これが確認ダイアログです。')
+      if (result) {
+        alert('削除しました。')
+        delete_button.click()
+      } else {
+        alert('キャンセルしました。')
+      }
+    })
+  </script>
 {% endblock %}

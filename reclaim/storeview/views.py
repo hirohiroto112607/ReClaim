@@ -38,18 +38,17 @@ def detail_item_view(request, pk):
 
 
 def update_item_view(request, pk):
+    item_instance = get_object_or_404(item, pk=pk)
     tag_object_list = tag.objects.all()
     item_category_object_list = item_category.objects.all()
-    item_instance = item.objects.get(item_id=pk)
     form = RegisterForm(instance=item_instance)
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
+        form = RegisterForm(request.POST, instance=item_instance)
         if form.is_valid():
             item_instance = form.save()
             return redirect('storeview:detail', pk=item_instance.pk)
     else:
         form = RegisterForm(instance=item_instance)
-    print(item.objects.get(pk=1))
     return render(request, 'storeview/upd-form.html', {'form': form, 'item_instance': item_instance, 'tag_object_list': tag_object_list, 'item_category_object_list': item_category_object_list})
 
 
@@ -85,6 +84,13 @@ def AiGenerate(request, pk):
         'item_category_object_list': item_category_object_list
     })
 
+def delete_item(request, pk): 
+    if request.method == 'POST':
+        item_instance = get_object_or_404(item, item_id=pk)
+        item_instance.delete() 
+        return redirect('storeview:index')
+    else:
+        return redirect('storeview:index')
 
 '''
 以下がカテゴリー名のリストです：

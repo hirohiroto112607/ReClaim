@@ -14,4 +14,5 @@ urlpatterns = [
     path('update/<int:pk>/', views.update_item_view, name='update'),
     path('overview/', views.overview, name='overview'),
     path('AiGenerate/<int:pk>', views.AiGenerate, name='AiGenerate'),
+    path('delete/<int:pk>', views.delete_item, name='delete'),
 ]

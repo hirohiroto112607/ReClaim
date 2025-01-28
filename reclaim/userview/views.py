@@ -3,8 +3,7 @@ from urllib.parse import parse_qs
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import DetailView, ListView
-from items.models import (item, item_category, item_message,  # type: ignore
-                          tag, tag_type)
+from items.models import item,  item_message
 
 from .forms import ItemContactForm
 
@@ -13,7 +12,7 @@ from .forms import ItemContactForm
 
 def test(request):
     object_list = item.objects.all()
-    print(tag_type)
+    # print(tag_type)
     return render(request, 'userview/test.html', {'object_list': object_list})
 
 
