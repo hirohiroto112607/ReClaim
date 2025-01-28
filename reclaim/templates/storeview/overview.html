@@ -45,7 +45,7 @@
           {% endif %}
           <div class="card-body">
             <h4 class="card-title">{{ item.item_name }}</h4>
-            <h5 class="card-text">{{ item.item_description }}</h5>
+            {% comment %} <h5 class="card-text">{{ item.item_description }}</h5> #TODO {% endcomment %}
             <p class="card-text">{{ item.item_category_id }}</p>
             {% for i in item.item_tag_id.all %}
               {{ i }}
