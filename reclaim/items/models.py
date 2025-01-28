@@ -8,7 +8,7 @@ class item(models.Model):
     item_id = models.AutoField(primary_key=True)
     item_category_id = models.ForeignKey('item_category', on_delete=models.PROTECT)
     # item_tag_id = models.ForeignKey('tag', on_delete=models.PROTECT)
-    item_tag_id = models.ManyToManyField('tag')
+    # item_tag_id = models.ManyToManyField('tag') #TODO
     item_name = models.CharField(max_length=100)
     item_date = models.DateTimeField()
     item_lost_location = models.CharField(max_length=100)
@@ -27,19 +27,19 @@ class item_category(models.Model):
     def __str__(self):
         return str(self.category_name)
 
-class tag(models.Model):
-    tag_id = models.AutoField(primary_key=True)
-    tag_type = models.ForeignKey('tag_type', on_delete=models.CASCADE)
-    tag_name = models.CharField(max_length=100)
+# class tag(models.Model):#TODO
+#     tag_id = models.AutoField(primary_key=True)
+#     tag_type = models.ForeignKey('tag_type', on_delete=models.CASCADE)
+#     tag_name = models.CharField(max_length=100)
     
-    def __str__(self):
-        return str(self.tag_name)
+#     def __str__(self):
+#         return str(self.tag_name)
 
-class tag_type(models.Model):
-    tag_type_id = models.AutoField(primary_key=True)
-    tag_type_name = models.CharField(max_length=100)
-    def __str__(self):
-        return str(self.tag_type_name)
+# class tag_type(models.Model):
+#     tag_type_id = models.AutoField(primary_key=True)
+#     tag_type_name = models.CharField(max_length=100)
+#     def __str__(self):
+#         return str(self.tag_type_name)#TODO
     
 class item_message(models.Model):
     message_id = models.AutoField(primary_key=True)
