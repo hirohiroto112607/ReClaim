@@ -10,4 +10,6 @@ urlpatterns = [
     path('detail/<int:pk>/', views.detail_item_view, name='detail'),
     path('item/<int:pk>/', detail_item_view, name='item_detail'),
     path('detail/<int:pk>/contact/', contact, name='contact'),
+    path('search_page/', views.search_page, name='search_page'),
+    path('search/', views.search, name='search'),
 ]

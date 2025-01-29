@@ -23,6 +23,10 @@
       <div class="navbar-nav d-flex flex-row">
         <a class="nav-link mx-3" href="{% url 'userview:index' %}">一覧</a>
       </div>
+      <div class="navbar-nav d-flex flex-row">
+        <a class="nav-link mx-3" href="{% url 'userview:search_page' %}">検索</a>
+        {% comment %} #TODO {% endcomment %}
+      </div>
       {% if user.is_authenticated %}
         <div class="navbar-nav d-flex flex-row">
           <li class="nav-item">

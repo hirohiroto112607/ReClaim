@@ -55,3 +55,18 @@ def contact(request, pk):
         form = ItemContactForm()
         item_instance = get_object_or_404(item, pk=pk)
     return render(request, 'userview/contact.html', {'form': form, 'item_instance': item_instance})
+
+def search_page(request):
+    return render(request, 'userview/search.html')
+
+def search(request):
+    if request.method == "GET":
+        query = request.GET.get('query')
+        print(query)
+        if query:
+            object_list = item.objects.filter(item_keyword__icontains=query)
+            return render(request, 'userview/search.html', {'object_list': object_list})
+        else:
+            return redirect('userview:index')
+    else:
+        return redirect('userview:index')
