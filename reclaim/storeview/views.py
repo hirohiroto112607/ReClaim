@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import generic
 from items.models import item, item_category, tag
+from django.db.models import Q
 
 from .forms import RegisterForm
 
@@ -103,6 +104,21 @@ def delete_item(request, pk):
         item_instance = get_object_or_404(item, item_id=pk)
         item_instance.delete()
         return redirect('storeview:index')
+    else:
+        return redirect('storeview:index')
+    
+def search_page(request):
+    return render(request, 'storeview/search.html')
+
+def search(request):
+    if request.method == "GET":
+        query = request.GET.get('query')
+        print(query)
+        if query:
+            object_list = item.objects.filter(Q(item_keyword__icontains=query)|Q(item_description__icontains=query))
+            return render(request, 'storeview/search.html', {'object_list': object_list})
+        else:
+            return redirect('storeview:index')
     else:
         return redirect('storeview:index')
 

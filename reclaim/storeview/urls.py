@@ -15,4 +15,6 @@ urlpatterns = [
     path('overview/', views.overview, name='overview'),
     path('AiGenerate/<int:pk>', views.AiGenerate, name='AiGenerate'),
     path('delete/<int:pk>', views.delete_item, name='delete'),
+    path('search_page/', views.search_page, name='search_page'),
+    path('search/', views.search, name='search'),
 ]
