@@ -5,14 +5,7 @@
 {% endblock %}
 
 {% block body %}
-  <div>
-    <h1>AI生成</h1>
-    <img src="{{ MEDIA_URL }}{{ item.item_image }}" alt="" />
-    {% for i in test %}
-      <p>{{ i }}</p>
-    {% endfor %}
-    <p>{{ test }}</p>
-  </div>
+  <h1>AI生成</h1>
 
   <form method="post" class="mx-3">
     {% csrf_token %}
@@ -72,7 +65,7 @@
     <div class="mb-3">
       <label for="id_item_keyword" class="form-label">キーワード:</label>
       {{ form.item_keyword.errors }}
-      <textarea name="item_keyword" cols="40" rows="10" required="" id="id_item_keyword" class="form-control">{{ item_instance.item_keyword }}{{ gen }}</textarea>
+      <textarea name="item_keyword" cols="40" rows="10" id="id_item_keyword" class="form-control">{{ gen }}</textarea>
     </div>
 
     <div class="mb-3">
@@ -81,8 +74,7 @@
       <input type="file" name="item_image" accept="image/*" id="id_item_image" class="form-control" />
     </div>
 
-    <img src="{{ MEDIA_URL }}{{ item_instance.item_image }}" class="preview-img" alt="..." style="max-width: 30%;max-height: 30%;"/>
-
+    <img src="{{ MEDIA_URL }}{{ item_instance.item_image }}" class="preview-img" alt="..." style="max-width: 30%;max-height: 30%;" />
 
     <div class="mb-3">
       <label for="id_item_founder" class="form-label">発見者:</label>

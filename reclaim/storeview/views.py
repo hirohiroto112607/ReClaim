@@ -10,6 +10,7 @@ from django.db.models import Q
 from .forms import RegisterForm
 
 # Create your views here.
+GenAi.init()
 
 
 def index(request):
@@ -73,8 +74,10 @@ def overview(request):
 
 def AiGenerate(request, pk):
     item_instance = get_object_or_404(item, pk=pk)
+    # print(item_instance.item_keyword)
     tag_object_list = tag.objects.all()
     item_category_object_list = item_category.objects.all()
+    gen = None  # ここで初期化
 
     if request.method == 'POST':
         form = RegisterForm(request.POST, request.FILES,
@@ -84,28 +87,19 @@ def AiGenerate(request, pk):
             return redirect('storeview:detail', pk=obj.pk)
     else:
         form = RegisterForm(instance=item_instance)
-        if item_instance.item_keyword == "":
-            test = GenAi.generate_by_text(
-                """
-                この画像について
-                できる限り多く細かく詳しく
-                日本語と英語でキーワードを考えてください。
-                """).text
-            gen = json.loads(test)
-            return render(request, 'storeview/AiGenerate.html', {
-                'item_instance': item_instance,
-                'gen': gen,
-                'form': form,
-                'tag_object_list': tag_object_list,
-                'item_category_object_list': item_category_object_list
-            })
+        if item_instance.item_keyword is None or item_instance.item_keyword == "":
+            response = GenAi.generate_by_image_path(
+                image_path=item_instance.item_image)
+            gen = response
         else:
-            return render(request, 'storeview/AiGenerate.html', {
-                'item_instance': item_instance,
-                'form': form,
-                'tag_object_list': tag_object_list,
-                'item_category_object_list': item_category_object_list
-            })
+            gen = item_instance.item_keyword
+        return render(request, 'storeview/AiGenerate.html', {
+            'item_instance': item_instance,
+            'gen': gen,
+            'form': form,
+            'tag_object_list': tag_object_list,
+            'item_category_object_list': item_category_object_list
+        })
 
 
 def delete_item(request, pk):

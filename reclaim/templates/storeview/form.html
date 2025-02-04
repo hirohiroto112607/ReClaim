@@ -24,10 +24,10 @@
       </select>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-3" style="display: none;">
       <label for="id_item_tag_id" class="form-label">タグ:</label>
       {{ form.item_tag_id.errors }}
-      <select name="item_tag_id" required="" id="id_item_tag_id" class="form-select">
+      <select name="item_tag_id"  id="id_item_tag_id" class="form-select">
         <option value="" selected="">---------</option>
         {% for i in tag_object_list %}
           <option value="{{ i.tag_id }}">{{ i.tag_name }}</option>
@@ -60,9 +60,9 @@
     </div>
 
     <div class="mb-3">
-      <label for="id_item_description" class="form-label">説明文:</label>
-      {{ form.item_description.errors }}
-      <textarea name="item_description" cols="40" rows="10" required="" id="id_item_description" class="form-control"></textarea>
+      <label for="id_item_keyword" class="form-label">キーワード:</label>
+      {{ form.item_keyword.errors }}
+      <textarea name="item_keyword" cols="40" rows="10" id="id_item_keyword" class="form-control">{{ item_instance.item_keyword }}</textarea>
     </div>
 
     <div class="mb-3">

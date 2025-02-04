@@ -13,8 +13,8 @@
     {% if user.is_authenticated %}
       <div class="h2 mb-3">Welcome {{ user.first_name }} {{ user.last_name }}</div>
       <p class="mb-3">{{ user.email }}</p>
-      <a href="{% url 'accounts:profile' %}" class="btn btn-primary me-2">プロフィール</a>
-      <a href="{% url 'userview:index' %}" class="btn btn-secondary me-2">リストへ戻る</a>
+      <a href="{% url 'accounts:profile' %}" class="btn btn-info me-2">プロフィール</a>
+      <a href="{% url 'userview:index' %}" class="btn btn-primary me-2">リストへ戻る</a>
       <form action="{% url 'accounts:logout' %}" method="post" class="d-inline">
         {% csrf_token %}
         <button type="submit" class="btn btn-danger">Logout</button>

@@ -37,7 +37,7 @@
       </section>
       <div class="mb-3">
         <a href="{% url 'accounts:edit_profile' %}" class="btn btn-primary me-2">プロフィールを編集</a>
-        <a href="{% url 'accounts:password_change' %}" class="btn btn-warning me-2">パスワードを変更</a>
+        <a href="{% url 'accounts:password_change' %}" class="btn btn-info me-2">パスワードを変更</a>
         {% if user.is_store %}
           <a href="{% url 'storeview:index' %}" class="btn btn-primary me-2">リストへ飛ぶ</a>
         {% else %}
