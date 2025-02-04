@@ -84,19 +84,28 @@ def AiGenerate(request, pk):
             return redirect('storeview:detail', pk=obj.pk)
     else:
         form = RegisterForm(instance=item_instance)
-
-    item_image_path = str(item_instance.item_image)
-    # test = GenAi.generate_by_image_path("", item_image_path).text
-    test = '[ "アウター", "コート", "ロングコート", "ダブルブレスト", "ピーコート", "オーバーコート", "チェスターコート", "キャメル", "ベージュ", "無地", "シンプル", "秋冬", "レディース", "ファッション", "通勤", "きれいめ", "カジュアル", "フォーマル", "上品", "エレガント", "着回し", "オフィス", "デート", "普段着", "ジャケット", "長袖", "ポケット付き", "ボタン留め", "ウール", "上着", "冬服", "秋服", "防寒", "保温性", "暖か", "膝丈", "ミドル丈", "ゆったり", "リラックス", "シルエット", "定番", "ベーシック", "マニッシュ", "きれいめカジュアル", "大人女子", "着痩せ", "スタイルアップ", "トレンド", "人気", "おしゃれ", "コーディネート", "着こなし" ]'
-    parsed = json.loads(test)
-
-    return render(request, 'storeview/AiGenerate.html', {
-        'item_instance': item_instance,
-        'gen': parsed,
-        'form': form,
-        'tag_object_list': tag_object_list,
-        'item_category_object_list': item_category_object_list
-    })
+        if item_instance.item_keyword == "":
+            test = GenAi.generate_by_text(
+                """
+                この画像について
+                できる限り多く細かく詳しく
+                日本語と英語でキーワードを考えてください。
+                """).text
+            gen = json.loads(test)
+            return render(request, 'storeview/AiGenerate.html', {
+                'item_instance': item_instance,
+                'gen': gen,
+                'form': form,
+                'tag_object_list': tag_object_list,
+                'item_category_object_list': item_category_object_list
+            })
+        else:
+            return render(request, 'storeview/AiGenerate.html', {
+                'item_instance': item_instance,
+                'form': form,
+                'tag_object_list': tag_object_list,
+                'item_category_object_list': item_category_object_list
+            })
 
 
 def delete_item(request, pk):
@@ -106,16 +115,19 @@ def delete_item(request, pk):
         return redirect('storeview:index')
     else:
         return redirect('storeview:index')
-    
+
+
 def search_page(request):
     return render(request, 'storeview/search.html')
+
 
 def search(request):
     if request.method == "GET":
         query = request.GET.get('query')
         print(query)
         if query:
-            object_list = item.objects.filter(Q(item_keyword__icontains=query)|Q(item_description__icontains=query))
+            object_list = item.objects.filter(
+                Q(item_keyword__icontains=query) | Q(item_description__icontains=query))
             return render(request, 'storeview/search.html', {'object_list': object_list})
         else:
             return redirect('storeview:index')

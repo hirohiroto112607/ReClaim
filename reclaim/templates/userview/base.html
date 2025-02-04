@@ -19,7 +19,7 @@
 
   <body>
     <nav class="navbar navbar-dark sticky-top bg-success">
-      <a class="navbar-brand" href="{% url 'userview:index' %}">Reclaim</a>
+      <a class="mx-3 navbar-brand" href="{% url 'userview:index' %}">Reclaim</a>
       <div class="navbar-nav d-flex flex-row">
         <a class="nav-link mx-3" href="{% url 'userview:index' %}">一覧</a>
         <a class="nav-link mx-3" href="{% url 'userview:search_page' %}">検索</a>
@@ -29,7 +29,7 @@
           <li class="nav-item">
             <form action="{% url 'accounts:logout' %}" method="post">
               {% csrf_token %}
-              <a class="nav-link" href="#" onclick="this.closest('form').submit();return false;">ログアウト</a>
+              <a class="nav-link mx-3" href="#" onclick="this.closest('form').submit();return false;">ログアウト</a>
             </form>
           </li>
         </div>

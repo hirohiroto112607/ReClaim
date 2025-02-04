@@ -3,7 +3,8 @@ from urllib.parse import parse_qs
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import DetailView, ListView
-from items.models import item,  item_message
+from items.models import item, item_message
+from django.db.models import Q
 
 from .forms import ItemContactForm
 
@@ -64,7 +65,7 @@ def search(request):
         query = request.GET.get('query')
         print(query)
         if query:
-            object_list = item.objects.filter(item_keyword__icontains=query)
+            object_list = item.objects.filter(Q(item_keyword__icontains=query)|Q(item_description__icontains=query))
             return render(request, 'userview/search.html', {'object_list': object_list})
         else:
             return redirect('userview:index')
