@@ -30,13 +30,18 @@ def registerform(request):
     item_category_object_list = item_category.objects.all()
     item_instance = None
     if request.method == 'POST':
-        form = RegisterForm(request.POST, instance=item_instance)
+        form = RegisterForm(request.POST, request.FILES,
+                            instance=item_instance)
         if form.is_valid():
             item_instance = form.save()
             return redirect('storeview:index')
     else:
         form = RegisterForm()
-    return render(request, 'storeview/form.html', {'form': form, 'tag_object_list': tag_object_list, 'item_category_object_list': item_category_object_list})
+    return render(request, 'storeview/form.html', {
+        'form': form,
+        'tag_object_list': tag_object_list,
+        'item_category_object_list': item_category_object_list
+    })
 
 
 def detail_item_view(request, pk):
@@ -53,9 +58,8 @@ def update_item_view(request, pk):
         form = RegisterForm(request.POST, request.FILES,
                             instance=item_instance)
         if form.is_valid():
-            print(form)
-            item_instance = form.save()
-            return redirect('storeview:detail', pk=item_instance.pk)
+            form.save()
+            return redirect('storeview:index')
     else:
         form = RegisterForm(instance=item_instance)
 
@@ -74,12 +78,13 @@ def overview(request):
 
 def AiGenerate(request, pk):
     item_instance = get_object_or_404(item, pk=pk)
-    # print(item_instance.item_keyword)
+    print(item_instance.item_keyword)
     tag_object_list = tag.objects.all()
     item_category_object_list = item_category.objects.all()
     gen = None  # ここで初期化
 
     if request.method == 'POST':
+        print("POST")
         form = RegisterForm(request.POST, request.FILES,
                             instance=item_instance)
         if form.is_valid():
@@ -87,12 +92,14 @@ def AiGenerate(request, pk):
             return redirect('storeview:detail', pk=obj.pk)
     else:
         form = RegisterForm(instance=item_instance)
-        if item_instance.item_keyword is None or item_instance.item_keyword == "":
+        if (item_instance.item_keyword == "None") or (item_instance.item_keyword == ""):
             response = GenAi.generate_by_image_path(
                 image_path=item_instance.item_image)
             gen = response
+            print("if None")
         else:
             gen = item_instance.item_keyword
+        print("gen="+gen)
         return render(request, 'storeview/AiGenerate.html', {
             'item_instance': item_instance,
             'gen': gen,

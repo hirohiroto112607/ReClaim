@@ -4,12 +4,11 @@
 <html lang="ja-JP">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <link rel="icon" href="#" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     <link rel="icon" href="{% static 'images/favicon.ico' %}" />
-    {% bootstrap_css %}
     {% bootstrap_javascript %}
+    {% bootstrap_css %}
     <title>
       {% block title %}
 
@@ -19,43 +18,45 @@
 
   <body>
     {% if user.is_authenticated %}
-        {% if user.is_store or user.is_superuser %}
-          <nav class="navbar navbar-dark sticky-top bg-success">
-            <a class="navbar-brand mx-3" href="{% url 'storeview:index' %}">Reclaim</a>
-            <div class="navbar-nav d-flex flex-row">
-              <a class="nav-link mx-3" href="{% url 'storeview:index' %}">一覧</a>
-              <a class="nav-link mx-3" href="{% url 'storeview:registerform' %}">登録</a>
-              <a class="nav-link mx-3" href="{% url 'storeview:search_page' %}">検索</a>
-            </div>
+      {% if user.is_store or user.is_superuser %}
+        <nav class="navbar navbar-dark sticky-top bg-success">
+          <a class="navbar-brand mx-3" href="{% url 'storeview:index' %}">Reclaim</a>
+          <div class="navbar-nav d-flex flex-row">
+            <a class="nav-link mx-3" href="{% url 'storeview:index' %}">一覧</a>
+            <a class="nav-link mx-3" href="{% url 'storeview:registerform' %}">登録</a>
+            <a class="nav-link mx-3" href="{% url 'storeview:search_page' %}">検索</a>
+          </div>
           <div class="navbar-nav d-flex flex-row">
             <form action="{% url 'accounts:logout' %}" method="post">
               {% csrf_token %}
               <a class="nav-link mx-3" href="#" onclick="this.closest('form').submit();return false;">ログアウト</a>
+              {% comment %} <a class="nav-link mx-3 logout-link" href="#">ログアウト</a> {% endcomment %}
             </form>
-          </nav>
-        {% else %}
-          <h1>Forbidden</h1>
-          <p>このページにアクセスする権限がありません。</p>
-          <p>店舗用アカウントでログインしてください。</p>
-            <a class="btn btn-primary" href="{% url 'accounts:login' %}?next={{ request.path }}">ログイン</a>
-            <a class="btn btn-secondary" href="{% url 'accounts:signup' %}?next={{ request.path }}">サインアップ</a>
-        {% endif %}
-      </nav>
-      {% if user.is_store or user.is_superuser %}
+          </div>
+        </nav>
         {% block body %}
 
         {% endblock %}
       {% endif %}
     {% else %}
-      <h1>Forbidden</h1>
-      <p>このページにアクセスする権限がありません。</p>
-      <p>ログインしてください。</p>
-      <a class="nav-link mx-3" href="{% url 'accounts:login' %}?next={{ request.path }}">ログイン</a>
-      <a class="nav-link mx-3" href="{% url 'accounts:signup' %}?next={{ request.path }}">サインアップ</a>
+      <div class="container mt-5">
+        <div class="alert alert-danger" role="alert">
+          <h4 class="alert-heading">Forbidden</h4>
+          <p>このページにアクセスする権限がありません。</p>
+          <hr />
+          <p class="mb-0">ログインしてください。</p>
+        </div>
+        <div class="d-flex justify-content-center mt-3">
+          <a class="btn btn-primary mx-2" href="{% url 'accounts:login' %}?next={{ request.path }}">ログイン</a>
+          <a class="btn btn-secondary mx-2" href="{% url 'accounts:signup' %}?next={{ request.path }}">サインアップ</a>
+        </div>
+      </div>
     {% endif %}
-
+    <script>
+      document.querySelector('.logout-link').addEventListener('click', function(event) {
+        event.preventDefault();
+        this.closest('form').submit();
+      });
+    </script>
   </body>
-
 </html>
-
-

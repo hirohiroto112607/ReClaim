@@ -3,13 +3,14 @@
 {% load static %}
 
 {% block title %}
-  落とし物更新フォーム
+  登録内容更新フォーム
 {% endblock %}
 
 {% block body %}
-  <h1 class="py-2 mx-3">落とし物更新フォーム</h1>
+  <h1 class="py-2 mx-3">登録内容更新フォーム</h1>
 
-  <form method="post" class="mx-3">
+  {{ form.errors }}
+  <form method="post" enctype="multipart/form-data" class="mx-3">
     {% csrf_token %}
 
     <div class="mb-3">
@@ -75,10 +76,10 @@
       {{ form.item_image.errors }}
       <input type="file" name="item_image" accept="image/*" id="id_item_image" class="form-control" />
     </div>
-    <img src="{{ MEDIA_URL }}{{ item_instance.item_image }}" class="preview-img" alt="..." style="max-width: 30%;max-height: 30%;"/>
+    <img src="{{ MEDIA_URL }}{{ item_instance.item_image }}" class="preview-img" alt="..." style="max-width: 30%;max-height: 30%;" />
 
     <a href="{% url 'storeview:AiGenerate' item_instance.pk %}">説明欄を画像から生成する</a>
-    {% comment %} #TODO {% endcomment %}
+    {% comment %}#TODO{% endcomment %}
 
     {% comment %} <div class="mb-3 form-check">
       <label for="id_item_status" class="form-check-label">発見されたか:</label>
