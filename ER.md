@@ -5,7 +5,6 @@ erDiagram
     item {
         int item_id PK
         int item_category_id FK
-        int item_tag_id FK
         string item_name
         datetime item_date
         string item_lost_location
@@ -13,6 +12,7 @@ erDiagram
         string item_image
         boolean item_status
         int item_founder FK
+        string item_keyword
     }
     item_category {
         int category_id PK
@@ -32,13 +32,14 @@ erDiagram
         int item_id FK
         string email
         text message
+        datetime message_date
     }
     User {
         int id PK
     }
 
     item ||--|| item_category : "belongs to"
-    item ||--|| tag : "belongs to"
+    item ||--o{ tag : "has"
     item ||--|| User : "belongs to"
     tag ||--|| tag_type : "belongs to"
     item_message ||--|| item : "belongs to"

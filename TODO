@@ -2,21 +2,21 @@ https://qiita.com/yuu_1st/items/9de358e249c2965979fd
 https://marketplace.visualstudio.com/items?itemName=fabiospampinato.vscode-todo-plus
 Todo:
   ☐ アカウント登録画面のエラー表示を修正する
-  ☐ プロフィール編集機能を実装する
-  ☐ 検索機能をつける
-  ☐ キーワード検索機能＆カテゴリー検索機能＆タグ検索機能
-  ☐ タグを複数選択可能にする
   ☐ 画像を複数投稿できるようにする
   ☐ UI統一
   ☐ 広告機能＆サブスク機能
-  ☐ accountを修正する
   ☐ 探し物機能を実装する
-  ☐ listの並び方を改善する
+  クイックセットアップ
+  
 
 Archive:
+  ✔ プロフィール編集機能を実装する @done(25-02-06 16:07) @project(Todo)
+  ✔ 検索機能をつける @done(25-02-06 16:07) @project(Todo)
+  ✔ キーワード検索機能＆カテゴリー検索機能＆タグ検索機能 @done(25-02-06 16:07) @project(Todo)
+  ✔ accountを修正する @done(25-02-06 16:07) @project(Todo)
+  ✔ listの並び方を改善する @done(25-02-06 16:07) @project(Todo)
   ✔ テレビで表示する用の画面を作成する @done(25-01-23 15:00) @project(Todo)
   ✔ パスワード変更機能を実装する @done(25-01-23 13:22) @project(Todo)
-  ✔ ここから下は書き換える https://gitkraken.dev/link/dnNjb2RlOi8vZWFtb2Rpby5naXRsZW5zL2xpbmsvci9hNzFiOTA5ZDA1ZDQ4NDc1ZmYyOTEwZDFlY2U0MjIxMDIxMmJhMmYwL2YvcmVjbGFpbS91c2Vydmlldy92aWV3cy5weT91cmw9aHR0cHMlM0ElMkYlMkZnaXRodWIuY29tJTJGaGlyb2hpcm90bzExMjYwNyUyRlJlQ2xhaW0uZ2l0JmxpbmVzPTM5?origin=gitlens @done(25-01-17 19:24) @project(Todo)
   ✔ StoreのStructureテーブルを作成する @done(25-01-17 19:26) @project(Todo)
   ☐ コマンド+シフト+Aでアーカイブ
   ☐ オプション+Sでスタート
