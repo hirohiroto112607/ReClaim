@@ -76,13 +76,12 @@ class ProfileEditView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         print(request.user.id)
         user_data = User.objects.get(id=request.user.id)
-        print(user_data.birth_date)
         form = SignUpForm(
             request.POST or None,
             initial={
                 'first_name': user_data.first_name,
                 'last_name': user_data.last_name,
-                'birth_date': user_data.birth_date,
+                # 'birth_date': user_data.birth_date,
             }
         )
 
@@ -99,8 +98,7 @@ class ProfileEditView(LoginRequiredMixin, View):
             user_data.email = form.cleaned_data['email']
             user_data.first_name = form.cleaned_data['first_name']
             user_data.last_name = form.cleaned_data['last_name']
-            user_data.birth_date = form.cleaned_data['birth_date']
-            print(user_data.birth_date)
+            # user_data.birth_date = form.cleaned_data['birth_date']
             user_data.save()
             return redirect('accounts:profile')
         else:
