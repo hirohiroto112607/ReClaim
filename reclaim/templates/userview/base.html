@@ -36,8 +36,6 @@
       {% else %}
         <div class="navbar-nav d-flex flex-row">
           <a class="nav-link mx-3" href="{% url 'accounts:login' %}?next={{ request.path }}">ログイン</a>
-        </div>
-        <div class="navbar-nav d-flex flex-row">
           <a class="nav-link mx-3" href="{% url 'accounts:signup' %}?next={{ request.path }}">サインアップ</a>
         </div>
       {% endif %}

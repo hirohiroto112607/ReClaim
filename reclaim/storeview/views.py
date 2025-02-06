@@ -85,21 +85,30 @@ def AiGenerate(request, pk):
 
     if request.method == 'POST':
         print("POST")
-        form = RegisterForm(request.POST, request.FILES,
-                            instance=item_instance)
+        form = RegisterForm(request.POST, request.FILES, instance=item_instance)
         if form.is_valid():
             obj = form.save()
             return redirect('storeview:detail', pk=obj.pk)
+        else:
+            # エラーがある場合は AiGenerate.html を再レンダリング
+            gen = item_instance.item_keyword
+            return render(request, 'storeview/AiGenerate.html', {
+                'item_instance': item_instance,
+                'gen': gen,
+                'form': form,
+                'tag_object_list': tag_object_list,
+                'item_category_object_list': item_category_object_list
+            })
     else:
         form = RegisterForm(instance=item_instance)
-        if (item_instance.item_keyword == "None") or (item_instance.item_keyword == ""):
-            response = GenAi.generate_by_image_path(
-                image_path=item_instance.item_image)
+        try:
+            response = GenAi.generate_by_image_path(image_path=item_instance.item_image)
             gen = response
             print("if None")
-        else:
-            gen = item_instance.item_keyword
-        print("gen="+gen)
+        except Exception as error:
+            print("Error: " + str(error))
+            gen = "AI生成が制限されています。後ほど再度お試しください。"
+        print("gen=" + str(gen))
         return render(request, 'storeview/AiGenerate.html', {
             'item_instance': item_instance,
             'gen': gen,
