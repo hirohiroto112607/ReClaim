@@ -14,7 +14,9 @@ import os
 from pathlib import Path
 
 ###
+from dotenv import load_dotenv
 
+load_dotenv()
 ###
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -140,4 +142,3 @@ STATICFILES_DIRS = (
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGOUT_REDIRECT_URL = "accounts:login"
-

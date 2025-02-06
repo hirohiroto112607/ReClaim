@@ -3,11 +3,9 @@ import os
 
 import google.generativeai as genai
 import httpx
-from dotenv import load_dotenv
 
 from reclaim.settings import BASE_DIR
 
-load_dotenv()
 
 
 def init():
