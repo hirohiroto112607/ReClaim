@@ -33,11 +33,17 @@ ReClaimはAIを活用した落とし物管理システムです。
 
 ### Installation
 
+
+1. ソフトウェアをダウンロードし、インストールします。
+2. 初回起動時に設定を行います。
+3. 落とし物の情報を登録します。
+4. 必要に応じて検索や管理を行います。
+
 ```bash
-git clone https://github.com/yourusername/reclaim.git
+git clone https://github.com/hirohiroto112607/ReClaim.git
 cd reclaim
 pip install -r requirements.txt
-python setup
+python setup.py
 python manage.py migrate
 python manage.py runserver
 ```
