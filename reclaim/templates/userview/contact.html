@@ -1,35 +1,65 @@
 {% extends 'userview/base.html' %}
 {% load static %}
-{% block title %}
-  Contact Us
-{% endblock %}
+{% block title %}お問い合わせ{% endblock %}
 {% block body %}
-  <link rel="stylesheet" href="{% static 'css/contact.css' %}" />
-  <div class="container">
-    <h1>Contact Us About an Item</h1>
-    {% if user.is_authenticated %}
-      <form method="post" action="{% url 'userview:contact' item_instance.pk %}">
-        {% csrf_token %}
-        <div class="form-group">
-          <label for="email">Your Email:</label>
-          <input type="email" id="email" name="email" required readonly value="{{ user.email }}" />
-          <a href="{% url 'accounts:profile' %}">異なる場合はこちらから変更してください</a>
-          {% comment %}# TODO edit機能をつける{% endcomment %}
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card shadow-sm">
+          <div class="card-body p-4">
+            <h1 class="h3 text-center mb-4">
+              <i class="bi bi-envelope me-2"></i>落とし物についての問い合わせ
+            </h1>
+            {% if user.is_authenticated %}
+              <form method="post" action="{% url 'userview:contact' item_instance.pk %}" class="needs-validation" novalidate>
+                {% csrf_token %}
+                <div class="mb-4">
+                  <label class="form-label">メールアドレス</label>
+                  <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                    <input type="email" class="form-control" value="{{ user.email }}" readonly />
+                  </div>
+                  <div class="form-text">
+                    <a href="{% url 'accounts:edit_profile' %}" class="text-decoration-none">
+                      <i class="bi bi-pencil me-1"></i>メールアドレスを変更する
+                    </a>
+                  </div>
+                </div>
+
+                <div class="mb-4">
+                  <label class="form-label">対象アイテム</label>
+                  <div class="alert alert-success">
+                    <i class="bi bi-box-seam me-2"></i>{{ item_instance.item_name }}
+                  </div>
+                  <input type="hidden" name="item_id" value="{{ item_instance.pk }}" />
+                </div>
+
+                <div class="mb-4">
+                  <label for="message" class="form-label">メッセージ</label>
+                  <textarea id="message" name="message" class="form-control" rows="5" required 
+                    placeholder="落とし物に関する詳細な情報をお書きください"></textarea>
+                </div>
+
+                <div class="d-grid">
+                  <button type="submit" class="btn btn-success btn-lg">
+                    <i class="bi bi-send me-2"></i>送信する
+                  </button>
+                </div>
+              </form>
+            {% else %}
+              <div class="text-center">
+                <div class="alert alert-warning mb-4">
+                  <i class="bi bi-exclamation-triangle me-2"></i>問い合わせにはログインが必要です
+                </div>
+                <a href="{% url 'accounts:login' %}?next={{ request.path }}" 
+                   class="btn btn-success btn-lg">
+                  <i class="bi bi-box-arrow-in-right me-2"></i>ログイン
+                </a>
+              </div>
+            {% endif %}
+          </div>
         </div>
-        <div class="form-group">
-          <label for="item">Item Name:</label>
-          <p>{{ item_instance.item_name }}</p>
-          <input type="hidden" id="item_id" name="item_id" value="{{ item_instance.pk }}" />
-        </div>
-        <div class="form-group">
-          <label for="message">Message:</label>
-          <textarea id="message" name="message" rows="5" required></textarea>
-        </div>
-        <button type="submit">Send Message</button>
-      </form>
-    {% else %}
-      <p>You must be logged in to contact us about an item.</p>
-      <a href="{% url 'accounts:login' %}?next={{ request.path }}">Log in</a>
-    {% endif %}
+      </div>
+    </div>
   </div>
 {% endblock %}

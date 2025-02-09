@@ -1,89 +1,127 @@
 {% extends 'storeview/base.html' %}
 {% load static %}
-{% block title %}
-キーワードをAIで生成する
-{% endblock %}
+
+{% block title %}キーワードをAIで生成する{% endblock %}
 
 {% block body %}
-  <h1>AI生成</h1>
-
-  <form method="post" class="mx-3">
-    {% csrf_token %}
-
-    <div class="mb-3">
-      <label for="id_item_category_id" class="form-label">カテゴリー:</label>
-      {{ form.item_category_id.errors }}
-      <select name="item_category_id" required="" id="id_item_category_id" class="form-select">
-        {% for i in item_category_object_list %}
-          {% if i.category_name|stringformat:'s' == item_instance|stringformat:'s' %}
-            <option value="{{ i.category_id }}" selected>{{ i.category_name }}</option>
-          {% else %}
-            <option value="{{ i.category_id }}">{{ i.category_name }}</option>
-          {% endif %}
-        {% endfor %}
-      </select>
+<div class="container">
+  <div class="row mb-4">
+    <div class="col">
+      <h1 class="display-4">AIによるキーワード生成</h1>
+      <p class="lead text-muted">画像から自動的にキーワードを生成します</p>
     </div>
+  </div>
 
-    <div class="mb-3">
-      <label for="id_item_tag_id" class="form-label">タグ:</label>
-      {{ form.item_tag_id.errors }}
-      <select name="item_tag_id" required="" id="id_item_tag_id" class="form-select">
-        {% for i in tag_object_list %}
-          {% if i.tag_name|stringformat:'s' == item_instance.item_tag_id|stringformat:'s' %}
-            <option value="{{ i.tag_id }}" selected>{{ i.tag_name }}</option>
-          {% else %}
-            <option value="{{ i.tag_id }}">{{ i.tag_name }}</option>
-          {% endif %}
-        {% endfor %}
-      </select>
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+
+            <div class="row g-4">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="id_item_category_id" class="form-label">カテゴリー</label>
+                  {{ form.item_category_id.errors }}
+                  <select name="item_category_id" required id="id_item_category_id" class="form-select">
+                    {% for i in item_category_object_list %}
+                      {% if i.category_name|stringformat:'s' == item_instance|stringformat:'s' %}
+                        <option value="{{ i.category_id }}" selected>{{ i.category_name }}</option>
+                      {% else %}
+                        <option value="{{ i.category_id }}">{{ i.category_name }}</option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="id_item_tag_id" class="form-label">タグ</label>
+                  {{ form.item_tag_id.errors }}
+                  <select name="item_tag_id" required id="id_item_tag_id" class="form-select">
+                    {% for i in tag_object_list %}
+                      {% if i.tag_name|stringformat:'s' == item_instance.item_tag_id|stringformat:'s' %}
+                        <option value="{{ i.tag_id }}" selected>{{ i.tag_name }}</option>
+                      {% else %}
+                        <option value="{{ i.tag_id }}">{{ i.tag_name }}</option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="id_item_name" class="form-label">名前</label>
+                  {{ form.item_name.errors }}
+                  <input type="text" name="item_name" maxlength="100" required id="id_item_name" class="form-control" value="{{ item_instance.item_name }}" />
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="id_item_date" class="form-label">発見日時</label>
+                  {{ form.item_date.errors }}
+                  <input type="text" name="item_date" required id="id_item_date" class="form-control hasDatepicker" value="{{ item_instance.item_date|date:'Y-m-d' }}" />
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="mb-3">
+                  <label for="id_item_lost_location" class="form-label">発見場所</label>
+                  {{ form.item_lost_location.errors }}
+                  <input type="text" name="item_lost_location" maxlength="100" required id="id_item_lost_location" class="form-control" value="{{ item_instance.item_lost_location }}" />
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="mb-3">
+                  <label for="id_item_description" class="form-label">説明文</label>
+                  {{ form.item_description.errors }}
+                  <textarea name="item_description" rows="5" required id="id_item_description" class="form-control">{{ item_instance.item_description }}</textarea>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="mb-3">
+                  <label for="id_item_keyword" class="form-label">生成されたキーワード</label>
+                  {{ form.item_keyword.errors }}
+                  <textarea name="item_keyword" rows="3" id="id_item_keyword" class="form-control">{{ gen }}</textarea>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <div class="mb-4">
+                  <label class="form-label">現在の画像</label>
+                  <div class="text-center">
+                    <img src="{{ MEDIA_URL }}{{ item_instance.item_image }}" class="img-fluid rounded" alt="現在の画像" style="max-height: 300px;" />
+                  </div>
+                </div>
+              </div>
+
+              <div style="display: none;">
+                <select name="item_founder" required id="id_item_founder">
+                  <option value="{{ request.user.id }}" selected>{{ request.user.email }}</option>
+                </select>
+              </div>
+
+              <div class="col-12">
+                <div class="d-grid gap-2">
+                  <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="bi bi-check-lg"></i> キーワードを保存
+                  </button>
+                  <a href="{% url 'storeview:detail' item_instance.pk %}" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> 戻る
+                  </a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-
-    <div class="mb-3">
-      <label for="id_item_name" class="form-label">名前:</label>
-      {{ form.item_name.errors }}
-      <input type="text" name="item_name" maxlength="100" required="" id="id_item_name" class="form-control" value="{{ item_instance.item_name }}" />
-    </div>
-
-    <div class="mb-3">
-      <label for="id_item_date" class="form-label">発見日時:</label>
-      {{ form.item_date.errors }}
-      <input type="text" name="item_date" required="" id="id_item_date" class="form-control hasDatepicker" value="{{ item_instance.item_date|date:'Y-m-d' }}" />
-    </div>
-
-    <div class="mb-3">
-      <label for="id_item_lost_location" class="form-label">発見場所:</label>
-      {{ form.item_lost_location.errors }}
-      <input type="text" name="item_lost_location" maxlength="100" required="" id="id_item_lost_location" class="form-control" value="{{ item_instance.item_lost_location }}" />
-    </div>
-
-    <div class="mb-3">
-      <label for="id_item_description" class="form-label">説明文:</label>
-      {{ form.item_description.errors }}
-      <textarea name="item_description" cols="40" rows="10" required="" id="id_item_description" class="form-control">{{ item_instance.item_description }}</textarea>
-    </div>
-
-    <div class="mb-3">
-      <label for="id_item_keyword" class="form-label">キーワード:</label>
-      {{ form.item_keyword.errors }}
-      <textarea name="item_keyword" cols="40" rows="10" id="id_item_keyword" class="form-control">{{ gen }}</textarea>
-    </div>
-
-    <div class="mb-3">
-      <label for="id_item_image" class="form-label">画像:</label>
-      {{ form.item_image.errors }}
-      <input type="file" name="item_image" accept="image/*" id="id_item_image" class="form-control" />
-    </div>
-
-    <img src="{{ MEDIA_URL }}{{ item_instance.item_image }}" class="preview-img" alt="..." style="max-width: 30%;max-height: 30%;" />
-
-    <div class="mb-3">
-      <label for="id_item_founder" class="form-label">発見者:</label>
-      {{ form.item_founder.errors }}
-      <select name="item_founder" required="" id="id_item_founder" class="form-select">
-        <option value="{{ request.user.id }}" selected="">{{ request.user.email }}</option>
-      </select>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
+  </div>
+</div>
 {% endblock %}

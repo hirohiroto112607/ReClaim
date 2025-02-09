@@ -1,37 +1,73 @@
 {% extends 'storeview/base.html' %}
 {% load static %}
 
-{% block title %}
-  {{ item.item_name }}
-{% endblock %}
+{% block title %}{{ item.item_name }}{% endblock %}
 
 {% block body %}
-  <div class="mt-5">
-    <div class="mx-5">
-      <div class="card" style="width: 18rem;">
+  <div class="container py-4">
+    <div class="row">
+      <div class="col-md-6">
         {% if item.item_image %}
-          <img src="{{ MEDIA_URL }}{{ item.item_image }}" class="card-img-top" alt="..." />
+          <img src="{{ MEDIA_URL }}{{ item.item_image }}" class="img-fluid rounded shadow-sm" alt="{{ item.item_name }}" />
         {% endif %}
-        <div class="card-body">
-          <h5 class="card-title">{{ item.item_name }}</h5>
-          <p class="card-text">{{ item.item_description }}</p>
-          <p class="card-text">{{ item.item_category_id }}</p>
-          {% for i in item.item_tag_id.all %}
-            <p class="card-text">{{ i }}</p>
-          {% endfor %}
-          <p class="card-text">{{ item.item_lost_location }}</p>
-          <p class="card-text">{{ item.item_keyword }}</p>
-          <a href="{% url 'storeview:update' item.pk %}" class="btn btn-primary">編集する</a>
-          <button class="btn btn-danger" id="delete-check">削除</button>
-          <form action="{% url 'storeview:delete' item.pk %}" method="post" name="delete" style="display: none;">
-            {% csrf_token %}
-            <button type="submit" id="delete">削除</button>
-          </form>
-          <a href="{% url 'storeview:index' %}" class="btn btn-primary">戻る</a>
+      </div>
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h2 class="card-title mb-4">{{ item.item_name }}</h2>
+            
+            <div class="mb-4">
+              <h5 class="text-muted mb-3">カテゴリー</h5>
+              <p class="card-text">{{ item.item_category_id }}</p>
+            </div>
+
+            {% if item.item_tag_id.all %}
+              <div class="mb-4">
+                <h5 class="text-muted mb-3">タグ</h5>
+                {% for tag in item.item_tag_id.all %}
+                  <span class="badge bg-secondary me-2">{{ tag }}</span>
+                {% endfor %}
+              </div>
+            {% endif %}
+
+            <div class="mb-4">
+              <h5 class="text-muted mb-3">発見場所</h5>
+              <p class="card-text">{{ item.item_lost_location }}</p>
+            </div>
+
+            <div class="mb-4">
+              <h5 class="text-muted mb-3">説明</h5>
+              <p class="card-text">{{ item.item_description }}</p>
+            </div>
+
+            {% if item.item_keyword %}
+              <div class="mb-4">
+                <h5 class="text-muted mb-3">キーワード</h5>
+                <p class="card-text">{{ item.item_keyword }}</p>
+              </div>
+            {% endif %}
+
+            <div class="d-grid gap-2">
+              <a href="{% url 'storeview:update' item.pk %}" class="btn btn-primary">
+                <i class="bi bi-pencil"></i> 編集する
+              </a>
+              <button class="btn btn-danger" id="delete-check">
+                <i class="bi bi-trash"></i> 削除
+              </button>
+              <a href="{% url 'storeview:index' %}" class="btn btn-secondary">
+                <i class="bi bi-arrow-left"></i> 戻る
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+  <form action="{% url 'storeview:delete' item.pk %}" method="post" name="delete" style="display: none;">
+    {% csrf_token %}
+    <button type="submit" id="delete">削除</button>
+  </form>
 
   <script>
     const delete_check_button = document.getElementById('delete-check')
@@ -40,7 +76,6 @@
       var result = window.confirm('本当に削除しますか？')
       if (result) {
         delete_button.click()
-      } else {
       }
     })
   </script>

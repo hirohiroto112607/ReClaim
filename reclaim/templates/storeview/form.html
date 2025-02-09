@@ -2,91 +2,112 @@
 {% load django_bootstrap5 %}
 {% load static %}
 
-{% block title %}
-  落とし物登録フォーム
-{% endblock %}
+{% block title %}落とし物登録フォーム{% endblock %}
 
 {% block body %}
-  <h1 class="py-2 mx-3">落とし物登録フォーム</h1>
-
-  {{ form.errors }}
-  <form method="post" enctype="multipart/form-data" class="mx-3">
-    {% csrf_token %}
-
-    <div class="mb-3">
-      <label for="id_item_category_id" class="form-label">カテゴリー:</label>
-      {{ form.item_category_id.errors }}
-      <select name="item_category_id" required="" id="id_item_category_id" class="form-select">
-        <option value="" selected="">---------</option>
-        {% for i in item_category_object_list %}
-          <option value="{{ i.category_id }}">{{ i.category_name }}</option>
-        {% endfor %}
-      </select>
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col">
+        <h1 class="display-4">落とし物登録</h1>
+      </div>
     </div>
 
-    <div class="mb-3" style="display: none;">
-      <label for="id_item_tag_id" class="form-label">タグ:</label>
-      {{ form.item_tag_id.errors }}
-      <select name="item_tag_id"  id="id_item_tag_id" class="form-select">
-        <option value="" selected="">---------</option>
-        {% for i in tag_object_list %}
-          <option value="{{ i.tag_id }}">{{ i.tag_name }}</option>
-        {% endfor %}
-      </select>
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            {% if form.errors %}
+              <div class="alert alert-danger">
+                {{ form.errors }}
+              </div>
+            {% endif %}
+
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="id_item_category_id" class="form-label">カテゴリー</label>
+                    {{ form.item_category_id.errors }}
+                    <select name="item_category_id" required id="id_item_category_id" class="form-select">
+                      <option value="" selected="">選択してください</option>
+                      {% for i in item_category_object_list %}
+                        <option value="{{ i.category_id }}">{{ i.category_name }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="id_item_name" class="form-label">名前</label>
+                    {{ form.item_name.errors }}
+                    <input type="text" name="item_name" maxlength="100" required id="id_item_name" class="form-control" placeholder="落とし物の名前" />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="id_item_date" class="form-label">発見日時</label>
+                    {{ form.item_date.errors }}
+                    <input type="datetime-local" name="item_date" required id="id_item_date" class="form-control" />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="id_item_lost_location" class="form-label">発見場所</label>
+                    {{ form.item_lost_location.errors }}
+                    <input type="text" name="item_lost_location" maxlength="100" required id="id_item_lost_location" class="form-control" placeholder="発見された場所" />
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="mb-3">
+                    <label for="id_item_description" class="form-label">説明文</label>
+                    {{ form.item_description.errors }}
+                    <textarea name="item_description" rows="5" required id="id_item_description" class="form-control" placeholder="落とし物の特徴や状態など"></textarea>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="mb-3">
+                    <label for="id_item_keyword" class="form-label">キーワード</label>
+                    {{ form.item_keyword.errors }}
+                    <textarea name="item_keyword" rows="3" id="id_item_keyword" class="form-control" placeholder="検索用のキーワード（任意）"></textarea>
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="mb-4">
+                    <label for="id_item_image" class="form-label">画像</label>
+                    {{ form.item_image.errors }}
+                    <input type="file" name="item_image" accept="image/*" id="id_item_image" class="form-control" />
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                      <i class="bi bi-check-lg"></i> 登録する
+                    </button>
+                    <a href="{% url 'storeview:index' %}" class="btn btn-secondary">
+                      <i class="bi bi-arrow-left"></i> 戻る
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display: none;">
+                <select name="item_founder" required id="id_item_founder">
+                  <option value="{{ request.user.id }}" selected>{{ request.user.email }}</option>
+                </select>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div class="mb-3">
-      <label for="id_item_name" class="form-label">名前:</label>
-      {{ form.item_name.errors }}
-      <input type="text" name="item_name" maxlength="100" required="" id="id_item_name" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-      <label for="id_item_date" class="form-label">発見日時:</label>
-      {{ form.item_date.errors }}
-      <input type="datetime-local" name="item_date" required="" id="id_item_date" class="form-control hasDatepicker" />
-    </div>
-
-    <div class="mb-3">
-      <label for="id_item_lost_location" class="form-label">発見場所:</label>
-      {{ form.item_lost_location.errors }}
-      <input type="text" name="item_lost_location" maxlength="100" required="" id="id_item_lost_location" class="form-control" />
-    </div>
-
-    <div class="mb-3">
-      <label for="id_item_description" class="form-label">説明文:</label>
-      {{ form.item_description.errors }}
-      <textarea name="item_description" cols="40" rows="10" required="" id="id_item_description" class="form-control"></textarea>
-    </div>
-
-    <div class="mb-3">
-      <label for="id_item_keyword" class="form-label">キーワード:</label>
-      {{ form.item_keyword.errors }}
-      <textarea name="item_keyword" cols="40" rows="10" id="id_item_keyword" class="form-control">{{ item_instance.item_keyword }}</textarea>
-    </div>
-
-    <div class="mb-3">
-      <label for="id_item_image" class="form-label">画像:</label>
-      {{ form.item_image.errors }}
-      <input type="file" name="item_image" accept="image/*" id="id_item_image" class="form-control" />
-    </div>
-
-    {% comment %} <div class="mb-3 form-check">
-      <label for="id_item_status" class="form-check-label">発見されたか:</label>
-      {{ form.item_status.errors }}
-      <input type="checkbox" name="item_status" id="id_item_status" class="form-check-input" />
-    </div> {% endcomment %}
-
-    <div class="mb-3" style="display: none;">
-      <label for="id_item_founder" class="form-label">発見者:</label>
-      {{ form.item_founder.errors }}
-      <select name="item_founder" required="" id="id_item_founder" class="form-select">
-        <option value="{{ request.user.id }}" selected="">{{ request.user.email }}</option>
-      </select>
-    </div>
-
-    <button type="submit" class="btn btn-primary">登録</button>
-  </form>
-
-  <a href="{% url 'storeview:index' %}" class="btn btn-primary mt-3 mx-3">戻る</a>
+  </div>
 {% endblock %}

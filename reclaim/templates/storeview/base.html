@@ -9,54 +9,86 @@
     <link rel="icon" href="{% static 'images/favicon.ico' %}" />
     {% bootstrap_javascript %}
     {% bootstrap_css %}
+    <style>
+      body {
+        background-color: #f8f9fa;
+      }
+      .navbar {
+        box-shadow: 0 2px 4px rgba(0,0,0,.1);
+      }
+      .card {
+        box-shadow: 0 2px 4px rgba(0,0,0,.05);
+        border-radius: 8px;
+        transition: transform 0.2s;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+      }
+      .btn-primary {
+        background-color: #198754;
+        border-color: #198754;
+      }
+      .btn-primary:hover {
+        background-color: #157347;
+        border-color: #157347;
+      }
+    </style>
     <title>
-      {% block title %}
-
-      {% endblock %}
+      {% block title %}{% endblock %} | Reclaim
     </title>
   </head>
 
   <body>
     {% if user.is_authenticated %}
       {% if user.is_store or user.is_superuser %}
-        <nav class="navbar navbar-dark sticky-top bg-success">
-          <a class="navbar-brand mx-3" href="{% url 'storeview:index' %}">Reclaim</a>
-          <div class="navbar-nav d-flex flex-row">
-            <a class="nav-link mx-3" href="{% url 'storeview:index' %}">一覧</a>
-            <a class="nav-link mx-3" href="{% url 'storeview:registerform' %}">登録</a>
-            <a class="nav-link mx-3" href="{% url 'storeview:search_page' %}">検索</a>
-          </div>
-          <div class="navbar-nav d-flex flex-row">
-            <form action="{% url 'accounts:logout' %}" method="post">
-              {% csrf_token %}
-              <a class="nav-link mx-3" href="#" onclick="this.closest('form').submit();return false;">ログアウト</a>
-              {% comment %} <a class="nav-link mx-3 logout-link" href="#">ログアウト</a> {% endcomment %}
-            </form>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
+          <div class="container">
+            <a class="navbar-brand" href="{% url 'storeview:index' %}">
+              <strong>Reclaim</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'storeview:index' %}">一覧</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'storeview:registerform' %}">登録</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'storeview:search_page' %}">検索</a>
+                </li>
+              </ul>
+              <div class="d-flex">
+                <form action="{% url 'accounts:logout' %}" method="post" class="m-0">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-outline-light">ログアウト</button>
+                </form>
+              </div>
+            </div>
           </div>
         </nav>
-        {% block body %}
-
-        {% endblock %}
+        <div class="container py-4">
+          {% block body %}{% endblock %}
+        </div>
       {% endif %}
     {% else %}
       <div class="container mt-5">
-        <div class="alert alert-danger" role="alert">
-          <h4 class="alert-heading">Forbidden</h4>
-          <p>このページにアクセスする権限がありません。</p>
-          <hr />
-          <p class="mb-0">ログインしてください。</p>
-        </div>
-        <div class="d-flex justify-content-center mt-3">
-          <a class="btn btn-primary mx-2" href="{% url 'accounts:login' %}?next={{ request.path }}">ログイン</a>
-          <a class="btn btn-secondary mx-2" href="{% url 'accounts:signup' %}?next={{ request.path }}">サインアップ</a>
+        <div class="card border-danger">
+          <div class="card-body">
+            <h4 class="card-title text-danger">アクセス制限</h4>
+            <p class="card-text">このページにアクセスする権限がありません。</p>
+            <hr />
+            <p class="card-text mb-0">ログインしてください。</p>
+            <div class="mt-3">
+              <a class="btn btn-primary me-2" href="{% url 'accounts:login' %}?next={{ request.path }}">ログイン</a>
+              <a class="btn btn-secondary" href="{% url 'accounts:signup' %}?next={{ request.path }}">サインアップ</a>
+            </div>
+          </div>
         </div>
       </div>
     {% endif %}
-    <script>
-      document.querySelector('.logout-link').addEventListener('click', function(event) {
-        event.preventDefault();
-        this.closest('form').submit();
-      });
-    </script>
   </body>
 </html>

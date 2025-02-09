@@ -1,45 +1,66 @@
 {% extends 'accounts/base.html' %}
 
-{% block title %}
-  プロフィール
-{% endblock %}
+{% block title %}プロフィール{% endblock %}
 
 {% block body %}
-  <div class="container mt-5">
-    <header class="mb-4">
-      {% if user.last_name %}
-        <h1 class="display-4">{{ user.last_name }} {{ user.first_name }}のプロフィール</h1>
-      {% endif %}
-    </header>
-    <main>
-      <section class="mb-4">
-        <h2 class="h3">基本情報</h2>
-        {% if user.email %}
-          <p class="mb-2">
-            <strong>メールアドレス:</strong> {{ user.email }}
-          </p>
-        {% endif %}
-      </section>
-      <section class="mb-4">
-        <h2 class="h3">プロフィール詳細</h2>
-        {% if user.profile %}
-          <ul class="list-group">
-            {% for profile in user.profile %}
-              <li class="list-group-item">{{ profile }}</li>
-            {% endfor %}
-          </ul>
-        {% endif %}
-      </section>
-      <div class="mb-3">
-        <a href="{% url 'accounts:edit_profile' %}" class="btn btn-primary me-2">プロフィールを編集</a>
-        <a href="{% url 'accounts:password_change' %}" class="btn btn-info me-2">パスワードを変更</a>
-        {% if user.is_store %}
-          <a href="{% url 'storeview:index' %}" class="btn btn-primary me-2">リストへ飛ぶ</a>
-        {% else %}
-          <a href="{% url 'userview:index' %}" class="btn btn-primary me-2">リストへ飛ぶ</a>
-        {% endif %}
-        <a href="{% url 'accounts:index' %}" class="btn btn-secondary">トップへ戻る</a>
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h1 class="h3 mb-0">
+            {% if user.last_name %}
+              {{ user.last_name }} {{ user.first_name }}のプロフィール
+            {% else %}
+              プロフィール
+            {% endif %}
+          </h1>
+        </div>
+        <div class="card-body">
+          <section class="mb-4">
+            <h2 class="h5 text-primary mb-3">基本情報</h2>
+            {% if user.email %}
+              <div class="d-flex align-items-center mb-2">
+                <i class="bi bi-envelope me-2"></i>
+                <span>{{ user.email }}</span>
+              </div>
+            {% endif %}
+          </section>
+
+          {% if user.profile %}
+          <section class="mb-4">
+            <h2 class="h5 text-primary mb-3">プロフィール詳細</h2>
+            <div class="list-group">
+              {% for profile in user.profile %}
+                <div class="list-group-item">{{ profile }}</div>
+              {% endfor %}
+            </div>
+          </section>
+          {% endif %}
+
+          <div class="d-flex flex-wrap gap-2">
+            <a href="{% url 'accounts:edit_profile' %}" class="btn btn-primary">
+              <i class="bi bi-pencil-square"></i> プロフィールを編集
+            </a>
+            <a href="{% url 'accounts:password_change' %}" class="btn btn-info text-white">
+              <i class="bi bi-key"></i> パスワードを変更
+            </a>
+            {% if user.is_store %}
+              <a href="{% url 'storeview:index' %}" class="btn btn-success">
+                <i class="bi bi-shop"></i> リストへ飛ぶ
+              </a>
+            {% else %}
+              <a href="{% url 'userview:index' %}" class="btn btn-success">
+                <i class="bi bi-list-ul"></i> リストへ飛ぶ
+              </a>
+            {% endif %}
+            <a href="{% url 'accounts:index' %}" class="btn btn-outline-secondary">
+              <i class="bi bi-house"></i> トップへ戻る
+            </a>
+          </div>
+        </div>
       </div>
-    </main>
+    </div>
   </div>
+</div>
 {% endblock %}

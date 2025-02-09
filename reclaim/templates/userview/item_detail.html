@@ -1,27 +1,53 @@
 {% extends 'userview/base.html' %}
 {% load static %}
-
-{% block title %}
-  {{ item.item_name }}
-{% endblock %}
-
+{% block title %}{{ item.item_name }}{% endblock %}
 {% block body %}
-  <div class="mt-5">
-    <div class="mx-5">
-      <div class="card" style="width: 18rem;">
-        {% if item.item_image %}
-          <img src="{{ MEDIA_URL }}{{ item.item_image }}" class="card-img-top" alt="..." />
-        {% endif %}
-        <div class="card-body">
-          <h5 class="card-title">{{ item.item_name }}</h5>
-          <p class="card-text">{{ item.item_description }}</p>
-          <p class="card-text">{{ item.item_keyword }}</p>
-          <p class="card-text">{{ item.item_category_id }}</p>
-          <p class="card-text">{{ item.item_tag_id }}</p>
-          <p class="card-text">{{ item.item_lost_location }}</p>
-          <a href="{% url 'userview:contact' item.pk %}" class="btn btn-primary">連絡する</a>
-          <!-- { % url 'userview:contact' %} -->
-          <a href="{% url 'userview:index' %}" class="btn btn-primary">戻る</a>
+  <div class="container py-5">
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          {% if item.item_image %}
+            <img src="{{ MEDIA_URL }}{{ item.item_image }}" class="card-img-top" style="height: 400px; object-fit: cover;" alt="{{ item.item_name }}" />
+          {% else %}
+            <div class="bg-light text-center py-5">
+              <i class="bi bi-image text-muted" style="font-size: 5rem;"></i>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h1 class="display-6 mb-4">{{ item.item_name }}</h1>
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <dl class="row mb-0">
+              <dt class="col-sm-3"><i class="bi bi-card-text me-2"></i>説明</dt>
+              <dd class="col-sm-9 mb-3">{{ item.item_description }}</dd>
+
+              <dt class="col-sm-3"><i class="bi bi-tag me-2"></i>キーワード</dt>
+              <dd class="col-sm-9 mb-3">{{ item.item_keyword }}</dd>
+
+              <dt class="col-sm-3"><i class="bi bi-folder me-2"></i>カテゴリー</dt>
+              <dd class="col-sm-9 mb-3">{{ item.item_category_id }}</dd>
+
+              <dt class="col-sm-3"><i class="bi bi-tags me-2"></i>タグ</dt>
+              <dd class="col-sm-9 mb-3">
+                {% for tag in item.item_tag_id.all %}
+                  <span class="badge bg-success rounded-pill me-1">{{ tag }}</span>
+                {% endfor %}
+              </dd>
+
+              <dt class="col-sm-3"><i class="bi bi-geo-alt me-2"></i>場所</dt>
+              <dd class="col-sm-9">{{ item.item_lost_location }}</dd>
+            </dl>
+          </div>
+        </div>
+        <div class="d-grid gap-2 mt-3">
+          <a href="{% url 'userview:contact' item.pk %}" class="btn btn-success btn-lg">
+            <i class="bi bi-envelope me-2"></i>連絡する
+          </a>
+          <a href="{% url 'userview:index' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-2"></i>戻る
+          </a>
         </div>
       </div>
     </div>

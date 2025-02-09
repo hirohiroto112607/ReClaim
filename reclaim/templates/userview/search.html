@@ -1,47 +1,62 @@
 {% extends 'userview/base.html' %}
 {% load static %}
-{% block title %}
-  search
-{% endblock %}
+{% block title %}検索{% endblock %}
 {% block body %}
-  <div class="container">
-    <h1 class="mt-4">検索画面</h1>
-    <form method="GET" action="{% url 'userview:search' %}" class="mb-4">
-      <div class="form-group">
-        <label for="query">検索キーワード:</label>
-        <input type="text" id="q" name="query" class="form-control" required />
-      </div>
-      <button type="submit" class="btn btn-primary mt-2">検索</button>
-    </form>
-    <div>
-      <h2>検索結果</h2>
-      <ul class="list-unstyled">
-        {% if object_list %}
-          <div class="row">
-            {% for item in object_list %}
-              <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                  {% if item.item_image %}
-                    <img src="{{ MEDIA_URL }}{{ item.item_image }}" class="card-img-top" alt="..." />
-                  {% endif %}
-                  <div class="card-body">
-                    <h4 class="card-title">{{ item.item_name }}</h4>
-                    <p class="card-text">{{ item.item_keyword }}</p>
-                    <p class="card-text">{{ item.item_category_id }}</p>
-                    {% for i in item.item_tag_id.all %}
-                      <span class="badge badge-secondary">{{ i }}</span>
-                    {% endfor %}
-                    <p class="card-text">{{ item.item_lost_location }}</p>
-                    <a href="{% url 'userview:detail' item.pk %}" class="btn btn-primary">詳細を見る</a>
-                  </div>
-                </div>
-              </div>
-            {% endfor %}
+  <div class="container py-4">
+    <div class="row justify-content-center mb-5">
+      <div class="col-md-8">
+        <h1 class="display-5 text-center mb-4"><i class="bi bi-search"></i> 落とし物を探す</h1>
+        <form method="GET" action="{% url 'userview:search' %}" class="mb-4">
+          <div class="input-group input-group-lg shadow-sm">
+            <input type="text" id="q" name="query" class="form-control" placeholder="キーワードを入力してください" required />
+            <button type="submit" class="btn btn-success px-4">
+              <i class="bi bi-search me-2"></i>検索
+            </button>
           </div>
-        {% else %}
-          <li>検索結果がありません。</li>
-        {% endif %}
-      </ul>
+        </form>
+      </div>
     </div>
+
+    {% if object_list %}
+      <div class="row g-4">
+        {% for item in object_list %}
+          <div class="col-md-4">
+            <div class="card h-100 shadow-sm hover-card">
+              {% if item.item_image %}
+                <img src="{{ MEDIA_URL }}{{ item.item_image }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="{{ item.item_name }}" />
+              {% else %}
+                <div class="bg-light text-center py-5">
+                  <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                </div>
+              {% endif %}
+              <div class="card-body">
+                <h4 class="card-title h5 mb-3">{{ item.item_name }}</h4>
+                <div class="small text-muted mb-2">
+                  <i class="bi bi-tag-fill me-2"></i>{{ item.item_keyword }}
+                </div>
+                <div class="small text-muted mb-2">
+                  <i class="bi bi-folder-fill me-2"></i>{{ item.item_category_id }}
+                </div>
+                <div class="mb-3">
+                  {% for i in item.item_tag_id.all %}
+                    <span class="badge bg-success rounded-pill">{{ i }}</span>
+                  {% endfor %}
+                </div>
+                <div class="small text-muted mb-3">
+                  <i class="bi bi-geo-alt-fill me-2"></i>{{ item.item_lost_location }}
+                </div>
+                <a href="{% url 'userview:detail' item.pk %}" class="btn btn-outline-success w-100">
+                  詳細を見る <i class="bi bi-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="alert alert-info text-center" role="alert">
+        <i class="bi bi-info-circle-fill me-2"></i>検索結果が見つかりませんでした
+      </div>
+    {% endif %}
   </div>
 {% endblock %}

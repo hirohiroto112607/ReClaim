@@ -1,47 +1,71 @@
 {% extends 'storeview/base.html' %}
 {% load static %}
-{% block title %}
-  search
-{% endblock %}
+
+{% block title %}落とし物を探す{% endblock %}
+
 {% block body %}
   <div class="container">
-    <h1 class="mt-4">検索画面</h1>
-    <form method="GET" action="{% url 'storeview:search' %}" class="mb-4">
-      <div class="form-group">
-        <label for="query">検索キーワード:</label>
-        <input type="text" id="q" name="query" class="form-control" required />
+    <div class="row mb-4">
+      <div class="col">
+        <h1 class="display-4">落とし物を探す</h1>
       </div>
-      <button type="submit" class="btn btn-primary mt-2">検索</button>
-    </form>
-    <div>
-      <h2>検索結果</h2>
-      <ul class="list-unstyled">
-        {% if object_list %}
-          <div class="row">
-            {% for item in object_list %}
-              <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                  {% if item.item_image %}
-                    <img src="{{ MEDIA_URL }}{{ item.item_image }}" class="card-img-top" alt="..." />
-                  {% endif %}
-                  <div class="card-body">
-                    <h4 class="card-title">{{ item.item_name }}</h4>
-                    <p class="card-text">{{ item.item_keyword }}</p>
-                    <p class="card-text">{{ item.item_category_id }}</p>
-                    {% for i in item.item_tag_id.all %}
-                      <span class="badge badge-secondary">{{ i }}</span>
-                    {% endfor %}
-                    <p class="card-text">{{ item.item_lost_location }}</p>
-                    <a href="{% url 'storeview:detail' item.pk %}" class="btn btn-primary">詳細を見る</a>
-                  </div>
-                </div>
-              </div>
-            {% endfor %}
-          </div>
-        {% else %}
-          <li>検索結果がありません。</li>
-        {% endif %}
-      </ul>
     </div>
+
+    <div class="row justify-content-center mb-5">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-body">
+            <form method="GET" action="{% url 'storeview:search' %}">
+              <div class="input-group">
+                <input type="text" id="q" name="query" class="form-control form-control-lg" placeholder="キーワードを入力..." required />
+                <button type="submit" class="btn btn-primary">
+                  <i class="bi bi-search"></i> 検索
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if object_list %}
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for item in object_list %}
+          <div class="col">
+            <div class="card h-100">
+              {% if item.item_image %}
+                <img src="{{ MEDIA_URL }}{{ item.item_image }}" class="card-img-top" alt="{{ item.item_name }}" style="height: 200px; object-fit: cover;" />
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title">{{ item.item_name }}</h5>
+                {% if item.item_keyword %}
+                  <p class="card-text">
+                    <small class="text-muted">{{ item.item_keyword }}</small>
+                  </p>
+                {% endif %}
+                <p class="card-text">
+                  <i class="bi bi-folder"></i> {{ item.item_category_id }}
+                </p>
+                {% if item.item_tag_id.all %}
+                  <div class="mb-2">
+                    {% for tag in item.item_tag_id.all %}
+                      <span class="badge bg-secondary">{{ tag }}</span>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+                <p class="card-text">
+                  <i class="bi bi-geo-alt"></i> {{ item.item_lost_location }}
+                </p>
+                <a href="{% url 'storeview:detail' item.pk %}" class="btn btn-primary w-100">詳細を見る</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="alert alert-info text-center" role="alert">
+        検索結果がありません。別のキーワードで試してみてください。
+      </div>
+    {% endif %}
   </div>
 {% endblock %}
