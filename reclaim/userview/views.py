@@ -11,10 +11,10 @@ from .forms import ItemContactForm
 # Create your views here.
 
 
-def test(request):
-    object_list = item.objects.all()
-    # print(tag_type)
-    return render(request, 'userview/test.html', {'object_list': object_list})
+# def test(request):
+#     object_list = item.objects.all()
+#     # print(tag_type)
+#     return render(request, 'userview/test.html', {'object_list': object_list})
 
 
 def index(request):
