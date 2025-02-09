@@ -9,8 +9,9 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 from django.views.generic.base import View
 from django.views.generic.edit import CreateView
+from django.contrib import messages
 
-from .forms import SignUpForm
+from .forms import SignUpForm, ProfileEditForm
 from .models import User
 
 # Create your views here.
@@ -74,37 +75,24 @@ def edit_profile(request):
 
 class ProfileEditView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        print(request.user.id)
         user_data = User.objects.get(id=request.user.id)
-        form = SignUpForm(
-            request.POST or None,
-            initial={
-                'first_name': user_data.first_name,
-                'last_name': user_data.last_name,
-                # 'birth_date': user_data.birth_date,
-            }
-        )
-
+        form = ProfileEditForm(instance=user_data)
         return render(request, 'accounts/edit_profile.html', {
             'form': form,
-            'user_data': user_data
+            'user': user_data
         })
 
     def post(self, request, *args, **kwargs):
         user_data = User.objects.get(id=request.user.id)
-        form = SignUpForm(request.POST, request.FILES, instance=user_data)
+        form = ProfileEditForm(request.POST, instance=user_data)
         if form.is_valid():
-            user_data = User.objects.get(id=request.user.id)
-            user_data.email = form.cleaned_data['email']
-            user_data.first_name = form.cleaned_data['first_name']
-            user_data.last_name = form.cleaned_data['last_name']
-            # user_data.birth_date = form.cleaned_data['birth_date']
-            user_data.save()
+            form.save()
+            messages.success(request, 'プロフィールが更新されました。')
             return redirect('accounts:profile')
-        else:
-            return render(request, 'accounts/profile.html', {
-                'form': form
-            })
+        return render(request, 'accounts/edit_profile.html', {
+            'form': form,
+            'user': user_data
+        })
 
 
 class ChangePasswordView(LoginRequiredMixin, PasswordChangeView):
