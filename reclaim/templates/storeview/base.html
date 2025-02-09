@@ -9,30 +9,6 @@
     <link rel="icon" href="{% static 'images/favicon.ico' %}" />
     {% bootstrap_javascript %}
     {% bootstrap_css %}
-    <style>
-      body {
-        background-color: #f8f9fa;
-      }
-      .navbar {
-        box-shadow: 0 2px 4px rgba(0,0,0,.1);
-      }
-      .card {
-        box-shadow: 0 2px 4px rgba(0,0,0,.05);
-        border-radius: 8px;
-        transition: transform 0.2s;
-      }
-      .card:hover {
-        transform: translateY(-5px);
-      }
-      .btn-primary {
-        background-color: #198754;
-        border-color: #198754;
-      }
-      .btn-primary:hover {
-        background-color: #157347;
-        border-color: #157347;
-      }
-    </style>
     <title>
       {% block title %}{% endblock %} | Reclaim
     </title>
@@ -62,6 +38,9 @@
                 </li>
               </ul>
               <div class="d-flex">
+                <a href="{% url 'accounts:profile' %}" class="btn btn-outline-light me-2">
+                  <i class="bi bi-person-circle"></i> アカウント
+                </a>
                 <form action="{% url 'accounts:logout' %}" method="post" class="m-0">
                   {% csrf_token %}
                   <button type="submit" class="btn btn-outline-light">ログアウト</button>

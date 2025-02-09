@@ -20,7 +20,7 @@
                     <input type="email" class="form-control" value="{{ user.email }}" readonly />
                   </div>
                   <div class="form-text">
-                    <a href="{% url 'accounts:edit_profile' %}" class="text-decoration-none">
+                    <a href="{% url 'accounts:edit_profile' %}" class="text-decoration-none text-success">
                       <i class="bi bi-pencil me-1"></i>メールアドレスを変更する
                     </a>
                   </div>
@@ -28,7 +28,7 @@
 
                 <div class="mb-4">
                   <label class="form-label">対象アイテム</label>
-                  <div class="alert alert-success">
+                  <div class="alert alert-success bg-success bg-opacity-10 border-success">
                     <i class="bi bi-box-seam me-2"></i>{{ item_instance.item_name }}
                   </div>
                   <input type="hidden" name="item_id" value="{{ item_instance.pk }}" />

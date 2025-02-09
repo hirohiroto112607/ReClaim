@@ -16,7 +16,6 @@ GenAi.init()
 def index(request):
     object_list = item.objects.all()
     tag_list = tag.objects.all()
-    print(tag_list)
     return render(request, 'storeview/list.html', {'object_list': object_list, 'tag_list': tag_list})
 
 
@@ -78,13 +77,11 @@ def overview(request):
 
 def AiGenerate(request, pk):
     item_instance = get_object_or_404(item, pk=pk)
-    print(item_instance.item_keyword)
     tag_object_list = tag.objects.all()
     item_category_object_list = item_category.objects.all()
     gen = None  # ここで初期化
 
     if request.method == 'POST':
-        print("POST")
         form = RegisterForm(request.POST, request.FILES, instance=item_instance)
         if form.is_valid():
             obj = form.save()
@@ -104,11 +101,9 @@ def AiGenerate(request, pk):
         try:
             response = GenAi.generate_by_image_path(image_path=item_instance.item_image)
             gen = response
-            print("if None")
         except Exception as error:
             print("Error: " + str(error))
             gen = "AI生成が制限されています。後ほど再度お試しください。"
-        print("gen=" + str(gen))
         return render(request, 'storeview/AiGenerate.html', {
             'item_instance': item_instance,
             'gen': gen,
