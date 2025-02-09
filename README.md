@@ -44,6 +44,7 @@ git clone https://github.com/hirohiroto112607/ReClaim.git
 cd reclaim
 pip install -r requirements.txt
 python setup.py
+python manage.py makemigration
 python manage.py migrate
 python manage.py runserver
 ```
