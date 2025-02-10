@@ -7,10 +7,11 @@ body {
 .card {
   box-shadow: 0 2px 4px rgba(0,0,0,.05);
   border-radius: 8px;
-  transition: transform 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 .card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0,0,0,.1);
 }
 .btn-primary {
   background-color: #198754;
@@ -19,4 +20,12 @@ body {
 .btn-primary:hover {
   background-color: #157347;
   border-color: #157347;
+}
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
 }

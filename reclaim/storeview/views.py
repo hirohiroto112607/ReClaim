@@ -131,13 +131,47 @@ def search(request):
         query = request.GET.get('query')
         print(query)
         if query:
-            object_list = item.objects.filter(
-                Q(item_keyword__icontains=query) | Q(item_description__icontains=query))
+            object_list = item.objects.filter(Q(item_keyword__icontains=query) | Q(item_description__icontains=query))
             return render(request, 'storeview/search.html', {'object_list': object_list})
         else:
             return redirect('storeview:index')
     else:
         return redirect('storeview:index')
+
+
+def upload_and_recognize(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST, request.FILES)
+        if form.is_valid():
+            image = form.cleaned_data['item_image']
+            # Process the image and get details using an image recognition API
+            # For example, using Google Vision API or a pre-trained model
+            # Here, we will use a placeholder function `recognize_image` to simulate this
+            details = recognize_image(image)
+            form.instance.item_name = details['name']
+            form.instance.item_description = details['description']
+            form.instance.item_category_id = get_category(details['category'])
+            form.save()
+            return redirect('storeview:index')
+    else:
+        form = RegisterForm()
+    return render(request, 'storeview/upload_and_recognize.html', {'form': form})
+
+
+def recognize_image(image):
+    # Placeholder function to simulate image recognition
+    # Replace this with actual API call or model inference
+    return {
+        'name': 'Recognized Item Name',
+        'description': 'Recognized Item Description',
+        'category': 'Recognized Category'
+    }
+
+
+def get_category(category_name):
+    # Get or create the category based on the recognized category name
+    category, created = item_category.objects.get_or_create(category_name=category_name)
+    return category
 
 
 '''

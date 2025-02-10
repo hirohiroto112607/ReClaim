@@ -35,17 +35,4 @@
                 </div>
                 <p class="card-text small text-muted mb-3">
                   <i class="bi bi-geo-alt me-1"></i>{{ item.item_lost_location }}
-                </p>
-                <div class="mt-auto">
-                  <a href="{% url 'userview:contact' item.pk %}" class="btn btn-success w-100">
-                    <i class="bi bi-chat-dots me-2"></i>問い合わせ
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
-  </div>
-{% endblock %}
+    

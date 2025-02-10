@@ -80,48 +80,4 @@
                 <div class="mb-3">
                   <label for="id_item_description" class="form-label">説明文</label>
                   {{ form.item_description.errors }}
-                  <textarea name="item_description" rows="5" required id="id_item_description" class="form-control">{{ item_instance.item_description }}</textarea>
-                </div>
-              </div>
-
-              <div class="col-12">
-                <div class="mb-3">
-                  <label for="id_item_keyword" class="form-label">生成されたキーワード</label>
-                  {{ form.item_keyword.errors }}
-                  <textarea name="item_keyword" rows="3" id="id_item_keyword" class="form-control">{{ gen }}</textarea>
-                </div>
-              </div>
-
-              <div class="col-12">
-                <div class="mb-4">
-                  <label class="form-label">現在の画像</label>
-                  <div class="text-center">
-                    <img src="{{ MEDIA_URL }}{{ item_instance.item_image }}" class="img-fluid rounded" alt="現在の画像" style="max-height: 300px;" />
-                  </div>
-                </div>
-              </div>
-
-              <div style="display: none;">
-                <select name="item_founder" required id="id_item_founder">
-                  <option value="{{ request.user.id }}" selected>{{ request.user.email }}</option>
-                </select>
-              </div>
-
-              <div class="col-12">
-                <div class="d-grid gap-2">
-                  <button type="submit" class="btn btn-primary btn-lg">
-                    <i class="bi bi-check-lg"></i> キーワードを保存
-                  </button>
-                  <a href="{% url 'storeview:detail' item_instance.pk %}" class="btn btn-secondary">
-                    <i class="bi bi-arrow-left"></i> 戻る
-                  </a>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-{% endblock %}
+                  <te
