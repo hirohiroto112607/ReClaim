@@ -46,4 +46,40 @@
               <a class="nav-link" href="{% url 'userview:search_page' %}">
                 <i class="bi bi-search me-1"></i>検索
               </a>
-            </
+            </li>
+          </ul>
+          <ul class="navbar-nav">
+            {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:profile' %}">
+                  <i class="bi bi-person-circle me-1"></i>アカウント
+                </a>
+              </li>
+              <li class="nav-item">
+                <form action="{% url 'accounts:logout' %}" method="post" class="d-inline">
+                  {% csrf_token %}
+                  <button type="submit" class="btn nav-link">
+                    <i class="bi bi-box-arrow-right me-1"></i>ログアウト
+                  </button>
+                </form>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:login' %}?next={{ request.path }}">
+                  <i class="bi bi-person me-1"></i>ログイン
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:signup' %}?next={{ request.path }}">
+                  <i class="bi bi-person-plus me-1"></i>サインアップ
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    {% block body %}{% endblock %}
+  </body>
+</html>

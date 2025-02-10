@@ -46,4 +46,26 @@
                 <p class="card-text">
                   <i class="bi bi-folder"></i> {{ item.item_category_id }}
                 </p>
-          
+                {% if item.item_tag_id.all %}
+                  <div class="mb-2">
+                    {% for tag in item.item_tag_id.all %}
+                      <span class="badge bg-secondary">{{ tag }}</span>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+                <p class="card-text">
+                  <i class="bi bi-geo-alt"></i> {{ item.item_lost_location }}
+                </p>
+                <a href="{% url 'storeview:detail' item.pk %}" class="btn btn-primary w-100">詳細を見る</a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="alert alert-info text-center" role="alert">
+        検索結果がありません。別のキーワードで試してみてください。
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

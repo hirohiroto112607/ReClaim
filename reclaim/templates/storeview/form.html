@@ -81,4 +81,33 @@
 
                 <div class="col-12">
                   <div class="mb-4">
-                    <label for="id_item_image" class="form-la
+                    <label for="id_item_image" class="form-label">画像</label>
+                    {{ form.item_image.errors }}
+                    <input type="file" name="item_image" accept="image/*" id="id_item_image" class="form-control" />
+                  </div>
+                </div>
+
+                <div class="col-12">
+                  <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                      <i class="bi bi-check-lg"></i> 登録する
+                    </button>
+                    <a href="{% url 'storeview:index' %}" class="btn btn-secondary">
+                      <i class="bi bi-arrow-left"></i> 戻る
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display: none;">
+                <select name="item_founder" required id="id_item_founder">
+                  <option value="{{ request.user.id }}" selected>{{ request.user.email }}</option>
+                </select>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

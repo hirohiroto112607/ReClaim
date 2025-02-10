@@ -35,4 +35,31 @@
             <input type="password" name="password2" required id="id_password2" class="form-control" autocomplete="new-password" />
           </div>
 
-          {% if form
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+              {% for error in form.non_field_errors %}
+                <p class="mb-0">{{ error }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          {% for field in form %}
+            {% if field.errors %}
+              <div class="alert alert-danger">
+                {% for error in field.errors %}
+                  <p class="mb-0">{{ error }}</p>
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endfor %}
+
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">アカウント作成</button>
+            <a href="{% url 'accounts:index' %}" class="btn btn-outline-secondary">戻る</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
