@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>アイテム一覧</title>
+</head>
+<body>
+    <h1>アイテム一覧</h1>
+    <ul>
+        {% for item in object_list %}
+        <li>
+            <img src="{{ item.item_image.url }}" alt="{{ item.item_name }}" width="100">
+            <p>{{ item.item_name }}</p>
+            <pre>{{ item.ai_generated_json|json_script:"jsonData" }}</pre>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

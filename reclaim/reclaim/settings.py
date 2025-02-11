@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'storeview',
     'accounts',
     'django_bootstrap5',
+    'background_task',
 ]
 
 AUTH_USER_MODEL = "accounts.User"
