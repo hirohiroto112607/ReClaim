@@ -42,3 +42,15 @@ class ImageUploadForm(forms.ModelForm):
     class Meta:
         model = item
         fields = ['item_image']
+        labels = {
+            'item_image': '画像',
+        }
+        help_texts = {
+            'item_image': 'アップロードする画像を選択してください。',
+        }
+        error_messages = {
+            'item_image': {
+                'invalid': '有効な画像ファイルをアップロードしてください。',
+                'required': '画像のアップロードは必須です。',
+            },
+        }

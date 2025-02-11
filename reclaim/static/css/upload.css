@@ -1,0 +1,63 @@
+.upload-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.upload-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.upload-title {
+  font-size: 24px;
+  color: #2c3e50;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.upload-form p {
+  margin: 0;
+}
+
+.upload-form input[type="file"] {
+  border: 2px dashed #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  transition: border-color 0.3s ease;
+}
+
+.upload-form input[type="file"]:hover {
+  border-color: #28a745;
+}
+
+.upload-button {
+  background-color: #28a745;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.upload-button:hover {
+  background-color: #218838;
+}
+
+/* エラーメッセージのスタイル */
+.errorlist {
+  color: #dc3545;
+  list-style: none;
+  padding: 0;
+  margin: 5px 0;
+}

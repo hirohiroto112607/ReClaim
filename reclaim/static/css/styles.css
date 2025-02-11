@@ -5,21 +5,22 @@ body {
   box-shadow: 0 2px 4px rgba(0,0,0,.1);
 }
 .card {
-  box-shadow: 0 2px 4px rgba(0,0,0,.05);
+  box-shadow: 0 4px 8px rgba(0,0,0,.1);
   border-radius: 8px;
   transition: transform 0.2s, box-shadow 0.2s;
+  margin-top: 20px;
 }
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 4px 8px rgba(0,0,0,.1);
 }
 .btn-primary {
-  background-color: #198754;
-  border-color: #198754;
+  background-color: #007bff;
+  border-color: #007bff;
 }
 .btn-primary:hover {
-  background-color: #157347;
-  border-color: #157347;
+  background-color: #0056b3;
+  border-color: #004085;
 }
 .btn-secondary {
   background-color: #6c757d;
@@ -28,4 +29,11 @@ body {
 .btn-secondary:hover {
   background-color: #5a6268;
   border-color: #545b62;
+}
+.container {
+  max-width: 600px;
+}
+.card-title {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
 }

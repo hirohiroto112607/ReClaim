@@ -113,7 +113,8 @@ def item_list_view(request):
 def upload_image(request):
     if request.method == 'POST':
         form = ImageUploadForm(request.POST, request.FILES)
-        if form.is_valid():
+        print(request.FILES)
+        if form.is_valid() and request.FILES != None:    
             item_instance = form.save(commit=False)
             item_instance.item_founder = request.user  # 現在のユーザーを設定
             item_instance.save()
@@ -122,6 +123,8 @@ def upload_image(request):
                 item_instance.pk, str(item_instance.item_image))
             messages.success(request, '画像がアップロードされ、AIに送信されました。')
             return redirect('storeview:index')
+        else:
+            messages.error(request, '画像のアップロードに失敗しました。')
     else:
         form = ImageUploadForm()
     return render(request, 'storeview/upload_image.html', {'form': form})
