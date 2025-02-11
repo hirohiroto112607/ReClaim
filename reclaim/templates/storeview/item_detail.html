@@ -48,6 +48,9 @@
             {% endif %}
 
             <div class="d-grid gap-2">
+                <a href="{% url 'storeview:AiGenerate' item.pk %}" class="btn btn-success">
+                <i class="bi bi-magic"></i> AiGenerate
+                </a>
               <a href="{% url 'storeview:update' item.pk %}" class="btn btn-primary">
                 <i class="bi bi-pencil"></i> 編集する
               </a>

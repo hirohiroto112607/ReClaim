@@ -17,7 +17,7 @@
           <div class="card-body">
             <form method="GET" action="{% url 'storeview:search' %}">
               <div class="input-group">
-                <input type="text" id="q" name="query" class="form-control form-control-lg" placeholder="キーワードを入力..." required />
+                <input type="text" id="q" name="query" value="{{ query }}" class="form-control form-control-lg" placeholder="キーワードを入力..." required />
                 <button type="submit" class="btn btn-primary">
                   <i class="bi bi-search"></i> 検索
                 </button>

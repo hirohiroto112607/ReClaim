@@ -17,6 +17,6 @@ urlpatterns = [
     path('search_page/', views.search_page, name='search_page'),
     path('search/', views.search, name='search'),
     path('upload_image/', views.upload_image, name='upload_image'),
-    path('display_json/<int:pk>/', views.display_json, name='display_json'),
+    # path('display_json/<int:pk>/', views.display_json, name='display_json'),
     path('item_list/', views.item_list_view, name='item_list'),  # 追加
 ]

@@ -12,7 +12,6 @@ from .forms import RegisterForm
 from .forms import ImageUploadForm
 
 # Create your views here.
-GenAi.init()
 
 
 def index(request):
@@ -79,34 +78,9 @@ def overview(request):
 
 def AiGenerate(request, pk):
     item_instance = get_object_or_404(item, pk=pk)
-    tag_object_list = tag.objects.all()
-    item_category_object_list = item_category.objects.all()
-
-    if request.method == 'POST':
-        form = RegisterForm(request.POST, request.FILES,
-                            instance=item_instance)
-        if form.is_valid():
-            obj = form.save()
-            # バックグラウンドタスクとしてAI生成を開始
-            try:
-                GenAi.process_ai_generate(pk, item_instance.item_image)
-                messages.success(request, 'AI生成を開始しました。しばらくお待ちください。')
-            except Exception as error:
-                print(f"AI Generation scheduling error: {str(error)}")
-                messages.error(request, 'AI生成の開始に失敗しました。')
-
-            return redirect('storeview:detail', pk=obj.pk)
-
-    form = RegisterForm(instance=item_instance)
-
-    context = {
-        'item_instance': item_instance,
-        'form': form,
-        'tag_object_list': tag_object_list,
-        'item_category_object_list': item_category_object_list
-    }
-
-    return render(request, 'storeview/AiGenerate.html', context)
+    GenAi.process_ai_generate(
+        item_instance.pk, str(item_instance.item_image))
+    return redirect('storeview:index')
 
 
 def delete_item(request, pk):
@@ -128,9 +102,8 @@ def search(request):
         print(query)
         if query:
             object_list = item.objects.filter(
-                Q(ai_generated_json__icontains=query) | Q(item_description__icontains(query))
-            )
-            return render(request, 'storeview/search.html', {'object_list': object_list})
+                Q(ai_generated_json__icontains=query) | Q(item_description__icontains=query) | Q(item_name__icontains=query) | Q(item_category_id__category_name__icontains=query))
+            return render(request, 'storeview/search.html', {'object_list': object_list, 'query': query})
         else:
             return redirect('storeview:index')
     else:
@@ -138,7 +111,7 @@ def search(request):
 
 
 def item_list_view(request):
-    object_list = Item.objects.all()
+    object_list = item.objects.all()
     return render(request, 'storeview/list.html', {'object_list': object_list})
 
 
@@ -150,62 +123,13 @@ def upload_image(request):
             item_instance.item_founder = request.user  # 現在のユーザーを設定
             item_instance.save()
             # バックグラウンドでAIに送信する
-            GenAi.process_ai_generate(item_instance.pk, str(item_instance.item_image))
+            GenAi.process_ai_generate(
+                item_instance.pk, str(item_instance.item_image))
             messages.success(request, '画像がアップロードされ、AIに送信されました。')
             return redirect('storeview:index')
     else:
         form = ImageUploadForm()
     return render(request, 'storeview/upload_image.html', {'form': form})
-
-
-def get_ai_generated_json(item_instance):
-    # AIから生成されたJSONを取得する処理
-    # ここでは仮のJSONを返す
-    return {
-        "name": "AI生成アイテム名",
-        "description": "AI生成アイテム説明",
-        "category": "AI生成カテゴリー"
-    }
-
-def display_json(request, pk):
-    item_instance = get_object_or_404(item, pk=pk)
-    ai_generated_json = get_ai_generated_json(item_instance)
-    return render(request, 'storeview/json_display.html', {'json_data': ai_generated_json})
-
-
-# def upload_and_recognize(request):
-#     if request.method == 'POST':
-#         form = RegisterForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             image = form.cleaned_data['item_image']
-#             # Process the image and get details using an image recognition API
-#             # For example, using Google Vision API or a pre-trained model
-#             # Here, we will use a placeholder function `recognize_image` to simulate this
-#             details = recognize_image(image)
-#             form.instance.item_name = details['name']
-#             form.instance.item_description = details['description']
-#             form.instance.item_category_id = get_category(details['category'])
-#             form.save()
-#             return redirect('storeview:index')
-#     else:
-#         form = RegisterForm()
-#     return render(request, 'storeview/upload_and_recognize.html', {'form': form})
-
-
-# def recognize_image(image):
-#     # Placeholder function to simulate image recognition
-#     # Replace this with actual API call or model inference
-#     return {
-#         'name': 'Recognized Item Name',
-#         'description': 'Recognized Item Description',
-#         'category': 'Recognized Category'
-#     }
-
-
-# def get_category(category_name):
-#     # Get or create the category based on the recognized category name
-#     category, created = item_category.objects.get_or_create(category_name=category_name)
-#     return category
 
 
 '''
