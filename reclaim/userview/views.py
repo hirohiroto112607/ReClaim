@@ -64,7 +64,7 @@ def search(request):
         query = request.GET.get('query')
         print(query)
         if query:
-            object_list = item.objects.filter(Q(item_keyword__icontains=query)|Q(item_description__icontains(query)))
+            object_list = item.objects.filter(Q(ai_generated_json__icontains=query)|Q(item_description__icontains(query)))
             return render(request, 'userview/search.html', {'object_list': object_list})
         else:
             return redirect('userview:index')

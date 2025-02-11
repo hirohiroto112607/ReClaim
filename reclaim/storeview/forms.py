@@ -15,7 +15,7 @@ class RegisterForm(ModelForm):
         item_date = models.DateTimeField()
         item_lost_location = models.CharField(max_length=100)
         item_description = models.TextField(blank=True, null=True)
-        item_keyword = models.CharField(max_length=600)
+        # ai_generated_json = models.CharField(max_length=600)
         item_image = models.ImageField(
             upload_to='images/', blank=True, null=True)
         item_status = models.BooleanField(default=False)
@@ -23,7 +23,7 @@ class RegisterForm(ModelForm):
         fields = ['item_category_id',
                   #   'item_tag_id',
                   'item_name', 'item_date',
-                  'item_lost_location', 'item_description', 'item_keyword', 'item_image', 'item_status', 'item_founder']
+                  'item_lost_location', 'item_description', 'ai_generated_json', 'item_image', 'item_status', 'item_founder']
         labels = {
             'item_category_id': 'カテゴリー',
             # 'item_tag_id': 'タグ',
@@ -31,8 +31,14 @@ class RegisterForm(ModelForm):
             'item_date': '発見日時',
             'item_lost_location': '発見場所',
             'item_description': '説明文',
-            'item_keyword': 'キーワード',
+            'ai_generated_json': 'キーワード',
             'item_image': '画像',
             'item_status': '発見されたか',
             'item_founder': '発見者',
         }
+
+
+class ImageUploadForm(forms.ModelForm):
+    class Meta:
+        model = item
+        fields = ['item_image']

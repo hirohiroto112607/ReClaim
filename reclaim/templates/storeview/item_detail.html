@@ -40,10 +40,10 @@
               <p class="card-text">{{ item.item_description }}</p>
             </div>
 
-            {% if item.item_keyword %}
+            {% if item.ai_generated_json %}
               <div class="mb-4">
                 <h5 class="text-muted mb-3">キーワード</h5>
-                <p class="card-text">{{ item.item_keyword }}</p>
+                <p class="card-text">{{ item.ai_generated_json }}</p>
               </div>
             {% endif %}
 

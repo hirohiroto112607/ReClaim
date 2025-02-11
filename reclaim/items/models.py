@@ -13,10 +13,11 @@ class item(models.Model):
     item_date = models.DateTimeField()
     item_lost_location = models.CharField(max_length=100)
     item_description = models.TextField()
-    item_keyword = models.CharField(max_length=600, blank=True, null=True)
+    # item_keyword = models.CharField(max_length=600, blank=True, null=True)
     item_image = models.ImageField(upload_to='images/', blank=True, null=True)
     item_status = models.BooleanField(default=False)
     item_founder = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    ai_generated_json = models.JSONField(blank=True, null=True)  # 追加
 
     def __str__(self):
         return str(self.item_name)
@@ -56,3 +57,4 @@ class item_message(models.Model):
 #     keyword = models.CharField(max_length=200)
 #     def __str__(self):
 #         return str(self.keyword)
+# ai_generated_json = models.CharField(max_length=600, blank=True, null=True)

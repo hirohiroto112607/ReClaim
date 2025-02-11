@@ -38,9 +38,9 @@
               {% endif %}
               <div class="card-body">
                 <h5 class="card-title">{{ item.item_name }}</h5>
-                {% if item.item_keyword %}
+                {% if item.ai_generated_json %}
                   <p class="card-text">
-                    <small class="text-muted">{{ item.item_keyword }}</small>
+                    <small class="text-muted">{{ item.ai_generated_json }}</small>
                   </p>
                 {% endif %}
                 <p class="card-text">

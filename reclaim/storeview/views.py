@@ -6,8 +6,10 @@ from django.urls import reverse_lazy
 from django.views import generic
 from items.models import item, item_category, tag
 from django.db.models import Q
+from django.contrib import messages
 
 from .forms import RegisterForm
+from .forms import ImageUploadForm
 
 # Create your views here.
 GenAi.init()
@@ -81,51 +83,29 @@ def AiGenerate(request, pk):
     item_category_object_list = item_category.objects.all()
 
     if request.method == 'POST':
-        form = RegisterForm(request.POST, request.FILES, instance=item_instance)
+        form = RegisterForm(request.POST, request.FILES,
+                            instance=item_instance)
         if form.is_valid():
             obj = form.save()
+            # バックグラウンドタスクとしてAI生成を開始
+            try:
+                GenAi.process_ai_generate(pk, item_instance.item_image)
+                messages.success(request, 'AI生成を開始しました。しばらくお待ちください。')
+            except Exception as error:
+                print(f"AI Generation scheduling error: {str(error)}")
+                messages.error(request, 'AI生成の開始に失敗しました。')
+
             return redirect('storeview:detail', pk=obj.pk)
-    
-    # GETリクエストの処理
-    try:
-        # AIによる情報生成
-        ai_info = GenAi.generate_item_info(item_instance.item_image)
-        print("AI Response:", ai_info)
 
-        # カテゴリーの設定
-        found_category = None
-        if 'category' in ai_info:
-            category_name = ai_info['category'].strip()
-            print(f"Looking for category name: '{category_name}'")
-            found_category = item_category.objects.filter(
-                category_name__exact=category_name
-            ).first()
-            print(f"Found category: {found_category}")
-
-        # インスタンスの属性を更新
-        if found_category:
-            item_instance.item_category_id = found_category
-        item_instance.item_name = ai_info.get('item_name', item_instance.item_name)
-        item_instance.item_keyword = ai_info.get('keywords', '')
-
-        # 更新された属性を持つインスタンスでフォームを作成
-        form = RegisterForm(instance=item_instance)
-
-    except Exception as error:
-        print(f"AI Generation error: {str(error)}")
-        form = RegisterForm(instance=item_instance)
-        ai_info = {
-            'keywords': f"AI生成中にエラーが発生しました。\nError: {str(error)}"
-        }
+    form = RegisterForm(instance=item_instance)
 
     context = {
         'item_instance': item_instance,
         'form': form,
-        'gen': ai_info.get('keywords', ''),
         'tag_object_list': tag_object_list,
         'item_category_object_list': item_category_object_list
     }
-    
+
     return render(request, 'storeview/AiGenerate.html', context)
 
 
@@ -147,7 +127,9 @@ def search(request):
         query = request.GET.get('query')
         print(query)
         if query:
-            object_list = item.objects.filter(Q(item_keyword__icontains=query) | Q(item_description__icontains(query)))
+            object_list = item.objects.filter(
+                Q(ai_generated_json__icontains=query) | Q(item_description__icontains(query))
+            )
             return render(request, 'storeview/search.html', {'object_list': object_list})
         else:
             return redirect('storeview:index')
@@ -156,8 +138,39 @@ def search(request):
 
 
 def item_list_view(request):
-    object_list = item.objects.all()
-    return render(request, 'userview/list.html', {'object_list': object_list})
+    object_list = Item.objects.all()
+    return render(request, 'storeview/list.html', {'object_list': object_list})
+
+
+def upload_image(request):
+    if request.method == 'POST':
+        form = ImageUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            item_instance = form.save(commit=False)
+            item_instance.item_founder = request.user  # 現在のユーザーを設定
+            item_instance.save()
+            # バックグラウンドでAIに送信する
+            GenAi.process_ai_generate(item_instance.pk, str(item_instance.item_image))
+            messages.success(request, '画像がアップロードされ、AIに送信されました。')
+            return redirect('storeview:index')
+    else:
+        form = ImageUploadForm()
+    return render(request, 'storeview/upload_image.html', {'form': form})
+
+
+def get_ai_generated_json(item_instance):
+    # AIから生成されたJSONを取得する処理
+    # ここでは仮のJSONを返す
+    return {
+        "name": "AI生成アイテム名",
+        "description": "AI生成アイテム説明",
+        "category": "AI生成カテゴリー"
+    }
+
+def display_json(request, pk):
+    item_instance = get_object_or_404(item, pk=pk)
+    ai_generated_json = get_ai_generated_json(item_instance)
+    return render(request, 'storeview/json_display.html', {'json_data': ai_generated_json})
 
 
 # def upload_and_recognize(request):
@@ -197,14 +210,13 @@ def item_list_view(request):
 
 '''
 以下がカテゴリー名のリストです：
-	貴重品類（硬貨、紙幣、各種有価証券 等）
-	電子機器類（スマホ、PC 等）
-	衣類類（コート、マフラー 等）
-    アクセサリー類（ピアス、指輪、ネックレス 等）
-	鍵（家、車、ロッカー 等）
-    カード（クレジットカード、キャッシュカード 等）
-	カバン・バッグ類（リュック 等）
-	書類（折り紙、 等）
-	スポーツ用品類（ボール、 食品類
-ガム、飴 等
+	定期券・カード類
+	傘
+	鍵
+	文具・書類
+	衣類・アクセサリー
+	かばん・バッグ
+	財布・貴重品
+	電子機器
+	その他
 '''
