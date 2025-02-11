@@ -79,38 +79,54 @@ def AiGenerate(request, pk):
     item_instance = get_object_or_404(item, pk=pk)
     tag_object_list = tag.objects.all()
     item_category_object_list = item_category.objects.all()
-    gen = None  # ここで初期化
 
     if request.method == 'POST':
         form = RegisterForm(request.POST, request.FILES, instance=item_instance)
         if form.is_valid():
             obj = form.save()
             return redirect('storeview:detail', pk=obj.pk)
-        else:
-            # エラーがある場合は AiGenerate.html を再レンダリング
-            gen = item_instance.item_keyword
-            return render(request, 'storeview/AiGenerate.html', {
-                'item_instance': item_instance,
-                'gen': gen,
-                'form': form,
-                'tag_object_list': tag_object_list,
-                'item_category_object_list': item_category_object_list
-            })
-    else:
+    
+    # GETリクエストの処理
+    try:
+        # AIによる情報生成
+        ai_info = GenAi.generate_item_info(item_instance.item_image)
+        print("AI Response:", ai_info)
+
+        # カテゴリーの設定
+        found_category = None
+        if 'category' in ai_info:
+            category_name = ai_info['category'].strip()
+            print(f"Looking for category name: '{category_name}'")
+            found_category = item_category.objects.filter(
+                category_name__exact=category_name
+            ).first()
+            print(f"Found category: {found_category}")
+
+        # インスタンスの属性を更新
+        if found_category:
+            item_instance.item_category_id = found_category
+        item_instance.item_name = ai_info.get('item_name', item_instance.item_name)
+        item_instance.item_keyword = ai_info.get('keywords', '')
+
+        # 更新された属性を持つインスタンスでフォームを作成
         form = RegisterForm(instance=item_instance)
-        try:
-            response = GenAi.generate_by_image_path(image_path=item_instance.item_image)
-            gen = response
-        except Exception as error:
-            print("Error: " + str(error))
-            gen = "AI生成が制限されています。後ほど再度お試しください。"
-        return render(request, 'storeview/AiGenerate.html', {
-            'item_instance': item_instance,
-            'gen': gen,
-            'form': form,
-            'tag_object_list': tag_object_list,
-            'item_category_object_list': item_category_object_list
-        })
+
+    except Exception as error:
+        print(f"AI Generation error: {str(error)}")
+        form = RegisterForm(instance=item_instance)
+        ai_info = {
+            'keywords': f"AI生成中にエラーが発生しました。\nError: {str(error)}"
+        }
+
+    context = {
+        'item_instance': item_instance,
+        'form': form,
+        'gen': ai_info.get('keywords', ''),
+        'tag_object_list': tag_object_list,
+        'item_category_object_list': item_category_object_list
+    }
+    
+    return render(request, 'storeview/AiGenerate.html', context)
 
 
 def delete_item(request, pk):
@@ -131,7 +147,7 @@ def search(request):
         query = request.GET.get('query')
         print(query)
         if query:
-            object_list = item.objects.filter(Q(item_keyword__icontains=query) | Q(item_description__icontains=query))
+            object_list = item.objects.filter(Q(item_keyword__icontains=query) | Q(item_description__icontains(query)))
             return render(request, 'storeview/search.html', {'object_list': object_list})
         else:
             return redirect('storeview:index')
@@ -139,39 +155,44 @@ def search(request):
         return redirect('storeview:index')
 
 
-def upload_and_recognize(request):
-    if request.method == 'POST':
-        form = RegisterForm(request.POST, request.FILES)
-        if form.is_valid():
-            image = form.cleaned_data['item_image']
-            # Process the image and get details using an image recognition API
-            # For example, using Google Vision API or a pre-trained model
-            # Here, we will use a placeholder function `recognize_image` to simulate this
-            details = recognize_image(image)
-            form.instance.item_name = details['name']
-            form.instance.item_description = details['description']
-            form.instance.item_category_id = get_category(details['category'])
-            form.save()
-            return redirect('storeview:index')
-    else:
-        form = RegisterForm()
-    return render(request, 'storeview/upload_and_recognize.html', {'form': form})
+def item_list_view(request):
+    object_list = item.objects.all()
+    return render(request, 'userview/list.html', {'object_list': object_list})
 
 
-def recognize_image(image):
-    # Placeholder function to simulate image recognition
-    # Replace this with actual API call or model inference
-    return {
-        'name': 'Recognized Item Name',
-        'description': 'Recognized Item Description',
-        'category': 'Recognized Category'
-    }
+# def upload_and_recognize(request):
+#     if request.method == 'POST':
+#         form = RegisterForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             image = form.cleaned_data['item_image']
+#             # Process the image and get details using an image recognition API
+#             # For example, using Google Vision API or a pre-trained model
+#             # Here, we will use a placeholder function `recognize_image` to simulate this
+#             details = recognize_image(image)
+#             form.instance.item_name = details['name']
+#             form.instance.item_description = details['description']
+#             form.instance.item_category_id = get_category(details['category'])
+#             form.save()
+#             return redirect('storeview:index')
+#     else:
+#         form = RegisterForm()
+#     return render(request, 'storeview/upload_and_recognize.html', {'form': form})
 
 
-def get_category(category_name):
-    # Get or create the category based on the recognized category name
-    category, created = item_category.objects.get_or_create(category_name=category_name)
-    return category
+# def recognize_image(image):
+#     # Placeholder function to simulate image recognition
+#     # Replace this with actual API call or model inference
+#     return {
+#         'name': 'Recognized Item Name',
+#         'description': 'Recognized Item Description',
+#         'category': 'Recognized Category'
+#     }
+
+
+# def get_category(category_name):
+#     # Get or create the category based on the recognized category name
+#     category, created = item_category.objects.get_or_create(category_name=category_name)
+#     return category
 
 
 '''
@@ -184,5 +205,6 @@ def get_category(category_name):
     カード（クレジットカード、キャッシュカード 等）
 	カバン・バッグ類（リュック 等）
 	書類（折り紙、 等）
-	スポーツ用品類（ボール、 食品類（ガム、飴 等
+	スポーツ用品類（ボール、 食品類
+ガム、飴 等
 '''

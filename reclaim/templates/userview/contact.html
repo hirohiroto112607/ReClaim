@@ -13,6 +13,7 @@
             {% if user.is_authenticated %}
               <form method="post" action="{% url 'userview:contact' item_instance.pk %}" class="needs-validation" novalidate>
                 {% csrf_token %}
+
                 <div class="mb-4">
                   <label class="form-label">メールアドレス</label>
                   <div class="input-group">
@@ -31,13 +32,16 @@
                   <div class="alert alert-success bg-success bg-opacity-10 border-success">
                     <i class="bi bi-box-seam me-2"></i>{{ item_instance.item_name }}
                   </div>
-                  <input type="hidden" name="item_id" value="{{ item_instance.pk }}" />
                 </div>
 
                 <div class="mb-4">
-                  <label for="message" class="form-label">メッセージ</label>
-                  <textarea id="message" name="message" class="form-control" rows="5" required 
-                    placeholder="落とし物に関する詳細な情報をお書きください"></textarea>
+                  <label for="{{ form.message.id_for_label }}" class="form-label">メッセージ</label>
+                  {{ form.message }}
+                  {% if form.message.errors %}
+                    <div class="text-danger small mt-1">
+                      {{ form.message.errors.0 }}
+                    </div>
+                  {% endif %}
                 </div>
 
                 <div class="d-grid">

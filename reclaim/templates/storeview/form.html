@@ -30,7 +30,7 @@
                   <div class="mb-3">
                     <label for="id_item_category_id" class="form-label">カテゴリー</label>
                     {{ form.item_category_id.errors }}
-                    <select name="item_category_id" required id="id_item_category_id" class="form-select">
+                    <select name="item_category_id" id="id_item_category_id" class="form-select">
                       <option value="" selected="">選択してください</option>
                       {% for i in item_category_object_list %}
                         <option value="{{ i.category_id }}">{{ i.category_name }}</option>
@@ -43,7 +43,7 @@
                   <div class="mb-3">
                     <label for="id_item_name" class="form-label">名前</label>
                     {{ form.item_name.errors }}
-                    <input type="text" name="item_name" maxlength="100" required id="id_item_name" class="form-control" placeholder="落とし物の名前" />
+                    <input type="text" name="item_name" maxlength="100" id="id_item_name" class="form-control" placeholder="落とし物の名前" />
                   </div>
                 </div>
 
@@ -51,7 +51,7 @@
                   <div class="mb-3">
                     <label for="id_item_date" class="form-label">発見日時</label>
                     {{ form.item_date.errors }}
-                    <input type="datetime-local" name="item_date" required id="id_item_date" class="form-control" />
+                    <input type="datetime-local" name="item_date" required id="id_item_date" class="form-control" value="" />TODO
                   </div>
                 </div>
 
@@ -59,7 +59,7 @@
                   <div class="mb-3">
                     <label for="id_item_lost_location" class="form-label">発見場所</label>
                     {{ form.item_lost_location.errors }}
-                    <input type="text" name="item_lost_location" maxlength="100" required id="id_item_lost_location" class="form-control" placeholder="発見された場所" />
+                    <input type="text" name="item_lost_location" maxlength="100" required id="id_item_lost_location" class="form-control" placeholder="発見された場所" />TODO
                   </div>
                 </div>
 
@@ -67,7 +67,7 @@
                   <div class="mb-3">
                     <label for="id_item_description" class="form-label">説明文</label>
                     {{ form.item_description.errors }}
-                    <textarea name="item_description" rows="5" required id="id_item_description" class="form-control" placeholder="落とし物の特徴や状態など"></textarea>
+                    <textarea name="item_description" rows="5" id="id_item_description" class="form-control" placeholder="落とし物の特徴や状態など"></textarea>
                   </div>
                 </div>
 

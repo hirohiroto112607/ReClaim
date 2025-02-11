@@ -25,28 +25,11 @@
                   <label for="id_item_category_id" class="form-label">カテゴリー</label>
                   {{ form.item_category_id.errors }}
                   <select name="item_category_id" required id="id_item_category_id" class="form-select">
-                    {% for i in item_category_object_list %}
-                      {% if i.category_name|stringformat:'s' == item_instance|stringformat:'s' %}
-                        <option value="{{ i.category_id }}" selected>{{ i.category_name }}</option>
-                      {% else %}
-                        <option value="{{ i.category_id }}">{{ i.category_name }}</option>
-                      {% endif %}
-                    {% endfor %}
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label for="id_item_tag_id" class="form-label">タグ</label>
-                  {{ form.item_tag_id.errors }}
-                  <select name="item_tag_id" required id="id_item_tag_id" class="form-select">
-                    {% for i in tag_object_list %}
-                      {% if i.tag_name|stringformat:'s' == item_instance.item_tag_id|stringformat:'s' %}
-                        <option value="{{ i.tag_id }}" selected>{{ i.tag_name }}</option>
-                      {% else %}
-                        <option value="{{ i.tag_id }}">{{ i.tag_name }}</option>
-                      {% endif %}
+                    {% for category in item_category_object_list %}
+                      <option value="{{ category.category_id }}" 
+                        {% if item_instance.item_category_id.category_id == category.category_id %}selected{% endif %}>
+                        {{ category.category_name }}
+                      </option>
                     {% endfor %}
                   </select>
                 </div>
@@ -56,7 +39,8 @@
                 <div class="mb-3">
                   <label for="id_item_name" class="form-label">名前</label>
                   {{ form.item_name.errors }}
-                  <input type="text" name="item_name" maxlength="100" required id="id_item_name" class="form-control" value="{{ item_instance.item_name }}" />
+                  <input type="text" name="item_name" maxlength="100" required id="id_item_name" 
+                    class="form-control" value="{{ form.initial.item_name|default:form.instance.item_name }}" />
                 </div>
               </div>
 

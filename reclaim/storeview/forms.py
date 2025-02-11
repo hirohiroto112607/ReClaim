@@ -9,12 +9,12 @@ class RegisterForm(ModelForm):
         model = item
         item_id = models.AutoField(primary_key=True)
         item_category_id = models.ForeignKey(
-            'item_category', on_delete=models.PROTECT)
+            'item_category', on_delete=models.PROTECT, blank=True, null=True)
         # item_tag_id = models.ForeignKey('tag', on_delete=models.PROTECT)
-        item_name = models.CharField(max_length=100)
+        item_name = models.CharField(max_length=100, blank=True, null=True)
         item_date = models.DateTimeField()
         item_lost_location = models.CharField(max_length=100)
-        item_description = models.TextField()
+        item_description = models.TextField(blank=True, null=True)
         item_keyword = models.CharField(max_length=600)
         item_image = models.ImageField(
             upload_to='images/', blank=True, null=True)

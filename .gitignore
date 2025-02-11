@@ -1,6 +1,7 @@
 ## add by me start
 temp.py
 .vscode/
+images/
 ## add by me end
 
 # Created by https://www.toptal.com/developers/gitignore/api/django
@@ -179,3 +180,4 @@ cython_debug/
 # End of https://www.toptal.com/developers/gitignore/api/django
 
 .github/copilot-instructions.md
+.DS_Store
