@@ -4,7 +4,7 @@ import python.GenAi as GenAi
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import generic
-from items.models import item, item_category, tag
+from items.models import item, item_category
 from django.db.models import Q
 from django.contrib import messages
 
@@ -16,8 +16,7 @@ from .forms import ImageUploadForm
 
 def index(request):
     object_list = item.objects.all()
-    tag_list = tag.objects.all()
-    return render(request, 'storeview/list.html', {'object_list': object_list, 'tag_list': tag_list})
+    return render(request, 'storeview/list.html', {'object_list': object_list})
 
 
 def hello(request):
@@ -26,7 +25,6 @@ def hello(request):
 
 
 def registerform(request):
-    tag_object_list = tag.objects.all()
     item_category_object_list = item_category.objects.all()
     item_instance = None
     if request.method == 'POST':
@@ -39,7 +37,6 @@ def registerform(request):
         form = RegisterForm()
     return render(request, 'storeview/form.html', {
         'form': form,
-        'tag_object_list': tag_object_list,
         'item_category_object_list': item_category_object_list
     })
 
@@ -51,7 +48,6 @@ def detail_item_view(request, pk):
 
 def update_item_view(request, pk):
     item_instance = get_object_or_404(item, pk=pk)
-    tag_object_list = tag.objects.all()
     item_category_object_list = item_category.objects.all()
 
     if request.method == 'POST':
@@ -66,7 +62,6 @@ def update_item_view(request, pk):
     return render(request, 'storeview/upd-form.html', {
         'form': form,
         'item_instance': item_instance,
-        'tag_object_list': tag_object_list,
         'item_category_object_list': item_category_object_list,
     })
 

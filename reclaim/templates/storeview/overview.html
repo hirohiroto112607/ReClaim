@@ -26,13 +26,13 @@
                     <p class="card-text text-muted">
                       <i class="bi bi-folder"></i> {{ item.item_category_id }}
                     </p>
-                    {% if item.item_tag_id.all %}
+                    {% comment %} {% if item.item_tag_id.all %}
                       <div class="mb-2">
                         {% for i in item.item_tag_id.all %}
                           <span class="badge bg-secondary">{{ i }}</span>
                         {% endfor %}
                       </div>
-                    {% endif %}
+                    {% endif %} {% endcomment %}
                     <p class="card-text">
                       <i class="bi bi-geo-alt"></i> {{ item.item_lost_location }}
                     </p>

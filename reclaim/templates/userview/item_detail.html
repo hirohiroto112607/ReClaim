@@ -31,9 +31,9 @@
 
               <dt class="col-sm-3"><i class="bi bi-tags me-2"></i>タグ</dt>
               <dd class="col-sm-9 mb-3">
-                {% for tag in item.item_tag_id.all %}
+                {% comment %} {% for tag in item.item_tag_id.all %}
                   <span class="badge bg-success rounded-pill me-1">{{ tag }}</span>
-                {% endfor %}
+                {% endfor %} {% endcomment %}
               </dd>
 
               <dt class="col-sm-3"><i class="bi bi-geo-alt me-2"></i>場所</dt>

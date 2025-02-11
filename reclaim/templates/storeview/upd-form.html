@@ -76,14 +76,14 @@
 
                 <div class="col-12">
                   <div class="mb-3">
-                    <label for="id_item_keyword" class="form-label">キーワード</label>
-                    {{ form.item_keyword.errors }}
-                    <textarea name="item_keyword" rows="3" id="id_item_keyword" class="form-control">{{ item_instance.item_keyword }}</textarea>
-                    <div class="mt-2">
-                      <a href="{% url 'storeview:AiGenerate' item_instance.pk %}" class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-magic"></i> AIで説明文を生成
-                      </a>
-                    </div>
+                  <label for="id_ai_generated_json" class="form-label">AI生成データ</label>
+                  {{ form.ai_generated_json.errors }}
+                  <textarea name="ai_generated_json" rows="3" id="id_ai_generated_json" class="form-control">{{ item_instance.ai_generated_json }}</textarea>
+                  <div class="mt-2">
+                    <a href="{% url 'storeview:AiGenerate' item_instance.pk %}" class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-magic"></i> AIでデータを生成
+                    </a>
+                  </div>
                   </div>
                 </div>
 

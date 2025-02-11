@@ -29,10 +29,10 @@ class item_category(models.Model):
     def __str__(self):
         return str(self.category_name)
 
-class tag(models.Model):
-    tag_id = models.AutoField(primary_key=True)
-    # tag_type = models.ForeignKey('tag_type', on_delete=models.CASCADE)
-    tag_name = models.CharField(max_length=100)
+# class tag(models.Model):
+#     tag_id = models.AutoField(primary_key=True)
+#     # tag_type = models.ForeignKey('tag_type', on_delete=models.CASCADE)
+#     tag_name = models.CharField(max_length=100)
     
 #     def __str__(self):
 #         return str(self.tag_name)

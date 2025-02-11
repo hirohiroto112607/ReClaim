@@ -1,6 +1,8 @@
 {% extends 'storeview/base.html' %}
 
-{% block title %}落とし物一覧{% endblock %}
+{% block title %}
+  落とし物一覧
+{% endblock %}
 
 {% block body %}
   <div class="row mb-4">
@@ -19,31 +21,25 @@
           <div class="card-body">
             <h5 class="card-title">{{ item.item_name }}</h5>
             <p class="card-text text-muted">
-              <small>
-                <i class="bi bi-folder"></i> {{ item.item_category_id }}
-              </small>
+              <small><i class="bi bi-folder"></i> {{ item.item_category_id }}</small>
             </p>
-            {% if item.item_tag_id.all %}
+            {% comment %} {% if item.item_tag_id.all %}
               <div class="mb-2">
                 {% for tag in item.item_tag_id.all %}
                   <span class="badge bg-secondary">{{ tag }}</span>
                 {% endfor %}
               </div>
-            {% endif %}
+            {% endif %} {% endcomment %}
             <p class="card-text">
               <i class="bi bi-geo-alt"></i> {{ item.item_lost_location }}
             </p>
-            <a href="{% url 'storeview:detail' item.pk %}" class="btn btn-primary w-100">
-              詳細を見る＆編集する
-            </a>
+            <a href="{% url 'storeview:detail' item.pk %}" class="btn btn-primary w-100">詳細を見る＆編集する</a>
           </div>
         </div>
       </div>
     {% empty %}
       <div class="col-12">
-        <div class="alert alert-info" role="alert">
-          登録されている落とし物はありません。
-        </div>
+        <div class="alert alert-info" role="alert">登録されている落とし物はありません。</div>
       </div>
     {% endfor %}
   </div>

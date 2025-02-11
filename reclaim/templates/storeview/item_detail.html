@@ -21,14 +21,14 @@
               <p class="card-text">{{ item.item_category_id }}</p>
             </div>
 
-            {% if item.item_tag_id.all %}
+            {% comment %} {% if item.item_tag_id.all %}
               <div class="mb-4">
                 <h5 class="text-muted mb-3">タグ</h5>
                 {% for tag in item.item_tag_id.all %}
                   <span class="badge bg-secondary me-2">{{ tag }}</span>
                 {% endfor %}
               </div>
-            {% endif %}
+            {% endif %} {% endcomment %}
 
             <div class="mb-4">
               <h5 class="text-muted mb-3">発見場所</h5>
