@@ -19,11 +19,6 @@ def index(request):
     return render(request, 'storeview/list.html', {'object_list': object_list})
 
 
-# def hello(request):
-#     hw = 'Hello World!'
-#     return render(request, 'base.html', {'object': hw})
-
-
 def registerform(request):
     item_category_object_list = item_category.objects.all()
     item_instance = None
@@ -55,6 +50,7 @@ def update_item_view(request, pk):
                             instance=item_instance)
         if form.is_valid():
             form.save()
+            item_instance.save()
             return redirect('storeview:index')
     else:
         form = RegisterForm(instance=item_instance)
