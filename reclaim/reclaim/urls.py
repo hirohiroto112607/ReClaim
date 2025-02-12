@@ -21,7 +21,6 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('userview/', include('userview.urls')), # This is the default page
     path('items/', include('items.urls')),
     path('storeview/', include('storeview.urls')),
     path('accounts/', include('accounts.urls')),
