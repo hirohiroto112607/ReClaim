@@ -17,8 +17,6 @@ from pathlib import Path
 import environ
 env = environ.Env()
 env.read_env(env_file=".env")
-print(env("ALLOW_ACCESS_HOSTS", default=None))
-print(env("DJANGO_SECRET_KEY"))
 ###
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

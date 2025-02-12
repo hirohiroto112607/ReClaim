@@ -43,7 +43,7 @@ git clone https://github.com/hirohiroto112607/ReClaim.git
 
 ```bash
 # Condaで新しい環境を作成・有効化
-conda create --name reclaim --file requirements.txt
+conda create --name reclaim --file reclaim.yml
 conda activate reclaim
 cd reclaim
 ```

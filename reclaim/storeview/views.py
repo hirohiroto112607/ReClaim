@@ -109,7 +109,6 @@ def item_list_view(request):
 def upload_image(request):
     if request.method == 'POST':
         form = ImageUploadForm(request.POST, request.FILES)
-        print(request.FILES)
         if form.is_valid() and request.FILES != None:    
             item_instance = form.save(commit=False)
             item_instance.item_founder = request.user  # 現在のユーザーを設定
