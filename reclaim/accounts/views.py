@@ -29,7 +29,7 @@ class SignupView(CreateView):
     success_url = reverse_lazy("accounts:index")  # ユーザー作成後のリダイレクト先ページ
 
     def form_valid(self, form):
-        # ユーザー作成後にそのままログイン状態にする設定
+# ユーザー作成後にそのままログイン状態にする設定
         response = super().form_valid(form)
         email = form.cleaned_data.get("email")
         password = form.cleaned_data.get("password1")
@@ -58,19 +58,6 @@ def profile(request):
 
 def logout_get(request):
     return render(request, "accounts/logout.html")
-
-
-def edit_profile(request):
-    # return render(request, "accounts/edit_profile.html")
-    form = SignUpForm()
-    if request.method == 'POST':
-        # form = RegisterForm(request.POST)
-        if form.is_valid():
-            item_instance = form.save()
-            return redirect('', )
-    else:
-        form = SignUpForm()
-    return render(request, 'accounts/edit_profile.html',)
 
 
 class ProfileEditView(LoginRequiredMixin, View):
@@ -110,6 +97,6 @@ class PasswordChange(LoginRequiredMixin, PasswordChangeView):
     template_name = 'accounts/password_change.html'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs) # 継承元のメソッドCALL
+        context = super().get_context_data(**kwargs)
         context["form_name"] = "password_change"
         return context
