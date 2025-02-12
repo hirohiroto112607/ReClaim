@@ -1,50 +1,76 @@
 # ReClaim
 
-## Usage
-
-利用したい際は
-[hirohiroto112607@misskey.resonite.love](https://misskey.resonite.love/@hirohiroto112607)
-[@p9WcKtj3d4g0JsF](https://x.com/@p9WcKtj3d4g0JsF)
-[hirohiroto112607@f5.si](mailto:hirohiroto112607@f5.si)
-へご確認ください。
-許諾のない場合、このソフト・コードを実行することは認められません。
-
-1. ソフトウェアをダウンロードし、インストールします。
-2. 初回起動時に設定を行います。
-3. 落とし物の情報を登録します。
-4. 必要に応じて検索や管理を行います。
-
-## About
+## 概要
 
 ReClaimはAIを活用した落とし物管理システムです。
-導入することによって登録、電話対応の手間などを削減できます。
-また、ユーザーフレンドリーなインターフェースを提供し、迅速かつ効率的な管理を実現します。
+Google GeminiとDjangoを使用し、以下の機能を提供します：
 
-### Features
+- AIによる落とし物の自動分類・特徴抽出
+- 画像認識による詳細な物品情報の生成
+- ユーザーフレンドリーなWeb管理インターフェース
+- 効率的な検索・管理機能
 
-- AIによる自動分類
-- 簡単な検索機能
+## 必要要件
 
-### Requirements
-
-- Python 3.8以上
-- Django 3.2以上
+- Python 3.12以上
+- Django 5.1以上
 - インターネット接続
+- Google Gemini APIキー（無料版でも可）
 
-### Installation
+## インストール手順
 
-
-1. ソフトウェアをダウンロードし、インストールします。
-2. 初回起動時に設定を行います。
-3. 落とし物の情報を登録します。
-4. 必要に応じて検索や管理を行います。
+1. リポジトリのクローン：
 
 ```bash
-git clone https://github.com/hirohiroto112607/ReClaim.git
+mkdir reclaim
 cd reclaim
-pip install -r requirements.txt
+git clone https://github.com/hirohiroto112607/ReClaim.git
+
+```
+
+2. 環境のセットアップ：
+
+```bash
+# Condaで新しい環境を作成・有効化
+conda create --name reclaim --file requirements.txt
+conda activate reclaim
+cd reclaim
+
+
+```
+
+3. 環境変数の設定：
+   - `.env`ファイルを作成し、以下の変数を設定：
+
+```plaintext
+GENAI-API-KEY=your_gemini_api_key_here
+```
+
+4. プロジェクトのセットアップ：
+
+```bash
 python setup.py
-python manage.py makemigration
-python manage.py migrate
+```
+
+このコマンドで以下の処理が自動的に実行されます：
+- データベースのマイグレーション
+- スーパーユーザーの作成
+- 静的ファイルの収集
+- 基本カテゴリーの作成
+
+5. 開発サーバーの起動：
+
+```bash
 python manage.py runserver
 ```
+
+## 利用について
+
+本システムの利用には許諾が必要です。
+利用をご希望の際は、以下のいずれかの連絡先までお問い合わせください：
+
+- Misskey: [@hirohiroto112607@misskey.resonite.love](https://misskey.resonite.love/@hirohiroto112607)
+- X: [@p9WcKtj3d4g0JsF](https://x.com/@p9WcKtj3d4g0JsF)
+- メール: [hirohiroto112607@f5.si](mailto:hirohiroto112607@f5.si)
+
+許諾のない場合、このソフトウェアおよびコードの実行は認められません。

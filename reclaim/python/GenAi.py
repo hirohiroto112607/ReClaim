@@ -166,7 +166,7 @@ def generate_item_info(image_path):
         }
 
 
-@background(schedule=1)
+@background(schedule=0)
 def process_ai_generate(item_id, item_image):
     print("AI生成を開始します")
     item_instance = get_object_or_404(item, pk=item_id)
