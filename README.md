@@ -1,5 +1,16 @@
 # ReClaim
 
+## 利用について
+
+本システムの利用には許諾が必要です。
+利用をご希望の際は、以下のいずれかの連絡先までお問い合わせください：
+
+- Misskey: [@hirohiroto112607@misskey.resonite.love](https://misskey.resonite.love/@hirohiroto112607)
+- X: [@p9WcKtj3d4g0JsF](https://x.com/@p9WcKtj3d4g0JsF)
+- メール: [hirohiroto112607@f5.si](mailto:hirohiroto112607@f5.si)
+
+許諾のない場合、このソフトウェアおよびコードの実行は認められません。
+
 ## 概要
 
 ReClaimはAIを活用した落とし物管理システムです。
@@ -35,8 +46,6 @@ git clone https://github.com/hirohiroto112607/ReClaim.git
 conda create --name reclaim --file requirements.txt
 conda activate reclaim
 cd reclaim
-
-
 ```
 
 3. 環境変数の設定：
@@ -64,13 +73,3 @@ python setup.py
 python manage.py runserver
 ```
 
-## 利用について
-
-本システムの利用には許諾が必要です。
-利用をご希望の際は、以下のいずれかの連絡先までお問い合わせください：
-
-- Misskey: [@hirohiroto112607@misskey.resonite.love](https://misskey.resonite.love/@hirohiroto112607)
-- X: [@p9WcKtj3d4g0JsF](https://x.com/@p9WcKtj3d4g0JsF)
-- メール: [hirohiroto112607@f5.si](mailto:hirohiroto112607@f5.si)
-
-許諾のない場合、このソフトウェアおよびコードの実行は認められません。

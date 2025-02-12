@@ -14,9 +14,11 @@ import os
 from pathlib import Path
 
 ###
-from dotenv import load_dotenv
-
-load_dotenv()
+import environ
+env = environ.Env()
+env.read_env(env_file=".env")
+print(env("ALLOW_ACCESS_HOSTS", default=None))
+print(env("DJANGO_SECRET_KEY"))
 ###
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,14 +30,31 @@ MEDIA_URL = 'media/'
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+SECRET_KEY = str(os.getenv("DJANGO_SECRET_KEY"))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# ALLOWEDHOSTSの設定
+# 基本のホストを設定
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
+EXETRA_DOMAIN = list(env("ALLOW_ACCESS_HOSTS").split(","))
 
+# 環境変数からホストを読み込み、存在する場合はリストに追加
+if env("ALLOW_ACCESS_HOSTS", default=None):
+    ALLOWED_HOSTS.extend(EXETRA_DOMAIN)
+
+# CSRF_TRUSTED_ORIGINSの設定
+HTTP_HOST = []
+for domain in EXETRA_DOMAIN:
+    HTTP_HOST.append("https://" + str(domain))
+CSRF_TRUSTED_ORIGINS = list(HTTP_HOST)
+CSRF_ALLOWED_ORIGINS = list(HTTP_HOST)
+CORS_ORIGIN_WHITELIST = list(HTTP_HOST)
+
+    
+print(ALLOWED_HOSTS)
 # Application definition
 
 INSTALLED_APPS = [

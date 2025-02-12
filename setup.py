@@ -1,9 +1,9 @@
 import os
 import sys
-import subprocess
 import django
 from django.core.management import execute_from_command_line
 from reclaim.items.models import item_category
+from django.core.management.utils import get_random_secret_key
 
 
 def setup_project():
@@ -14,6 +14,11 @@ def setup_project():
     django.setup()
 
     try:
+        # SECRET_KEYの生成
+        print("SECRET_KEYを生成中...")
+        secret_key = get_random_secret_key()
+        with open('.env', 'w') as f:
+            f.write(f"DJANGO_SECRET_KEY={secret_key}")
         # マイグレーションの実行
         print("データベースのマイグレーションを実行中...")
         execute_from_command_line(['manage.py', 'makemigrations'])
@@ -45,7 +50,7 @@ def setup_project():
         # セットアップ完了
         print("\nセットアップが完了しました!")
         print("開発サーバーを起動するには以下のコマンドを実行してください:")
-        print("python manage.py runserver")
+        print("python start.py")
 
     except Exception as e:
         print(f"エラーが発生しました: {str(e)}")
