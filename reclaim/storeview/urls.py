@@ -5,7 +5,7 @@ from . import views
 app_name = 'storeview'
 urlpatterns = [
     path('', views.index, name='index'),
-    path('hello/', views.hello, name='hello'),
+    # path('hello/', views.hello, name='hello'),
     path('registerform/', views.registerform, name='registerform'),
     path('list/', views.item_list_view, name='list'),
     path('detail/<int:pk>/', views.detail_item_view, name='detail'),

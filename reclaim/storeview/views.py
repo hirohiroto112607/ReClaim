@@ -19,9 +19,9 @@ def index(request):
     return render(request, 'storeview/list.html', {'object_list': object_list})
 
 
-def hello(request):
-    hw = 'Hello World!'
-    return render(request, 'base.html', {'object': hw})
+# def hello(request):
+#     hw = 'Hello World!'
+#     return render(request, 'base.html', {'object': hw})
 
 
 def registerform(request):

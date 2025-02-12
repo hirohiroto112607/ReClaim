@@ -19,11 +19,3 @@ class ItemContactForm(forms.ModelForm):
             }
         }
 
-
-class ImageUploadForm(forms.ModelForm):
-    class Meta:
-        model = item
-        fields = ['item_image']
-        labels = {
-            'item_image': '画像',
-        }
