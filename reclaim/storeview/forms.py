@@ -35,9 +35,15 @@ class RegisterForm(ModelForm):
 
 
 class ImageUploadForm(forms.ModelForm):
+    item_date = forms.DateField(
+        label='発見日時',
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        required=True
+    )
+    
     class Meta:
         model = item
-        fields = ['item_image']
+        fields = ['item_image', 'item_date']
         labels = {
             'item_image': '画像',
         }
