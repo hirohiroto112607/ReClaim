@@ -1,4 +1,5 @@
 import json
+import unicodedata
 
 import python.GenAi as GenAi
 from django.shortcuts import get_object_or_404, redirect, render
@@ -90,8 +91,10 @@ def search_page(request):
 def search(request):
     if request.method == "GET":
         query = request.GET.get('query')
-        print(query)
         if query:
+            # Unicode正規化
+            query = unicodedata.normalize('NFKC', query)
+            print(query)
             object_list = item.objects.filter(
                 Q(ai_generated_json__icontains=query) |
                 Q(item_description__icontains=query) |
