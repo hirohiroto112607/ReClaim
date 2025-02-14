@@ -134,15 +134,18 @@ def process_ai_generate(item_id, item_image):
     item_instance = get_object_or_404(item, pk=item_id)
     image_path = os.path.join(BASE_DIR, "media", str(item_image))
     print("image_path: " + image_path)
-    ai_info = generate_item_info(image_path)  # この時点ではimage_pathは相対パス
+    ai_info = generate_item_info(image_path)  # generate_item_infoは辞書を返す場合もあり得る
     print("ai_info: " + str(ai_info))
     
-    # 返ってきたjson文字列を辞書に変換
-    try:
-        ai_data = json.loads(ai_info)
-    except Exception as e:
-        print("ai_infoのパースに失敗しました: " + str(e))
-        ai_data = {}
+    # 返ってきた結果がすでに辞書の場合はそのまま使用し、文字列の場合はパースを試みる
+    if isinstance(ai_info, dict):
+        ai_data = ai_info
+    else:
+        try:
+            ai_data = json.loads(ai_info)
+        except Exception as e:
+            print("ai_infoのパースに失敗しました: " + str(e))
+            ai_data = {}
     
     item_instance.ai_generated_json = ai_data.get('keywords', '')
     item_instance.item_name = ai_data.get('item_name', '')
