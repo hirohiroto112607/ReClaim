@@ -93,7 +93,11 @@ def search(request):
         print(query)
         if query:
             object_list = item.objects.filter(
-                Q(ai_generated_json__icontains=query) | Q(item_description__icontains=query) | Q(item_name__icontains(query)) | Q(item_category_id__category_name__icontains=query))
+                Q(ai_generated_json__icontains=query) |
+                Q(item_description__icontains=query) |
+                Q(item_name__icontains=query) |
+                Q(item_category_id__category_name__icontains=query)
+            )
             return render(request, 'storeview/search.html', {'object_list': object_list, 'query': query})
         else:
             return redirect('storeview:index')
