@@ -6,15 +6,15 @@ from django.db import models
 # Create your models here.
 class item(models.Model):
     item_id = models.AutoField(primary_key=True)
-    item_category_id = models.ForeignKey('item_category', on_delete=models.PROTECT, null=True)
-    item_name = models.CharField(max_length=100, null=True)
-    item_date = models.DateTimeField()
-    item_lost_location = models.CharField(max_length=100, null=True)
-    item_description = models.TextField(null=True)
-    item_image = models.ImageField(upload_to='images/', blank=True, null=True)
+    item_category_id = models.ForeignKey('item_category', on_delete=models.PROTECT, null=True, blank=True)
+    item_name = models.CharField(max_length=100, null=True, blank=True)
+    item_date = models.DateTimeField(null=True, blank=True)
+    item_lost_location = models.CharField(max_length=100, null=True, blank=True)
+    item_description = models.TextField(null=True, blank=True)
+    item_image = models.ImageField(upload_to='images/', null=True, blank=True)
     item_status = models.BooleanField(default=False)
     item_founder = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
-    ai_generated_json = models.JSONField(blank=True, null=True)  # 追加
+    ai_generated_json = models.JSONField(null=True, blank=True)
 
     def __str__(self):
         return str(self.item_name)

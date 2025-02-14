@@ -133,16 +133,24 @@ def process_ai_generate(item_id, item_image):
     print("AI生成を開始します")
     item_instance = get_object_or_404(item, pk=item_id)
     image_path = os.path.join(BASE_DIR, "media", str(item_image))
-    print("image_path"+image_path)
-    ai_info = generate_item_info(image_path)  # この時点ではimagepathは相対パス
-    print("ai_info"+str(ai_info))
-    item_instance.ai_generated_json = ai_info.get('keywords', '')
-    item_instance.item_name = ai_info.get('item_name', '')
-    print("item_instance.item_name"+str(item_instance.item_name))
+    print("image_path: " + image_path)
+    ai_info = generate_item_info(image_path)  # この時点ではimage_pathは相対パス
+    print("ai_info: " + str(ai_info))
+    
+    # 返ってきたjson文字列を辞書に変換
+    try:
+        ai_data = json.loads(ai_info)
+    except Exception as e:
+        print("ai_infoのパースに失敗しました: " + str(e))
+        ai_data = {}
+    
+    item_instance.ai_generated_json = ai_data.get('keywords', '')
+    item_instance.item_name = ai_data.get('item_name', '')
+    print("item_instance.item_name: " + str(item_instance.item_name))
     item_instance.item_category_id = get_object_or_404(
-        item_category, category_name=ai_info.get('category', 'その他'))
-    print("item_instance.item_category_id"+str(item_instance.item_category_id))
-
+        item_category, category_name=ai_data.get('category', 'その他'))
+    print("item_instance.item_category_id: " + str(item_instance.item_category_id))
+    
     item_instance.save()
     print("AI生成が完了しました")
 
