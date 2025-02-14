@@ -16,15 +16,15 @@ cleanup() {
 trap cleanup SIGINT SIGTERM
 
 # cloudflaredをバックグラウンドで実行
-cloudflared tunnel run reclaim &
+nohup cloudflared tunnel run reclaim &
 pids+=($!)
 
 # Django開発サーバーをバックグラウンドで実行
-python manage.py runserver &
+nohup python manage.py runserver &
 pids+=($!)
 
 # Django background tasksをバックグラウンドで実行
-python manage.py process_tasks &
+nohup python manage.py process_tasks &
 pids+=($!)
 
 echo "全てのサービスを開始しました"
