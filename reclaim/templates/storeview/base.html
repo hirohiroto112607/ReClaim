@@ -4,7 +4,7 @@
 <html lang="ja-JP">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8" name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     <link rel="icon" href="{% static 'images/favicon.ico' %}" />
     {% bootstrap_javascript %}
@@ -18,7 +18,7 @@
     {% if user.is_authenticated %}
       {% if user.is_store or user.is_superuser %}
         <nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
-          <div class="container">
+          <div class="container-fluid px-2 px-sm-3">
             <a class="navbar-brand" href="{% url 'storeview:index' %}">
               <strong>Reclaim</strong>
             </a>
@@ -26,27 +26,27 @@
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav me-auto">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'storeview:index' %}">一覧</a>
+                  <a class="nav-link px-3" href="{% url 'storeview:index' %}">一覧</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'storeview:registerform' %}">登録</a>
+                  <a class="nav-link px-3" href="{% url 'storeview:registerform' %}">登録</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'storeview:search_page' %}">検索</a>
+                  <a class="nav-link px-3" href="{% url 'storeview:search_page' %}">検索</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'storeview:upload_image' %}">画像アップロード</a>
+                  <a class="nav-link px-3" href="{% url 'storeview:upload_image' %}">画像アップロード</a>
                 </li>
               </ul>
-              <div class="d-flex">
-                <a href="{% url 'accounts:profile' %}" class="btn btn-outline-light me-2">
+              <div class="d-flex flex-column flex-lg-row gap-2">
+                <a href="{% url 'accounts:profile' %}" class="btn btn-outline-light w-100">
                   <i class="bi bi-person-circle"></i> アカウント
                 </a>
-                <form action="{% url 'accounts:logout' %}" method="post" class="m-0">
+                <form action="{% url 'accounts:logout' %}" method="post" class="m-0 w-100">
                   {% csrf_token %}
-                  <button type="submit" class="btn btn-outline-light">ログアウト</button>
+                  <button type="submit" class="btn btn-outline-light w-100">ログアウト</button>
                 </form>
               </div>
             </div>
@@ -54,7 +54,7 @@
         </nav>
         
         {% if messages %}
-          <div class="container mt-3">
+          <div class="container-fluid px-2 px-sm-3 mt-3">
             {% for message in messages %}
               <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                 {{ message }}
@@ -64,21 +64,21 @@
           </div>
         {% endif %}
 
-        <div class="container py-4">
+        <div class="container-fluid px-2 px-sm-3 py-4">
           {% block body %}{% endblock %}
         </div>
       {% endif %}
     {% else %}
-      <div class="container mt-5">
+      <div class="container-fluid px-2 px-sm-3 mt-4">
         <div class="card border-danger">
           <div class="card-body">
             <h4 class="card-title text-danger">アクセス制限</h4>
             <p class="card-text">このページにアクセスする権限がありません。</p>
             <hr />
             <p class="card-text mb-0">ログインしてください。</p>
-            <div class="mt-3">
-              <a class="btn btn-primary me-2" href="{% url 'accounts:login' %}?next={{ request.path }}">ログイン</a>
-              <a class="btn btn-secondary" href="{% url 'accounts:signup' %}?next={{ request.path }}">サインアップ</a>
+            <div class="mt-3 d-flex flex-column flex-sm-row gap-2">
+              <a class="btn btn-primary w-100" href="{% url 'accounts:login' %}?next={{ request.path }}">ログイン</a>
+              <a class="btn btn-secondary w-100" href="{% url 'accounts:signup' %}?next={{ request.path }}">サインアップ</a>
             </div>
           </div>
         </div>

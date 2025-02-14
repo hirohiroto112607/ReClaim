@@ -4,17 +4,28 @@
 {% block title %}画像アップロード{% endblock %}
 
 {% block body %}
-<link rel="stylesheet" href="{% static 'css/upload.css' %}">
+
+<link rel="stylesheet" href="/static/css/upload.css">
 <div class="upload-container">
   <div class="upload-card">
     <div class="card-body">
       <h1 class="upload-title">画像アップロード</h1>
       <form method="post" enctype="multipart/form-data" class="upload-form">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="mb-3">
+          <label for="id_item_image" class="form-label">画像:</label>
+          <input type="file" name="item_image" accept="image/*" aria-describedby="id_item_image_helptext"
+            id="id_item_image" class="form-control" capture="camera">
+          <div class="form-text" id="id_item_image_helptext">アップロードする画像を選択してください。</div>
+        </div>
+        <div class="mb-3">
+          <label for="id_item_date" class="form-label">発見日時:</label>
+          <input type="date" name="item_date" id="id_item_date" class="form-control" required>
+        </div>
         <button type="submit" class="upload-button">アップロード</button>
       </form>
     </div>
   </div>
 </div>
+
 {% endblock %}

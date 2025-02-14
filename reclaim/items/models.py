@@ -6,11 +6,11 @@ from django.db import models
 # Create your models here.
 class item(models.Model):
     item_id = models.AutoField(primary_key=True)
-    item_category_id = models.ForeignKey('item_category', on_delete=models.PROTECT)
-    item_name = models.CharField(max_length=100)
+    item_category_id = models.ForeignKey('item_category', on_delete=models.PROTECT, null=True)
+    item_name = models.CharField(max_length=100, null=True)
     item_date = models.DateTimeField()
-    item_lost_location = models.CharField(max_length=100)
-    item_description = models.TextField()
+    item_lost_location = models.CharField(max_length=100, null=True)
+    item_description = models.TextField(null=True)
     item_image = models.ImageField(upload_to='images/', blank=True, null=True)
     item_status = models.BooleanField(default=False)
     item_founder = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
