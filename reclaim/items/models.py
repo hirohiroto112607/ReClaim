@@ -1,6 +1,9 @@
 from accounts.models import User
 from django.conf import settings
 from django.db import models
+from django.shortcuts import render, redirect
+from django.db.models import Q
+import unicodedata
 
 
 # Create your models here.
@@ -33,3 +36,22 @@ class item_message(models.Model):
     message = models.TextField(max_length=500,)
     def __str__(self):
         return str(self.message)
+
+
+def search(request):
+    if request.method == "GET":
+        query = request.GET.get('query')
+        if query:
+            # Unicode正規化
+            query = unicodedata.normalize('NFKC', query)
+            object_list = item.objects.filter(
+                Q(ai_generated_json__icontains=query) |
+                Q(item_description__icontains=query) |
+                Q(item_name__icontains=query) |
+                Q(item_category_id__category_name__icontains=query)
+            )
+            return render(request, 'storeview/search.html', {'object_list': object_list, 'query': query})
+        else:
+            return redirect('storeview:index')
+    else:
+        return redirect('storeview:index')

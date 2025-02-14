@@ -1,4 +1,5 @@
 import json
+import unicodedata
 
 import python.GenAi as GenAi
 from django.shortcuts import get_object_or_404, redirect, render
@@ -92,8 +93,14 @@ def search(request):
         query = request.GET.get('query')
         print(query)
         if query:
+            # Unicode正規化
+            query = unicodedata.normalize('NFKC', query)
             object_list = item.objects.filter(
-                Q(ai_generated_json__icontains=query) | Q(item_description__icontains=query) | Q(item_name__icontains=query) | Q(item_category_id__category_name__icontains=query))
+                Q(ai_generated_json__icontains=query) |
+                Q(item_description__icontains=query) |
+                Q(item_name__icontains=query) |
+                Q(item_category_id__category_name__icontains=query)
+            )
             return render(request, 'storeview/search.html', {'object_list': object_list, 'query': query})
         else:
             return redirect('storeview:index')
@@ -112,7 +119,14 @@ def upload_image(request):
         if form.is_valid() and request.FILES:    
             item_instance = form.save(commit=False)
             item_instance.item_founder = request.user
-            item_instance.item_date = form.cleaned_data['item_date']  # 日付データを保存
+            
+            # POSTデータから直接値を取得
+            item_instance.item_date = request.POST.get('item_date')
+            item_instance.item_lost_location = request.POST.get('item_lost_location')
+            item_instance.item_name = "未分類アイテム"
+            item_instance.item_description = "画像認識による自動分類を待機中"
+            # ItemCategoryが存在することを確認してから設定
+            item_instance.item_category_id = item_category.objects.get(category_id=9)
             item_instance.save()
             # バックグラウンドでAIに送信する
             GenAi.process_ai_generate(
