@@ -109,9 +109,10 @@ def item_list_view(request):
 def upload_image(request):
     if request.method == 'POST':
         form = ImageUploadForm(request.POST, request.FILES)
-        if form.is_valid() and request.FILES != None:    
+        if form.is_valid() and request.FILES:    
             item_instance = form.save(commit=False)
-            item_instance.item_founder = request.user  # 現在のユーザーを設定
+            item_instance.item_founder = request.user
+            item_instance.item_date = form.cleaned_data['item_date']  # 日付データを保存
             item_instance.save()
             # バックグラウンドでAIに送信する
             GenAi.process_ai_generate(

@@ -183,3 +183,8 @@ cython_debug/
 
 .github/copilot-instructions.md
 .DS_Store
+契約書.md
+temp.md
+.gitignore
+Reclaim.code-workspace
+nohup.out
