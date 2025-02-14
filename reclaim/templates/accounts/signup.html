@@ -14,43 +14,47 @@
           {% csrf_token %}
           <div class="mb-3">
             <label for="id_email" class="form-label">メールアドレス</label>
-            <input type="email" name="email" maxlength="254" required id="id_email" class="form-control" placeholder="example@email.com" />
+            <input type="email" name="email" maxlength="254" required id="id_email" class="form-control"
+              placeholder="example@email.com" />
           </div>
           <div class="row mb-3">
-            <div class="col-md-6">
-              <label for="id_first_name" class="form-label">名</label>
-              <input type="text" name="first_name" maxlength="150" required id="id_first_name" class="form-control" />
-            </div>
             <div class="col-md-6">
               <label for="id_last_name" class="form-label">姓</label>
               <input type="text" name="last_name" maxlength="150" required id="id_last_name" class="form-control" />
             </div>
+            <div class="col-md-6">
+              <label for="id_first_name" class="form-label">名</label>
+              <input type="text" name="first_name" maxlength="150" required id="id_first_name" class="form-control" />
+            </div>
+
           </div>
           <div class="mb-3">
             <label for="id_password1" class="form-label">パスワード</label>
-            <input type="password" name="password1" required id="id_password1" class="form-control" autocomplete="new-password" />
+            <input type="password" name="password1" required id="id_password1" class="form-control"
+              autocomplete="new-password" />
           </div>
           <div class="mb-3">
             <label for="id_password2" class="form-label">パスワード（確認）</label>
-            <input type="password" name="password2" required id="id_password2" class="form-control" autocomplete="new-password" />
+            <input type="password" name="password2" required id="id_password2" class="form-control"
+              autocomplete="new-password" />
           </div>
 
           {% if form.non_field_errors %}
-            <div class="alert alert-danger">
-              {% for error in form.non_field_errors %}
-                <p class="mb-0">{{ error }}</p>
-              {% endfor %}
-            </div>
+          <div class="alert alert-danger">
+            {% for error in form.non_field_errors %}
+            <p class="mb-0">{{ error }}</p>
+            {% endfor %}
+          </div>
           {% endif %}
 
           {% for field in form %}
-            {% if field.errors %}
-              <div class="alert alert-danger">
-                {% for error in field.errors %}
-                  <p class="mb-0">{{ error }}</p>
-                {% endfor %}
-              </div>
-            {% endif %}
+          {% if field.errors %}
+          <div class="alert alert-danger">
+            {% for error in field.errors %}
+            <p class="mb-0">{{ error }}</p>
+            {% endfor %}
+          </div>
+          {% endif %}
           {% endfor %}
 
           <div class="d-grid gap-2">
