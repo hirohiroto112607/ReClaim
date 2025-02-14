@@ -14,7 +14,7 @@ class item(models.Model):
     item_image = models.ImageField(upload_to='images/', null=True, blank=True)
     item_status = models.BooleanField(default=False)
     item_founder = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
-    ai_generated_json = models.JSONField(null=True, blank=True)
+    ai_generated_json = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return str(self.item_name)

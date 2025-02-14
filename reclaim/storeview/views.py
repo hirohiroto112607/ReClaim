@@ -93,7 +93,11 @@ def search(request):
         print(query)
         if query:
             object_list = item.objects.filter(
-                Q(ai_generated_json__icontains=query) | Q(item_description__icontains=query) | Q(item_name__icontains(query)) | Q(item_category_id__category_name__icontains=query))
+                Q(ai_generated_json__icontains=query) |
+                Q(item_description__icontains=query) |
+                Q(item_name__icontains=query) |
+                Q(item_category_id__category_name__icontains=query)
+            )
             return render(request, 'storeview/search.html', {'object_list': object_list, 'query': query})
         else:
             return redirect('storeview:index')
@@ -119,7 +123,7 @@ def upload_image(request):
             item_instance.item_name = "未分類アイテム"
             item_instance.item_description = "画像認識による自動分類を待機中"
             # ItemCategoryが存在することを確認してから設定
-            item_instance.item_category_id = item_category.objects.get(id=9)
+            item_instance.item_category_id = item_category.objects.get(category_id=9)
             item_instance.save()
             # バックグラウンドでAIに送信する
             GenAi.process_ai_generate(
