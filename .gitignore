@@ -188,3 +188,4 @@ temp.md
 .gitignore
 Reclaim.code-workspace
 nohup.out
+.env

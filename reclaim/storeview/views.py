@@ -129,6 +129,7 @@ def search_page(request):
 def search(request):
     if request.method == "GET":
         query = request.GET.get('query')
+        print(query)
         if query:
             # Unicode正規化
             query = unicodedata.normalize('NFKC', query)

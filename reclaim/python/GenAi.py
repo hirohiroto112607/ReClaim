@@ -131,7 +131,7 @@ def generate_item_info(image_path):
 
 @background(schedule=0)
 def process_ai_generate(item_id, item_image):
-    print("AI生成を開始します")
+    print(str(item_id)+str(item_image)+"AI生成を開始します")
     item_instance = get_object_or_404(item, pk=item_id)
     image_path = os.path.join(BASE_DIR, "media", str(item_image))
     print("image_path: " + image_path)
