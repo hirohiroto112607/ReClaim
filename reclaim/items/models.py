@@ -4,6 +4,7 @@ from django.db import models
 from django.shortcuts import render, redirect
 from django.db.models import Q
 import unicodedata
+from django.utils import timezone
 
 
 # Create your models here.
@@ -11,7 +12,7 @@ class item(models.Model):
     item_id = models.AutoField(primary_key=True)
     item_category_id = models.ForeignKey('item_category', on_delete=models.PROTECT, null=True, blank=True)
     item_name = models.CharField(max_length=100, null=True, blank=True)
-    item_date = models.DateTimeField(null=True, blank=True)
+    item_date = models.DateTimeField(default=None, null=True, blank=True)
     item_lost_location = models.CharField(max_length=100, null=True, blank=True)
     item_description = models.TextField(null=True, blank=True)
     item_image = models.ImageField(upload_to='images/', null=True, blank=True)

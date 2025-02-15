@@ -8,6 +8,8 @@ from django.db.models import Q
 from django.contrib import messages
 
 from .forms import ItemContactForm
+import json
+import unicodedata
 
 # Create your views here.
 
@@ -24,7 +26,28 @@ def item_list_view(request):
 
 def detail_item_view(request, pk):
     item_instance = get_object_or_404(item, pk=pk)
-    return render(request, 'userview/item_detail.html', {'item': item_instance})
+    
+    # 各フィールドのユニコード正規化
+    decoded_data = {
+        'name': unicodedata.normalize('NFKC', item_instance.item_name),
+        'description': unicodedata.normalize('NFKC', item_instance.item_description),
+        'location': unicodedata.normalize('NFKC', item_instance.item_lost_location),
+    }
+    
+    # JSON データが存在する場合はデコード
+    if item_instance.ai_generated_json:
+        try:
+            ai_json = json.loads(item_instance.ai_generated_json)
+            decoded_data['ai_json'] = json.dumps(ai_json, ensure_ascii=False, indent=2)
+        except json.JSONDecodeError:
+            decoded_data['ai_json'] = None
+    
+    context = {
+        'item': item_instance,
+        'decoded': decoded_data,
+    }
+    print(context)
+    return render(request, 'userview/item_detail.html', context)
 
 
 def contact(request, pk):
@@ -58,8 +81,10 @@ def search(request):
         print(query)
         if query:
             object_list = item.objects.filter(
-                Q(ai_generated_json__icontains=query) | 
-                Q(item_description__icontains=query)  # ()を削除
+                Q(ai_generated_json__icontains=query) |
+                Q(item_description__icontains=query) |
+                Q(item_name__icontains=query) |
+                Q(item_category_id__category_name__icontains=query)
             )
             return render(request, 'userview/search.html', {'object_list': object_list, 'query': query})
         else:

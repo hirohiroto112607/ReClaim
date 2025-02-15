@@ -22,7 +22,7 @@
               </div>
             {% endif %}
 
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data" id="updateForm">
               {% csrf_token %}
 
               <div class="row g-3">
@@ -46,7 +46,7 @@
                   <div class="mb-3">
                     <label for="id_item_name" class="form-label">名前</label>
                     {{ form.item_name.errors }}
-                    <input type="text" name="item_name" maxlength="100" required id="id_item_name" class="form-control" value="{{ item_instance.item_name }}" />
+                    <input type="text" name="item_name" maxlength="100" required id="id_item_name" class="form-control" value="{{ decoded.name }}" />
                   </div>
                 </div>
 
@@ -62,7 +62,7 @@
                   <div class="mb-3">
                     <label for="id_item_lost_location" class="form-label">発見場所</label>
                     {{ form.item_lost_location.errors }}
-                    <input type="text" name="item_lost_location" maxlength="100" required id="id_item_lost_location" class="form-control" value="{{ item_instance.item_lost_location }}" />
+                    <input type="text" name="item_lost_location" maxlength="100" required id="id_item_lost_location" class="form-control" value="{{ decoded.location }}" />
                   </div>
                 </div>
 
@@ -70,20 +70,20 @@
                   <div class="mb-3">
                     <label for="id_item_description" class="form-label">説明文</label>
                     {{ form.item_description.errors }}
-                    <textarea name="item_description" rows="5" required id="id_item_description" class="form-control">{{ item_instance.item_description }}</textarea>
+                    <textarea name="item_description" rows="5" required id="id_item_description" class="form-control">{{ decoded.description }}</textarea>
                   </div>
                 </div>
 
                 <div class="col-12">
                   <div class="mb-3">
-                  <label for="id_ai_generated_json" class="form-label">AI生成データ</label>
-                  {{ form.ai_generated_json.errors }}
-                  <textarea name="ai_generated_json" rows="3" id="id_ai_generated_json" class="form-control">{{ item_instance.ai_generated_json }}</textarea>
-                  <div class="mt-2">
-                    <a href="{% url 'storeview:AiGenerate' item_instance.pk %}" class="btn btn-outline-primary btn-sm">
-                    <i class="bi bi-magic"></i> AIでデータを生成
-                    </a>
-                  </div>
+                    <label for="id_ai_generated_json" class="form-label">AI生成データ</label>
+                    {{ form.ai_generated_json.errors }}
+                    <textarea name="ai_generated_json" rows="3" id="id_ai_generated_json" class="form-control">{{ decoded.ai_json|safe }}</textarea>
+                    <div class="mt-2">
+                      <a href="{% url 'storeview:AiGenerate' item_instance.pk %}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-magic"></i> AIでデータを生成
+                      </a>
+                    </div>
                   </div>
                 </div>
 
@@ -109,7 +109,7 @@
 
                 <div class="col-12">
                   <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary btn-lg">
+                    <button type="submit" class="btn btn-primary btn-lg" onclick="return prepareFormData()">
                       <i class="bi bi-check-lg"></i> 更新する
                     </button>
                     <a href="{% url 'storeview:index' %}" class="btn btn-secondary">
@@ -124,4 +124,20 @@
       </div>
     </div>
   </div>
+
+  <script>
+    function prepareFormData() {
+      const aiJsonInput = document.getElementById('id_ai_generated_json');
+      try {
+        // 入力された文字列をカンマで分割し、配列に変換
+        const tags = aiJsonInput.value.split(',').map(tag => tag.trim()).filter(tag => tag);
+        // 配列をJSON文字列に変換
+        aiJsonInput.value = JSON.stringify(tags);
+        return true;
+      } catch (e) {
+        console.error('JSONの変換に失敗しました:', e);
+        return false;
+      }
+    }
+  </script>
 {% endblock %}

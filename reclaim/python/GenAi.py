@@ -7,6 +7,7 @@ import httpx
 from background_task import background
 from django.shortcuts import get_object_or_404
 from items.models import item, item_category
+from django.utils import timezone
 
 from reclaim.settings import BASE_DIR
 
@@ -134,10 +135,9 @@ def process_ai_generate(item_id, item_image):
     item_instance = get_object_or_404(item, pk=item_id)
     image_path = os.path.join(BASE_DIR, "media", str(item_image))
     print("image_path: " + image_path)
-    ai_info = generate_item_info(image_path)  # generate_item_infoは辞書を返す場合もあり得る
+    ai_info = generate_item_info(image_path)
     print("ai_info: " + str(ai_info))
     
-    # 返ってきた結果がすでに辞書の場合はそのまま使用し、文字列の場合はパースを試みる
     if isinstance(ai_info, dict):
         ai_data = ai_info
     else:
@@ -147,15 +147,25 @@ def process_ai_generate(item_id, item_image):
             print("ai_infoのパースに失敗しました: " + str(e))
             ai_data = {}
     
-    item_instance.ai_generated_json = ai_data.get('keywords', '')
-    item_instance.item_name = ai_data.get('item_name', '')
-    print("item_instance.item_name: " + str(item_instance.item_name))
-    item_instance.item_category_id = get_object_or_404(
-        item_category, category_name=ai_data.get('category', 'その他'))
-    print("item_instance.item_category_id: " + str(item_instance.item_category_id))
-    
-    item_instance.save()
-    print("AI生成が完了しました")
+    try:
+        # キーワードをJSON形式で保存
+        keywords_json = json.dumps({'keywords': ai_data.get('keywords', '')}, ensure_ascii=False)
+        item_instance.ai_generated_json = keywords_json
+        
+        item_instance.item_name = ai_data.get('item_name', '')
+        print("item_instance.item_name: " + str(item_instance.item_name))
+        
+        category_name = ai_data.get('category', 'その他')
+        item_instance.item_category_id = get_object_or_404(item_category, category_name=category_name)
+        print("item_instance.item_category_id: " + str(item_instance.item_category_id))
+        
+        # 現在時刻を設定
+        item_instance.item_date = timezone.now()
+        
+        item_instance.save()
+        print("AI生成が完了しました")
+    except Exception as e:
+        print(f"保存時にエラーが発生しました: {str(e)}")
 
 
 global model

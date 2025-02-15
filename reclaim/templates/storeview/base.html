@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     <link rel="icon" href="{% static 'images/favicon.ico' %}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     {% bootstrap_javascript %}
     {% bootstrap_css %}
     <title>
@@ -20,7 +21,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
           <div class="container-fluid px-2 px-sm-3">
             <a class="navbar-brand" href="{% url 'storeview:index' %}">
-              <strong>Reclaim</strong>
+              <i class="bi bi-box-seam"></i> <strong>Reclaim</strong>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
@@ -28,25 +29,27 @@
             <div class="collapse navbar-collapse" id="navbarNav">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                  <a class="nav-link px-3" href="{% url 'storeview:index' %}">一覧</a>
+                  <a class="nav-link px-3" href="{% url 'storeview:index' %}"><i class="bi bi-list-ul"></i> 一覧</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link px-3" href="{% url 'storeview:registerform' %}">登録</a>
+                  <a class="nav-link px-3" href="{% url 'storeview:registerform' %}"><i class="bi bi-plus-circle"></i> 登録</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link px-3" href="{% url 'storeview:search_page' %}">検索</a>
+                  <a class="nav-link px-3" href="{% url 'storeview:search_page' %}"><i class="bi bi-search"></i> 検索</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link px-3" href="{% url 'storeview:upload_image' %}">画像アップロード</a>
+                  <a class="nav-link px-3" href="{% url 'storeview:upload_image' %}"><i class="bi bi-image"></i> 画像アップロード</a>
                 </li>
               </ul>
               <div class="d-flex flex-column flex-lg-row gap-2">
-                <a href="{% url 'accounts:profile' %}" class="btn btn-outline-light w-100">
+                <a href="{% url 'accounts:profile' %}" class="btn btn-outline-light w-120">
                   <i class="bi bi-person-circle"></i> アカウント
                 </a>
-                <form action="{% url 'accounts:logout' %}" method="post" class="m-0 w-100">
+                <form action="{% url 'accounts:logout' %}" method="post" class="m-0 w-120">
                   {% csrf_token %}
-                  <button type="submit" class="btn btn-outline-light w-100">ログアウト</button>
+                  <button type="submit" class="btn btn-outline-light w-100">
+                    <i class="bi bi-box-arrow-right"></i> ログアウト
+                  </button>
                 </form>
               </div>
             </div>
