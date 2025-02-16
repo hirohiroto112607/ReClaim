@@ -1,15 +1,16 @@
+import json
+import unicodedata
 from urllib.parse import parse_qs
 
+from django.contrib import messages
+from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import DetailView, ListView
+
 from items.models import item, item_message
-from django.db.models import Q
-from django.contrib import messages
 
 from .forms import ItemContactForm
-import json
-import unicodedata
 
 # Create your views here.
 

@@ -1,17 +1,16 @@
 import json
 import unicodedata
-import unicodedata
 
-import python.GenAi as GenAi
+from django.contrib import messages
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import generic
-from items.models import item, item_category
-from django.db.models import Q
-from django.contrib import messages
 
-from .forms import RegisterForm
-from .forms import ImageUploadForm
+import python.GenAi as GenAi
+from items.models import item, item_category
+
+from .forms import ImageUploadForm, RegisterForm
 
 # Create your views here.
 

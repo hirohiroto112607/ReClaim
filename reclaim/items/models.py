@@ -1,10 +1,12 @@
-from accounts.models import User
+import unicodedata
+
 from django.conf import settings
 from django.db import models
-from django.shortcuts import render, redirect
 from django.db.models import Q
-import unicodedata
+from django.shortcuts import redirect, render
 from django.utils import timezone
+
+from accounts.models import User
 
 
 # Create your models here.
