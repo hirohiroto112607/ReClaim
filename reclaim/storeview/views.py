@@ -40,27 +40,27 @@ def registerform(request):
 
 def detail_item_view(request, pk):
     item_instance = get_object_or_404(item, pk=pk)
-
+    
     # 各フィールドのユニコード正規化
     decoded_data = {
         'name': unicodedata.normalize('NFKC', item_instance.item_name),
         'description': unicodedata.normalize('NFKC', item_instance.item_description),
         'location': unicodedata.normalize('NFKC', item_instance.item_lost_location),
     }
-
+    
     # JSON データが存在する場合はデコード
     if item_instance.ai_generated_json:
         try:
             ai_json = json.loads(item_instance.ai_generated_json)
-            decoded_data['ai_json'] = ai_json  # デコードしたJSONをそのまま渡す
+            decoded_data['ai_json'] = ai_json["keywords"]
         except json.JSONDecodeError:
             decoded_data['ai_json'] = None
-
+    
     context = {
         'item': item_instance,
         'decoded': decoded_data,
     }
-
+    print(context)
     return render(request, 'storeview/item_detail.html', context)
 
 
@@ -108,8 +108,37 @@ def overview(request):
 
 def AiGenerate(request, pk):
     item_instance = get_object_or_404(item, pk=pk)
-    GenAi.process_ai_generate(
-        item_instance.pk, str(item_instance.item_image))
+    # 既存のJSONデータがある場合は、それを解析して重複を防ぐ
+    if (item_instance.ai_generated_json):
+        try:
+            existing_data = json.loads(item_instance.ai_generated_json)
+            if isinstance(existing_data, str):
+                existing_data = json.loads(existing_data)
+        except json.JSONDecodeError:
+            existing_data = []
+    else:
+        existing_data = []
+    
+    # 新しいAI生成データを取得
+    new_data = GenAi.process_ai_generate(item_instance.pk, str(item_instance.item_image))
+    
+    # データの整形と重複の除去
+    if isinstance(new_data, str):
+        try:
+            new_data = json.loads(new_data)
+        except json.JSONDecodeError:
+            new_data = []
+    
+    # リストの場合は重複を除去して保存
+    if isinstance(new_data, list):
+        # すべての要素から余分な引用符を除去
+        cleaned_data = [tag.strip("'") for tag in new_data]
+        # 重複を除去
+        unique_data = list(set(cleaned_data))
+        # JSONとして保存
+        item_instance.ai_generated_json = json.dumps(unique_data, ensure_ascii=False)
+        item_instance.save()
+    
     return redirect('storeview:index')
 
 
@@ -136,7 +165,7 @@ def search(request):
             object_list = item.objects.filter(
                 Q(ai_generated_json__icontains=query) |
                 Q(item_description__icontains=query) |
-                Q(item_name__icontains=query) |
+                Q(item_name__icontains=query) | # type: ignore
                 Q(item_category_id__category_name__icontains=query)
             )
             return render(request, 'storeview/search.html', {'object_list': object_list, 'query': query})

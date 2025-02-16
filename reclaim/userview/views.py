@@ -38,7 +38,7 @@ def detail_item_view(request, pk):
     if item_instance.ai_generated_json:
         try:
             ai_json = json.loads(item_instance.ai_generated_json)
-            decoded_data['ai_json'] = json.dumps(ai_json, ensure_ascii=False, indent=2)
+            decoded_data['ai_json'] = ai_json["keywords"]
         except json.JSONDecodeError:
             decoded_data['ai_json'] = None
     

@@ -149,7 +149,7 @@ def process_ai_generate(item_id, item_image):
     
     try:
         # キーワードをJSON形式で保存
-        keywords_json = json.dumps({'keywords': ai_data.get('keywords', '')}, ensure_ascii=False)
+        keywords_json = json.dumps({'keywords': ai_data.get('keywords', '')})
         item_instance.ai_generated_json = keywords_json
         
         item_instance.item_name = ai_data.get('item_name', '')

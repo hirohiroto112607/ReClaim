@@ -1,9 +1,15 @@
 ## add by me start
-temp.py
 .vscode/
+.github/
 images/
 **/migrations/[0-9][0-9][0-9][0-9]_*.py
-!**/migrations/0001_initial.py
+!**/migrations/0001_initial.py¥¥^-0
+ER.drawio
+ER.md
+契約書.md
+temp.md
+temp.py
+reclaim/start.sh
 ## add by me end
 
 # Created by https://www.toptal.com/developers/gitignore/api/django
@@ -16,6 +22,7 @@ images/
 __pycache__/
 local_settings.py
 db.sqlite3
+
 db.sqlite3-journal
 
 
@@ -183,8 +190,9 @@ cython_debug/
 
 .github/copilot-instructions.md
 .DS_Store
-契約書.md
-temp.md
 .gitignore
 Reclaim.code-workspace
 nohup.out
+reclaim/media/images
+media/images/
+*.jpg

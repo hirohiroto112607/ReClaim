@@ -38,21 +38,3 @@ class item_message(models.Model):
     def __str__(self):
         return str(self.message)
 
-
-def search(request):
-    if request.method == "GET":
-        query = request.GET.get('query')
-        if query:
-            # Unicode正規化
-            query = unicodedata.normalize('NFKC', query)
-            object_list = item.objects.filter(
-                Q(ai_generated_json__icontains=query) |
-                Q(item_description__icontains=query) |
-                Q(item_name__icontains=query) |
-                Q(item_category_id__category_name__icontains=query)
-            )
-            return render(request, 'storeview/search.html', {'object_list': object_list, 'query': query})
-        else:
-            return redirect('storeview:index')
-    else:
-        return redirect('storeview:index')

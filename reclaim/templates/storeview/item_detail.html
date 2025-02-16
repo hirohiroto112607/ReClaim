@@ -43,7 +43,11 @@
             </div>
             <div class="mb-4">
               <h5 class="text-muted mb-3">解析結果</h5>
-              <p class="card-text">{{ decoded.ai_json }}</p>
+              <p class="card-text">
+                {% if decoded.ai_json %}
+                  {{ decoded.ai_json }}
+                {% endif %}
+              </p>
             </div>
             <div class="d-grid gap-2">
               <a href="{% url 'storeview:AiGenerate' item.pk %}" class="btn btn-success"><i class="bi bi-magic"></i> AiGenerate</a>
