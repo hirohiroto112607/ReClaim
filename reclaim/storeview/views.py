@@ -49,12 +49,13 @@ def detail_item_view(request, pk):
     }
     
     # JSON データが存在する場合はデコード
-    if item_instance.ai_generated_json:
+    if item_instance.ai_generated_keywords:
         try:
-            ai_json = json.loads(item_instance.ai_generated_json)
-            decoded_data['ai_json'] = ai_json["keywords"]
+            ai_json = json.loads(item_instance.ai_generated_keywords)
+            decoded_data['ai_keywords'] = ai_json["keywords"]
         except json.JSONDecodeError:
-            decoded_data['ai_json'] = None
+            decoded_data['ai_keywords'] = None
+        
     
     context = {
         'item': item_instance,
@@ -86,12 +87,11 @@ def update_item_view(request, pk):
     }
 
     # JSON データが存在する場合はデコード
-    if item_instance.ai_generated_json:
+    if item_instance.ai_generated_keywords:
         try:
-            ai_json = json.loads(item_instance.ai_generated_json)
-            decoded_data['ai_json'] = ai_json  # デコードしたJSONをそのまま渡す
+            decoded_data['ai_keywords'] = item_instance.ai_generated_keywords
         except json.JSONDecodeError:
-            decoded_data['ai_json'] = None
+            decoded_data['ai_keywords'] = None
 
     return render(request, 'storeview/upd-form.html', {
         'form': form,
@@ -108,37 +108,10 @@ def overview(request):
 
 def AiGenerate(request, pk):
     item_instance = get_object_or_404(item, pk=pk)
-    # 既存のJSONデータがある場合は、それを解析して重複を防ぐ
-    if (item_instance.ai_generated_json):
-        try:
-            existing_data = json.loads(item_instance.ai_generated_json)
-            if isinstance(existing_data, str):
-                existing_data = json.loads(existing_data)
-        except json.JSONDecodeError:
-            existing_data = []
-    else:
-        existing_data = []
-    
-    # 新しいAI生成データを取得
-    new_data = GenAi.process_ai_generate(item_instance.pk, str(item_instance.item_image))
-    
-    # データの整形と重複の除去
-    if isinstance(new_data, str):
-        try:
-            new_data = json.loads(new_data)
-        except json.JSONDecodeError:
-            new_data = []
-    
-    # リストの場合は重複を除去して保存
-    if isinstance(new_data, list):
-        # すべての要素から余分な引用符を除去
-        cleaned_data = [tag.strip("'") for tag in new_data]
-        # 重複を除去
-        unique_data = list(set(cleaned_data))
-        # JSONとして保存
-        item_instance.ai_generated_json = json.dumps(unique_data, ensure_ascii=False)
-        item_instance.save()
-    
+
+       # 新しいAI生成データを取得
+    GenAi.process_ai_generate(item_instance.pk, str(item_instance.item_image))
+    messages.success(request, 'AIに送信されました。') 
     return redirect('storeview:index')
 
 
@@ -163,7 +136,7 @@ def search(request):
             query = unicodedata.normalize('NFKC', query)
             print(query)
             object_list = item.objects.filter(
-                Q(ai_generated_json__icontains=query) |
+                Q(ai_generated_keywords__icontains=query) |
                 Q(item_description__icontains=query) |
                 Q(item_name__icontains=query) | # type: ignore
                 Q(item_category_id__category_name__icontains=query)
@@ -194,18 +167,7 @@ def upload_image(request):
             item_instance.item_name = "未分類アイテム"
             item_instance.item_description = "画像認識による自動分類を待機中"
             # ItemCategoryが存在することを確認してから設定
-            item_instance.item_category_id = item_category.objects.get(
-                category_id=9)
-
-            # POSTデータから直接値を取得
-            item_instance.item_date = request.POST.get('item_date')
-            item_instance.item_lost_location = request.POST.get(
-                'item_lost_location')
-            item_instance.item_name = "未分類アイテム"
-            item_instance.item_description = "画像認識による自動分類を待機中"
-            # ItemCategoryが存在することを確認してから設定
-            item_instance.item_category_id = item_category.objects.get(
-                category_id=9)
+            item_instance.item_category_id = item_category.objects.get(category_name = "その他")
             item_instance.save()
             # バックグラウンドでAIに送信する
             GenAi.process_ai_generate(

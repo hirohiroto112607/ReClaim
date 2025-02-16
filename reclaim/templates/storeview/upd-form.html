@@ -76,9 +76,9 @@
 
                 <div class="col-12">
                   <div class="mb-3">
-                    <label for="id_ai_generated_json" class="form-label">AI生成データ</label>
-                    {{ form.ai_generated_json.errors }}
-                    <textarea name="ai_generated_json" rows="3" id="id_ai_generated_json" class="form-control">{{ decoded.ai_json|safe }}</textarea>
+                    <label for="id_ai_generated_keywords" class="form-label">AI生成データ</label>
+                    {{ form.id_ai_generated_keywords.errors }}
+                    <textarea name="id_ai_generated_keywords" rows="3" id="id_ai_generated_keywords" class="form-control">{{ decoded.ai_json|safe }}</textarea>
                     <div class="mt-2">
                       <a href="{% url 'storeview:AiGenerate' item_instance.pk %}" class="btn btn-outline-primary btn-sm">
                         <i class="bi bi-magic"></i> AIでデータを生成
@@ -127,7 +127,7 @@
 
   <script>
     function prepareFormData() {
-      const aiJsonInput = document.getElementById('id_ai_generated_json');
+      const aiJsonInput = document.getElementById('id_ai_generated_keywords');
       try {
         // 入力された文字列をカンマで分割し、配列に変換
         const tags = aiJsonInput.value.split(',').map(tag => tag.trim()).filter(tag => tag);

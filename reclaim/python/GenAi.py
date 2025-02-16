@@ -114,8 +114,6 @@ def generate_item_info(image_path):
             category = result['category'].strip()
             if category not in valid_categories:
                 print(f"Invalid category: {category}")
-                result['category'] = "その他"  # デフォルトカテゴリー
-        print("Result:", result)
         return result
 
     except Exception as error:
@@ -130,10 +128,10 @@ def generate_item_info(image_path):
 
 
 @background(schedule=0)
-def process_ai_generate(item_id, item_image):
+def process_ai_generate(item_id, item_image=""):
     print("AI生成を開始します")
     item_instance = get_object_or_404(item, pk=item_id)
-    image_path = os.path.join(BASE_DIR, "media", str(item_image))
+    image_path = os.path.join(BASE_DIR, "media", str(item_instance.item_image))
     print("image_path: " + image_path)
     ai_info = generate_item_info(image_path)
     print("ai_info: " + str(ai_info))
@@ -148,20 +146,23 @@ def process_ai_generate(item_id, item_image):
             ai_data = {}
     
     try:
-        # キーワードをJSON形式で保存
-        keywords_json = json.dumps({'keywords': ai_data.get('keywords', '')})
-        item_instance.ai_generated_json = keywords_json
+        keywords = ai_data.get('keywords', '')
+        try:
+            json.loads(keywords)  # JSONとして有効か確認
+            item_instance.ai_generated_keywords = keywords
+        except json.JSONDecodeError:
+            print("ai_generated_keywordsがJSONとして無効です: " + str(keywords))
+            item_instance.ai_generated_keywords = '{"keywords":"'+str(keywords)+'"}'
         
+        print("ai_generated_keywords: " + str(item_instance.ai_generated_keywords))
         item_instance.item_name = ai_data.get('item_name', '')
         print("item_instance.item_name: " + str(item_instance.item_name))
         
         category_name = ai_data.get('category', 'その他')
         item_instance.item_category_id = get_object_or_404(item_category, category_name=category_name)
         print("item_instance.item_category_id: " + str(item_instance.item_category_id))
-        
-        # 現在時刻を設定
-        item_instance.item_date = timezone.now()
-        
+        if item_instance.item_description == "":
+            item_instance.item_description = "画像認識による自動分類を待機中"
         item_instance.save()
         print("AI生成が完了しました")
     except Exception as e:

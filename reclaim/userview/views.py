@@ -35,12 +35,12 @@ def detail_item_view(request, pk):
     }
     
     # JSON データが存在する場合はデコード
-    if item_instance.ai_generated_json:
+    if item_instance.ai_generated_keywords:
         try:
-            ai_json = json.loads(item_instance.ai_generated_json)
-            decoded_data['ai_json'] = ai_json["keywords"]
+            ai_json = json.loads(item_instance.ai_generated_keywords)
+            decoded_data['ai_keywords'] = ai_json["keywords"]
         except json.JSONDecodeError:
-            decoded_data['ai_json'] = None
+            decoded_data['ai_keywords'] = None
     
     context = {
         'item': item_instance,
@@ -81,7 +81,7 @@ def search(request):
         print(query)
         if query:
             object_list = item.objects.filter(
-                Q(ai_generated_json__icontains=query) |
+                Q(ai_generated_keywords__icontains=query) |
                 Q(item_description__icontains=query) |
                 Q(item_name__icontains=query) |
                 Q(item_category_id__category_name__icontains=query)
