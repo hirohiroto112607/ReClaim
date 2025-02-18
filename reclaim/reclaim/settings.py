@@ -37,11 +37,9 @@ DEBUG = True
 # 基本のホストを設定
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
-EXETRA_DOMAIN = list(env("ALLOW_ACCESS_HOSTS").split(","))
+EXETRA_DOMAIN = list(env("ALLOW_ACCESS_HOSTS", default="reclaim.hirohiroto112607.f5.si").split(","))
 
-# 環境変数からホストを読み込み、存在する場合はリストに追加
-if env("ALLOW_ACCESS_HOSTS", default=None):
-    ALLOWED_HOSTS.extend(EXETRA_DOMAIN)
+ALLOWED_HOSTS = ALLOWED_HOSTS + EXETRA_DOMAIN
 
 # CSRF_TRUSTED_ORIGINSの設定
 HTTP_HOST = []

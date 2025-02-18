@@ -11,7 +11,7 @@ class RegisterForm(ModelForm):
         item_category_id = models.ForeignKey(
             'item_category', on_delete=models.PROTECT, blank=True, null=True)
         item_name = models.CharField(max_length=100, blank=True, null=True)
-        item_date = models.DateTimeField()
+        # item_date = models.DateTimeField()
         item_lost_location = models.CharField(max_length=100)
         item_description = models.TextField(blank=True, null=True)
         item_image = models.ImageField(
@@ -19,7 +19,8 @@ class RegisterForm(ModelForm):
         item_status = models.BooleanField(default=False)
         item_founder = models.CharField(max_length=100)  # TODO 自動で入力されるようにする
         fields = ['item_category_id',
-                  'item_name', 'item_date',
+                  'item_name', 
+                  'item_date',
                   'item_lost_location', 'item_description', 'ai_generated_json', 'item_image', 'item_status', 'item_founder']
         labels = {
             'item_category_id': 'カテゴリー',

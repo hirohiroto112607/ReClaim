@@ -15,6 +15,8 @@ cleanup() {
 # SIGINTとSIGTERMのトラップを設定
 trap cleanup SIGINT SIGTERM
 
+conda activate reclaim
+
 # cloudflaredをバックグラウンドで実行
 cloudflared tunnel run reclaim &
 pids+=($!)

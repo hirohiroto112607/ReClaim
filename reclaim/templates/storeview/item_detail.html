@@ -1,7 +1,9 @@
 {% extends 'storeview/base.html' %}
 {% load static %}
 
-{% block title %}{{ item.item_name }}{% endblock %}
+{% block title %}
+  {{ item.item_name }}
+{% endblock %}
 
 {% block body %}
   <div class="container py-4">
@@ -15,7 +17,7 @@
         <div class="card shadow-sm">
           <div class="card-body">
             <h2 class="card-title mb-4">{{ item.item_name }}</h2>
-            
+
             <div class="mb-4">
               <h5 class="text-muted mb-3">カテゴリー</h5>
               <p class="card-text">{{ item.item_category_id }}</p>
@@ -39,27 +41,19 @@
               <h5 class="text-muted mb-3">説明</h5>
               <p class="card-text">{{ item.item_description }}</p>
             </div>
-
-            {% if item.ai_generated_json %}
-              <div class="mb-4">
-                <h5 class="text-muted mb-3">キーワード</h5>
-                <p class="card-text">{{ item.ai_generated_json }}</p>
-              </div>
-            {% endif %}
-
+            <div class="mb-4">
+              <h5 class="text-muted mb-3">解析結果</h5>
+              <p class="card-text">
+                {% if decoded.ai_json %}
+                  {{ decoded.ai_json }}
+                {% endif %}
+              </p>
+            </div>
             <div class="d-grid gap-2">
-                <a href="{% url 'storeview:AiGenerate' item.pk %}" class="btn btn-success">
-                <i class="bi bi-magic"></i> AiGenerate
-                </a>
-              <a href="{% url 'storeview:update' item.pk %}" class="btn btn-primary">
-                <i class="bi bi-pencil"></i> 編集する
-              </a>
-              <button class="btn btn-danger" id="delete-check">
-                <i class="bi bi-trash"></i> 削除
-              </button>
-              <a href="{% url 'storeview:index' %}" class="btn btn-secondary">
-                <i class="bi bi-arrow-left"></i> 戻る
-              </a>
+              <a href="{% url 'storeview:AiGenerate' item.pk %}" class="btn btn-success"><i class="bi bi-magic"></i> AiGenerate</a>
+              <a href="{% url 'storeview:update' item.pk %}" class="btn btn-primary"><i class="bi bi-pencil"></i> 編集する</a>
+              <button class="btn btn-danger" id="delete-check"><i class="bi bi-trash"></i> 削除</button>
+              <a href="{% url 'storeview:index' %}" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> 戻る</a>
             </div>
           </div>
         </div>
