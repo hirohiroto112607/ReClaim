@@ -197,15 +197,6 @@ def upload_image(request):
             item_instance.item_category_id = item_category.objects.get(
                 category_id=9)
 
-            # POSTデータから直接値を取得
-            item_instance.item_date = request.POST.get('item_date')
-            item_instance.item_lost_location = request.POST.get(
-                'item_lost_location')
-            item_instance.item_name = "未分類アイテム"
-            item_instance.item_description = "画像認識による自動分類を待機中"
-            # ItemCategoryが存在することを確認してから設定
-            item_instance.item_category_id = item_category.objects.get(
-                category_id=9)
             item_instance.save()
             # バックグラウンドでAIに送信する
             GenAi.process_ai_generate(
