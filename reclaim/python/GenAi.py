@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 from items.models import item, item_category
 from django.utils import timezone
 
-from reclaim.settings import BASE_DIR
+from config.settings import BASE_DIR
 
 
 def init():
