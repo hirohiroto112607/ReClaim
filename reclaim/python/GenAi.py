@@ -18,10 +18,8 @@ def init():
                                   generation_config={
                                       "response_mime_type": "application/json"},
                                   system_instruction="""
-                                  600文字以内にしてください。
-                                  多く回答すること。
-                                  キーワードのみを上げてください。
-                                  """)
+                                  """
+                                  )
     print("Initialized model")
     return model
 
