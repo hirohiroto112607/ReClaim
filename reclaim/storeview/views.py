@@ -48,13 +48,11 @@ def detail_item_view(request, pk):
         'location': unicodedata.normalize('NFKC', item_instance.item_lost_location),
     }
     
-    # JSON データが存在する場合はデコード
+    # テキストデータが存在する場合はデコード
     if item_instance.ai_generated_json:
-        try:
-            ai_json = json.loads(item_instance.ai_generated_json)
-            decoded_data['ai_json'] = ai_json["keywords"]
-        except json.JSONDecodeError:
-            decoded_data['ai_json'] = None
+        decoded_data['ai_json'] = item_instance.ai_generated_json
+    else:
+        decoded_data['ai_json'] = None
     
     context = {
         'item': item_instance,
@@ -85,13 +83,11 @@ def update_item_view(request, pk):
         'location': unicodedata.normalize('NFKC', item_instance.item_lost_location),
     }
 
-    # JSON データが存在する場合はデコード
+    # テキストデータが存在する場合はデコード
     if item_instance.ai_generated_json:
-        try:
-            ai_json = json.loads(item_instance.ai_generated_json)
-            decoded_data['ai_json'] = ai_json  # デコードしたJSONをそのまま渡す
-        except json.JSONDecodeError:
-            decoded_data['ai_json'] = None
+        decoded_data['ai_json'] = item_instance.ai_generated_json
+    else:
+        decoded_data['ai_json'] = None
 
     return render(request, 'storeview/upd-form.html', {
         'form': form,
@@ -108,14 +104,9 @@ def overview(request):
 
 def AiGenerate(request, pk):
     item_instance = get_object_or_404(item, pk=pk)
-    # 既存のJSONデータがある場合は、それを解析して重複を防ぐ
+    # 既存のテキストデータがある場合は、それを解析して重複を防ぐ
     if (item_instance.ai_generated_json):
-        try:
-            existing_data = json.loads(item_instance.ai_generated_json)
-            if isinstance(existing_data, str):
-                existing_data = json.loads(existing_data)
-        except json.JSONDecodeError:
-            existing_data = []
+        existing_data = item_instance.ai_generated_json.split(',')
     else:
         existing_data = []
     
@@ -124,20 +115,12 @@ def AiGenerate(request, pk):
     
     # データの整形と重複の除去
     if isinstance(new_data, str):
-        try:
-            new_data = json.loads(new_data)
-        except json.JSONDecodeError:
-            new_data = []
+        new_data = new_data.split(',')
     
-    # リストの場合は重複を除去して保存
-    if isinstance(new_data, list):
-        # すべての要素から余分な引用符を除去
-        cleaned_data = [tag.strip("'") for tag in new_data]
-        # 重複を除去
-        unique_data = list(set(cleaned_data))
-        # JSONとして保存
-        item_instance.ai_generated_json = json.dumps(unique_data, ensure_ascii=False)
-        item_instance.save()
+    # 重複を除去して保存
+    unique_data = list(set(existing_data + new_data))
+    item_instance.ai_generated_json = ','.join(unique_data)
+    item_instance.save()
     
     return redirect('storeview:index')
 

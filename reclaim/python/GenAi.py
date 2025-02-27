@@ -16,9 +16,7 @@ def init():
     genai.configure(api_key=os.getenv("GENAI-API-KEY"))
     model = genai.GenerativeModel("gemini-1.5-flash",
                                   generation_config={
-                                      "response_mime_type": "application/json"},
-                                  system_instruction="""
-                                  """
+                                      "response_mime_type": "application/json"}
                                   )
     print("Initialized model")
     return model
