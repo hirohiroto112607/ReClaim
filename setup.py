@@ -1,9 +1,10 @@
 import os
 import sys
+
 import django
 from django.core.management import execute_from_command_line
-from reclaim.items.models import item_category
 from django.core.management.utils import get_random_secret_key
+from reclaim.items.models import item_category
 
 
 def setup_project():

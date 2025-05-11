@@ -1,25 +1,23 @@
 import json
 import unicodedata
-import unicodedata
 
 import python.GenAi as GenAi
-from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy
-from django.views import generic
-from items.models import item, item_category
-from django.db.models import Q
 from django.contrib import messages
+from django.db.models import Q
+from django.shortcuts import get_object_or_404, redirect, render
+from items.models import item, item_category, item_message
 
-from .forms import RegisterForm
-from .forms import ImageUploadForm
+from .forms import ImageUploadForm, RegisterForm
 
 # Create your views here.
 
 
 def index(request):
+    return render(request, 'storeview/index.html')
+
+def item_list_view(request):
     object_list = item.objects.all()
     return render(request, 'storeview/list.html', {'object_list': object_list})
-
 
 def registerform(request):
     item_category_object_list = item_category.objects.all()
@@ -40,20 +38,22 @@ def registerform(request):
 
 def detail_item_view(request, pk):
     item_instance = get_object_or_404(item, pk=pk)
-    
+
     # 各フィールドのユニコード正規化
     decoded_data = {
         'name': unicodedata.normalize('NFKC', item_instance.item_name),
         'description': unicodedata.normalize('NFKC', item_instance.item_description),
         'location': unicodedata.normalize('NFKC', item_instance.item_lost_location),
     }
-    
-    # テキストデータが存在する場合はデコード
+
+    # JSON データが存在する場合はデコード
     if item_instance.ai_generated_json:
-        decoded_data['ai_json'] = item_instance.ai_generated_json
-    else:
-        decoded_data['ai_json'] = None
-    
+        try:
+            ai_json = json.loads(item_instance.ai_generated_json)
+            decoded_data['ai_json'] = ai_json["keywords"]
+        except json.JSONDecodeError:
+            decoded_data['ai_json'] = None
+
     context = {
         'item': item_instance,
         'decoded': decoded_data,
@@ -83,11 +83,13 @@ def update_item_view(request, pk):
         'location': unicodedata.normalize('NFKC', item_instance.item_lost_location),
     }
 
-    # テキストデータが存在する場合はデコード
+    # JSON データが存在する場合はデコード
     if item_instance.ai_generated_json:
-        decoded_data['ai_json'] = item_instance.ai_generated_json
-    else:
-        decoded_data['ai_json'] = None
+        try:
+            ai_json = json.loads(item_instance.ai_generated_json)
+            decoded_data['ai_json'] = ai_json  # デコードしたJSONをそのまま渡す
+        except json.JSONDecodeError:
+            decoded_data['ai_json'] = None
 
     return render(request, 'storeview/upd-form.html', {
         'form': form,
@@ -104,24 +106,39 @@ def overview(request):
 
 def AiGenerate(request, pk):
     item_instance = get_object_or_404(item, pk=pk)
-    # 既存のテキストデータがある場合は、それを解析して重複を防ぐ
+    # 既存のJSONデータがある場合は、それを解析して重複を防ぐ
     if (item_instance.ai_generated_json):
-        existing_data = item_instance.ai_generated_json.split(',')
+        try:
+            existing_data = json.loads(item_instance.ai_generated_json)
+            if isinstance(existing_data, str):
+                existing_data = json.loads(existing_data)
+        except json.JSONDecodeError:
+            existing_data = []
     else:
         existing_data = []
-    
+
     # 新しいAI生成データを取得
-    new_data = GenAi.process_ai_generate(item_instance.pk, str(item_instance.item_image))
-    
+    new_data = GenAi.process_ai_generate(
+        item_instance.pk, str(item_instance.item_image))
+
     # データの整形と重複の除去
     if isinstance(new_data, str):
-        new_data = new_data.split(',')
-    
-    # 重複を除去して保存
-    unique_data = list(set(existing_data + new_data))
-    item_instance.ai_generated_json = ','.join(unique_data)
-    item_instance.save()
-    
+        try:
+            new_data = json.loads(new_data)
+        except json.JSONDecodeError:
+            new_data = []
+
+    # リストの場合は重複を除去して保存
+    if isinstance(new_data, list):
+        # すべての要素から余分な引用符を除去
+        cleaned_data = [tag.strip("'") for tag in new_data]
+        # 重複を除去
+        unique_data = list(set(cleaned_data))
+        # JSONとして保存
+        item_instance.ai_generated_json = json.dumps(
+            unique_data, ensure_ascii=False)
+        item_instance.save()
+
     return redirect('storeview:index')
 
 
@@ -148,19 +165,28 @@ def search(request):
             object_list = item.objects.filter(
                 Q(ai_generated_json__icontains=query) |
                 Q(item_description__icontains=query) |
-                Q(item_name__icontains=query) | # type: ignore
+                Q(item_name__icontains=query) |  # type: ignore
                 Q(item_category_id__category_name__icontains=query)
             )
-            return render(request, 'storeview/search.html', {'object_list': object_list, 'query': query})
+            decoded = []
+            for obj in object_list:
+                decoded_data = {
+                    'name': unicodedata.normalize('NFKC', obj.item_name),
+                    'description': unicodedata.normalize('NFKC', obj.item_description),
+                    'location': unicodedata.normalize('NFKC', obj.item_lost_location),
+                }
+                if obj.ai_generated_json:
+                    try:
+                        ai_json = json.loads(obj.ai_generated_json)
+                        decoded_data['ai_json'] = ai_json["keywords"]
+                    except json.JSONDecodeError:
+                        decoded_data['ai_json'] = None
+                decoded.append(decoded_data)
+            return render(request, 'storeview/search.html', {'object_list': object_list, 'query': query, 'decoded': decoded_data})
         else:
             return redirect('storeview:index')
     else:
         return redirect('storeview:index')
-
-
-def item_list_view(request):
-    object_list = item.objects.all()
-    return render(request, 'storeview/list.html', {'object_list': object_list})
 
 
 def upload_image(request):
@@ -174,21 +200,19 @@ def upload_image(request):
             item_instance.item_date = request.POST.get('item_date')
             item_instance.item_lost_location = request.POST.get(
                 'item_lost_location')
-            item_instance.item_name = "未分類アイテム"
-            item_instance.item_description = "画像認識による自動分類を待機中"
+            if request.POST.get('item_name'):
+                item_instance.item_name = request.POST.get('item_name')
+            else:
+                item_instance.item_name = "未分類アイテム"
+            if request.POST.get('item_description'):
+                item_instance.item_description = request.POST.get(
+                    'item_description')
+            else:
+                item_instance.item_description = "画像認識による自動分類を待機中"
+            print(item_category.objects.get(category_id=1))
             # ItemCategoryが存在することを確認してから設定
             item_instance.item_category_id = item_category.objects.get(
-                category_id=9)
-
-            # POSTデータから直接値を取得
-            item_instance.item_date = request.POST.get('item_date')
-            item_instance.item_lost_location = request.POST.get(
-                'item_lost_location')
-            item_instance.item_name = "未分類アイテム"
-            item_instance.item_description = "画像認識による自動分類を待機中"
-            # ItemCategoryが存在することを確認してから設定
-            item_instance.item_category_id = item_category.objects.get(
-                category_id=9)
+                category_id=1)
             item_instance.save()
             # バックグラウンドでAIに送信する
             GenAi.process_ai_generate(
@@ -200,6 +224,25 @@ def upload_image(request):
     else:
         form = ImageUploadForm()
     return render(request, 'storeview/upload_image.html', {'form': form})
+
+
+def message_list_view(request):
+    """
+    店舗ユーザー宛のメッセージ一覧を表示する
+    """
+    if request.user.is_authenticated:
+        # 現在のログインユーザー宛のメッセージを取得
+        message_list = item_message.objects.filter(receiver=request.user).order_by('-message_id')
+        
+        # アイテム情報を含めたコンテキストを作成
+        context = {
+            'message_list': message_list,
+        }
+        
+        return render(request, 'storeview/message_list.html', context)
+    else:
+        # 未ログインの場合はログインページへリダイレクト
+        return redirect('accounts:login')
 
 
 '''

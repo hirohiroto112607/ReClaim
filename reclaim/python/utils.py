@@ -6,8 +6,8 @@ utils.py
 AI生成JSONデータのデコードを行うヘルパー関数を提供します。
 """
 
-import unicodedata
 import json
+import unicodedata
 
 
 def normalize_item_fields(item_instance):

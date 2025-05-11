@@ -20,7 +20,7 @@
       {% if user.is_store or user.is_superuser %}
         <nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top">
           <div class="container-fluid px-2 px-sm-3">
-            <a class="navbar-brand" href="{% url 'storeview:index' %}">
+            <a class="navbar-brand" href="{% url 'storeview:about' %}">
               <i class="bi bi-box-seam"></i> <strong>Reclaim</strong>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,6 +39,17 @@
                 </li>
                 <li class="nav-item">
                   <a class="nav-link px-3" href="{% url 'storeview:upload_image' %}"><i class="bi bi-image"></i> 画像アップロード</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link px-3" href="{% url 'storeview:messages' %}">
+                    {% if unread_message_count > 0 %}
+                      <i class="bi bi-envelope-fill text-warning"></i>
+                      <span class="badge bg-warning text-dark rounded-pill">{{ unread_message_count }}</span>
+                    {% else %}
+                      <i class="bi bi-envelope"></i>
+                    {% endif %}
+                    メッセージ
+                  </a>
                 </li>
               </ul>
               <div class="d-flex flex-column flex-lg-row gap-2">

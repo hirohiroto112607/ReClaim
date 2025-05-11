@@ -1,8 +1,8 @@
-import subprocess
-import time
-import sys
-import signal
 import os
+import signal
+import subprocess
+import sys
+import time
 
 
 def run_command(command):

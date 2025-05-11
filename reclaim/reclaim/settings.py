@@ -15,6 +15,7 @@ from pathlib import Path
 
 ###
 import environ
+
 env = environ.Env()
 env.read_env(env_file=".env")
 ###
@@ -94,6 +95,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.media',
+                'storeview.context_processors.unread_messages',
             ],
         },
     },
