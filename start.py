@@ -3,11 +3,21 @@ import time
 import sys
 import signal
 import os
+import shlex
+
+
+def normalize_command(command):
+    if isinstance(command, str):
+        return shlex.split(command)
+    if isinstance(command, (list, tuple)) and command:
+        return list(command)
+    raise ValueError("command must be a non-empty string or argument list")
 
 
 def run_command(command):
     try:
-        ret = subprocess.run(command, shell=True, capture_output=True, text=True)
+        normalized_command = normalize_command(command)
+        ret = subprocess.run(normalized_command, shell=False, capture_output=True, universal_newlines=True)
         if ret.returncode == 0:
             return ret
         return None
@@ -17,9 +27,10 @@ def run_command(command):
 
 
 def start_process(command):
-    return subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, 
-                          stderr=subprocess.PIPE, encoding='utf-8',
-                          preexec_fn=os.setsid)  # プロセスグループを作成
+    normalized_command = normalize_command(command)
+    return subprocess.Popen(normalized_command, shell=False, stdout=subprocess.PIPE,
+                          stderr=subprocess.PIPE, universal_newlines=True,
+                          start_new_session=True)  # プロセスグループを作成
 
 
 def signal_handler(signum, frame):
@@ -40,12 +51,12 @@ def start():
     signal.signal(signal.SIGTERM, signal_handler)
     
     # 開発サーバーを起動
-    server_command = f"python3 {manage_py} runserver"
+    server_command = [sys.executable, manage_py, "runserver"]
     print("開発サーバーを起動します...")
     server_process = start_process(server_command)
     
     # タスク処理を起動
-    task_command = f"python3 {manage_py} process_tasks"
+    task_command = [sys.executable, manage_py, "process_tasks"]
     print("タスクを起動します...")
     task_process = start_process(task_command)
     
