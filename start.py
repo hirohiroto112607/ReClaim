@@ -7,7 +7,7 @@ import os
 
 def run_command(command):
     try:
-        ret = subprocess.run(command, shell=True, capture_output=True, text=True)
+        ret = subprocess.run(command, shell=False, capture_output=True, universal_newlines=True)
         if ret.returncode == 0:
             return ret
         return None
@@ -17,8 +17,8 @@ def run_command(command):
 
 
 def start_process(command):
-    return subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, 
-                          stderr=subprocess.PIPE, encoding='utf-8',
+    return subprocess.Popen(command, shell=False, stdout=subprocess.PIPE,
+                          stderr=subprocess.PIPE, universal_newlines=True,
                           preexec_fn=os.setsid)  # プロセスグループを作成
 
 
@@ -40,12 +40,12 @@ def start():
     signal.signal(signal.SIGTERM, signal_handler)
     
     # 開発サーバーを起動
-    server_command = f"python3 {manage_py} runserver"
+    server_command = [sys.executable, manage_py, "runserver"]
     print("開発サーバーを起動します...")
     server_process = start_process(server_command)
     
     # タスク処理を起動
-    task_command = f"python3 {manage_py} process_tasks"
+    task_command = [sys.executable, manage_py, "process_tasks"]
     print("タスクを起動します...")
     task_process = start_process(task_command)
     
