@@ -3,11 +3,21 @@ import time
 import sys
 import signal
 import os
+import shlex
+
+
+def normalize_command(command):
+    if isinstance(command, str):
+        return shlex.split(command)
+    if isinstance(command, (list, tuple)) and command:
+        return list(command)
+    raise ValueError("command must be a non-empty string or argument list")
 
 
 def run_command(command):
     try:
-        ret = subprocess.run(command, shell=False, capture_output=True, universal_newlines=True)
+        normalized_command = normalize_command(command)
+        ret = subprocess.run(normalized_command, shell=False, capture_output=True, universal_newlines=True)
         if ret.returncode == 0:
             return ret
         return None
@@ -17,9 +27,10 @@ def run_command(command):
 
 
 def start_process(command):
-    return subprocess.Popen(command, shell=False, stdout=subprocess.PIPE,
+    normalized_command = normalize_command(command)
+    return subprocess.Popen(normalized_command, shell=False, stdout=subprocess.PIPE,
                           stderr=subprocess.PIPE, universal_newlines=True,
-                          preexec_fn=os.setsid)  # プロセスグループを作成
+                          start_new_session=True)  # プロセスグループを作成
 
 
 def signal_handler(signum, frame):
